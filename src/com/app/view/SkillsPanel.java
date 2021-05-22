@@ -1,13 +1,93 @@
 package com.app.view;
 
-import javax.swing.JPanel;
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 
 public class SkillsPanel extends JPanel {
 
     public SkillsPanel() {
 
         this.setBackground(new Color(182, 144, 51));
-        this.setBounds(500,40,300, 360);
+        this.setBounds(700,80,666, 320);
+        this.setLayout(new GridLayout(9,4));
+
+        //Titles:
+        JLabel acrLabel = new JLabel("Acrobatics:");
+        JLabel aniLabel = new JLabel("Animal Handling:");
+        JLabel arcLabel = new JLabel("Arcana:");
+        JLabel athLabel = new JLabel("Athletics:");
+        JLabel decLabel = new JLabel("Deception:");
+        JLabel hisLabel = new JLabel("History:");
+        JLabel insLabel = new JLabel("Insight:");
+        JLabel intLabel = new JLabel("Intimidation:");
+        JLabel invLabel = new JLabel("Investigation:");
+
+        JLabel medLabel = new JLabel("Medicine:");
+        JLabel natLabel = new JLabel("Nature:");
+        JLabel prcLabel = new JLabel("Perception:");
+        JLabel prfLabel = new JLabel("Performance:");
+        JLabel prsLabel = new JLabel("Persuasion:");
+        JLabel relLabel = new JLabel("Religion:");
+        JLabel sleLabel = new JLabel("Sleight of Hand:");
+        JLabel steLabel = new JLabel("Stealth:");
+        JLabel surLabel = new JLabel("Survival:");
+
+        //Values:
+        JLabel v01Label = new JLabel("/Value/");
+        JLabel v02Label = new JLabel("/Value/");
+        JLabel v03Label = new JLabel("/Value/");
+        JLabel v04Label = new JLabel("/Value/");
+        JLabel v05Label = new JLabel("/Value/");
+        JLabel v06Label = new JLabel("/Value/");
+        JLabel v07Label = new JLabel("/Value/");
+        JLabel v08Label = new JLabel("/Value/");
+        JLabel v09Label = new JLabel("/Value/");
+        JLabel v10Label = new JLabel("/Value/");
+        JLabel v11Label = new JLabel("/Value/");
+        JLabel v12Label = new JLabel("/Value/");
+        JLabel v13Label = new JLabel("/Value/");
+        JLabel v14Label = new JLabel("/Value/");
+        JLabel v15Label = new JLabel("/Value/");
+        JLabel v16Label = new JLabel("/Value/");
+        JLabel v17Label = new JLabel("/Value/");
+        JLabel v18Label = new JLabel("/Value/");
+
+        //Adding elements:
+        this.add(acrLabel);
+        this.add(v01Label);
+        this.add(medLabel);
+        this.add(v10Label);
+        this.add(aniLabel);
+        this.add(v02Label);
+        this.add(natLabel);
+        this.add(v11Label);
+        this.add(arcLabel);
+        this.add(v03Label);
+        this.add(prcLabel);
+        this.add(v12Label);
+        this.add(athLabel);
+        this.add(v04Label);
+        this.add(prfLabel);
+        this.add(v13Label);
+        this.add(decLabel);
+        this.add(v05Label);
+        this.add(prsLabel);
+        this.add(v14Label);
+        this.add(hisLabel);
+        this.add(v06Label);
+        this.add(relLabel);
+        this.add(v15Label);
+        this.add(insLabel);
+        this.add(v07Label);
+        this.add(sleLabel);
+        this.add(v16Label);
+        this.add(intLabel);
+        this.add(v08Label);
+        this.add(steLabel);
+        this.add(v17Label);
+        this.add(invLabel);
+        this.add(v09Label);
+        this.add(surLabel);
+        this.add(v18Label);
     }
 }

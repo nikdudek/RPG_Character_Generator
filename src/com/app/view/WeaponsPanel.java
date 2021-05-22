@@ -8,6 +8,6 @@ public class WeaponsPanel extends JPanel {
     public WeaponsPanel() {
 
         this.setBackground(new Color(111, 84, 11));
-        this.setBounds(0,400,350, 200);
+        this.setBounds(0,400,600, 368);
     }
 }
