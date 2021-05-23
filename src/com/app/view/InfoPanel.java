@@ -38,7 +38,7 @@ public class InfoPanel extends JPanel {
         String[] alignments = {"Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"};
         JComboBox alignmentBox = new JComboBox(alignments);
 
-        JLabel expLabel = new JLabel("Experience:");
+        JLabel expLabel = new JLabel("Experience:"); //REPLACE WITH SOMETHING ELSE (NPC GENERATOR) ------------------
         JTextField expField = new JTextField();
 
         //Putting elements into Panel

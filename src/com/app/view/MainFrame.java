@@ -53,6 +53,9 @@ public class MainFrame extends JFrame implements ActionListener {
         exitItem.setActionCommand("exitItem");
         exitItem.addActionListener(this);
 
+        diceItem.setActionCommand("diceItem");
+        diceItem.addActionListener(this);
+
         //Mnemonic function for menus:
         fileMenu.setMnemonic(KeyEvent.VK_F);
         newItem.setMnemonic(KeyEvent.VK_N);
@@ -120,13 +123,16 @@ public class MainFrame extends JFrame implements ActionListener {
             case "loadItem" -> {
                 JFileChooser fileChooser = new JFileChooser();
                 int response = fileChooser.showOpenDialog(null); //CHOOSE PARENT
-                //3:12:19 -> zapisywanie i wczytywanie
+                //3:12:19 -> saving and loading
             }
             case "saveItem" -> {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.showSaveDialog(null); //CHOOSE PARENT
             }
             case "exitItem" -> System.exit(0);
+            case "diceItem" -> {
+                DiceRollerFrame diceFrame = new DiceRollerFrame();
+            }
             default -> throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
         }
     }

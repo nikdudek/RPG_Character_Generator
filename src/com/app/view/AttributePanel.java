@@ -9,9 +9,18 @@ public class AttributePanel extends JPanel {
 
         this.setBackground(new Color(144, 111, 25));
         this.setBounds(300,80,400, 320);
-        this.setLayout(new GridLayout(6,4));
+        this.setLayout(new GridLayout(7,4));
 
         //Titles:
+        JButton col1Label = new JButton("Roll!");
+        col1Label.setFont(col1Label.getFont().deriveFont(col1Label.getFont().getStyle() | Font.ITALIC));
+        JLabel col2Label = new JLabel("Base Value");
+        col2Label.setFont(col2Label.getFont().deriveFont(col2Label.getFont().getStyle() | Font.ITALIC));
+        JLabel col3Label = new JLabel("Modifier");
+        col3Label.setFont(col3Label.getFont().deriveFont(col3Label.getFont().getStyle() | Font.ITALIC));
+        JLabel col4Label = new JLabel("Saving Throw");
+        col4Label.setFont(col4Label.getFont().deriveFont(col4Label.getFont().getStyle() | Font.ITALIC));
+
         JLabel strLabel = new JLabel("Strength:");
         JLabel dexLabel = new JLabel("Dexterity:");
         JLabel conLabel = new JLabel("Condition:");
@@ -40,6 +49,10 @@ public class AttributePanel extends JPanel {
         JLabel v06cLabel = new JLabel("/Value/");
 
         //Adding elements:
+        this.add(col1Label);
+        this.add(col2Label);
+        this.add(col3Label);
+        this.add(col4Label);
         this.add(strLabel);
         this.add(v01aLabel);
         this.add(v01bLabel);
