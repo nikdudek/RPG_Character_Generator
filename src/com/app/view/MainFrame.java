@@ -12,7 +12,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
     //Menus:
     JMenu fileMenu = new JMenu("File");
-    JMenu pagesMenu = new JMenu("Pages");
+//    JMenu pagesMenu = new JMenu("Pages");
     JMenu toolsMenu = new JMenu("Tools");
     JMenu aboutMenu = new JMenu("About");
 
@@ -23,9 +23,9 @@ public class MainFrame extends JFrame implements ActionListener {
     JMenuItem exitItem = new JMenuItem("Exit");
 
     //Pages - items:
-    JMenuItem mainItem = new JMenuItem("Main page");
-    JMenuItem bioItem = new JMenuItem("Second page");
-    JMenuItem inventoryItem = new JMenuItem("Inventory");
+//    JMenuItem mainItem = new JMenuItem("Main page");
+//    JMenuItem bioItem = new JMenuItem("Second page");
+//    JMenuItem inventoryItem = new JMenuItem("Inventory");
 
     //Tools - items:
     JMenuItem diceItem = new JMenuItem("Dice roller");
@@ -63,7 +63,7 @@ public class MainFrame extends JFrame implements ActionListener {
         loadItem.setMnemonic(KeyEvent.VK_L);
         exitItem.setMnemonic(KeyEvent.VK_E);
 
-        pagesMenu.setMnemonic(KeyEvent.VK_P);
+//        pagesMenu.setMnemonic(KeyEvent.VK_P);
 
         toolsMenu.setMnemonic(KeyEvent.VK_T);
         diceItem.setMnemonic(KeyEvent.VK_D);
@@ -78,9 +78,9 @@ public class MainFrame extends JFrame implements ActionListener {
         fileMenu.add(exitItem);
 
         //Adding items to Pages
-        pagesMenu.add(mainItem);
-        pagesMenu.add(bioItem);
-        pagesMenu.add(inventoryItem);
+//        pagesMenu.add(mainItem);
+//        pagesMenu.add(bioItem);
+//        pagesMenu.add(inventoryItem);
 
         //Adding items to Tools
         toolsMenu.add(diceItem);
@@ -88,7 +88,7 @@ public class MainFrame extends JFrame implements ActionListener {
 
         //Adding menus to menu bar
         optionsMenu.add(fileMenu);
-        optionsMenu.add(pagesMenu);
+//        optionsMenu.add(pagesMenu);
         optionsMenu.add(toolsMenu);
         optionsMenu.add(aboutMenu);
 

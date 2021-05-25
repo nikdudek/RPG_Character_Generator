@@ -42,3 +42,4 @@ public class CombatValuesPanel extends JPanel {
         this.add(v06Label);
     }
 }
+// PROFICIENCY = (7 + LVL) / 4

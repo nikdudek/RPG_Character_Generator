@@ -8,7 +8,7 @@ public class CharacterSheet {
     private String race;
     private String mainClass;
     private String subClass;
-    private int LevelTotal;
+    private int Level;
     private String background;
     private String alignment;
     private int experience;
@@ -85,12 +85,12 @@ public class CharacterSheet {
         this.subClass = subClass;
     }
 
-    public int getLevelTotal() {
-        return LevelTotal;
+    public int getLevel() {
+        return Level;
     }
 
-    public void setLevelTotal(int levelTotal) {
-        LevelTotal = levelTotal;
+    public void setLevel(int Level) {
+        Level = Level;
     }
 
     public String getBackground() {
