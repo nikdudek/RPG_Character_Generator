@@ -10,8 +10,15 @@ import java.awt.event.ActionListener;
 
 public class DiceRollerFrame implements ActionListener {
 
+    private static DiceRollerFrame instance = null;
+    public static synchronized DiceRollerFrame getInstance() {
+        if(instance == null)
+            instance = new DiceRollerFrame();
+        return instance;
+    }
+
     JFrame frame = new JFrame("Dice Roller");
-    DiceRoller diceRoller = new DiceRoller();
+    DiceRoller diceRoller = DiceRoller.getInstance();
 
     //Buttons & Text Fields declaration:
     JButton d2Button = new JButton("Roll 2-sided Dice");
@@ -46,7 +53,7 @@ public class DiceRollerFrame implements ActionListener {
     JTextField d20CountField = new JTextField("1");
     JTextField d20Field = new JTextField();
 
-    DiceRollerFrame() {
+    private DiceRollerFrame() {
 
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300,520);

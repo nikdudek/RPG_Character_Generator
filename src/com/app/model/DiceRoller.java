@@ -3,6 +3,17 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class DiceRoller {
 
+    //SINGLETON
+    private DiceRoller() {
+        System.out.println("Dice Roller created.");
+    }
+
+    private static DiceRoller instance = null;
+    public static synchronized DiceRoller getInstance() {
+        if(instance == null)
+            instance = new DiceRoller();
+        return instance;
+    }
     public int d2(int k) {
         if(k > 0)
             return d2(k - 1) + (ThreadLocalRandom.current().nextInt(1,3));

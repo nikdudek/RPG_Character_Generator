@@ -1,60 +1,136 @@
 package com.app.view;
 
+import com.app.controller.Controller;
+import com.app.model.CharacterSheet;
+import com.app.model.CoreRules;
 import com.app.model.DiceRoller;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.CoderResult;
 
 public class AttributePanel extends JPanel implements ActionListener {
 
-    public String attributeToModifier(String attr) {
-        int attrVal = (Integer.parseInt(attr) - 10);
-        if(attrVal < 0) return String.valueOf((attrVal - 1) / 2);
-        else return String.valueOf(attrVal / 2);
+    //SINGLETON
+    private static AttributePanel instance = null;
+    public static synchronized AttributePanel getInstance() {
+        if(instance == null)
+            instance = new AttributePanel();
+        return instance;
     }
 
-    public String attributeToST(String attr) {
-        int attrVal = (Integer.parseInt(attr) - 10);
-        if(attrVal < 0) return String.valueOf((attrVal - 1) / 2);
-        else return String.valueOf(attrVal / 2);
-    }
+    //Instance of characterSheet:
+    CharacterSheet characterSheet = CharacterSheet.getInstance();
 
-    DiceRoller diceRoller = new DiceRoller();
-    int attributeDiceCount = 3;
 
     //Values:
-    JLabel v01aLabel = new JLabel("/Value/");
-    JLabel v01bLabel = new JLabel("/Value/");
-    JLabel v01cLabel = new JLabel("/Value/");
-    JLabel v02aLabel = new JLabel("/Value/");
-    JLabel v02bLabel = new JLabel("/Value/");
-    JLabel v02cLabel = new JLabel("/Value/");
-    JLabel v03aLabel = new JLabel("/Value/");
-    JLabel v03bLabel = new JLabel("/Value/");
-    JLabel v03cLabel = new JLabel("/Value/");
-    JLabel v04aLabel = new JLabel("/Value/");
-    JLabel v04bLabel = new JLabel("/Value/");
-    JLabel v04cLabel = new JLabel("/Value/");
-    JLabel v05aLabel = new JLabel("/Value/");
-    JLabel v05bLabel = new JLabel("/Value/");
-    JLabel v05cLabel = new JLabel("/Value/");
-    JLabel v06aLabel = new JLabel("/Value/");
-    JLabel v06bLabel = new JLabel("/Value/");
-    JLabel v06cLabel = new JLabel("/Value/");
+    JLabel strValueLabel = new JLabel("...");
+    JLabel strModifierLabel = new JLabel("...");
+    JLabel strSTLabel = new JLabel("...");
+    JLabel dexValueLabel = new JLabel("...");
+    JLabel dexModifierLabel = new JLabel("...");
+    JLabel dexSTLabel = new JLabel("...");
+    JLabel conValueLabel = new JLabel("...");
+    JLabel conModifierLabel = new JLabel("...");
+    JLabel conSTLabel = new JLabel("...");
+    JLabel intValueLabel = new JLabel("...");
+    JLabel intModifierLabel = new JLabel("...");
+    JLabel intSTLabel = new JLabel("...");
+    JLabel wisValueLabel = new JLabel("...");
+    JLabel wisModifierLabel = new JLabel("...");
+    JLabel wisSTLabel = new JLabel("...");
+    JLabel chaValueLabel = new JLabel("...");
+    JLabel chaModifierLabel = new JLabel("...");
+    JLabel chaSTLabel = new JLabel("...");
 
-    public AttributePanel() {
+    //Getters for Labels:
+
+    public JLabel getStrValueLabel() {
+        return strValueLabel;
+    }
+
+    public JLabel getStrModifierLabel() {
+        return strModifierLabel;
+    }
+
+    public JLabel getStrSTLabel() {
+        return strSTLabel;
+    }
+
+    public JLabel getDexValueLabel() {
+        return dexValueLabel;
+    }
+
+    public JLabel getDexModifierLabel() {
+        return dexModifierLabel;
+    }
+
+    public JLabel getDexSTLabel() {
+        return dexSTLabel;
+    }
+
+    public JLabel getConValueLabel() {
+        return conValueLabel;
+    }
+
+    public JLabel getConModifierLabel() {
+        return conModifierLabel;
+    }
+
+    public JLabel getConSTLabel() {
+        return conSTLabel;
+    }
+
+    public JLabel getIntValueLabel() {
+        return intValueLabel;
+    }
+
+    public JLabel getIntModifierLabel() {
+        return intModifierLabel;
+    }
+
+    public JLabel getIntSTLabel() {
+        return intSTLabel;
+    }
+
+    public JLabel getWisValueLabel() {
+        return wisValueLabel;
+    }
+
+    public JLabel getWisModifierLabel() {
+        return wisModifierLabel;
+    }
+
+    public JLabel getWisSTLabel() {
+        return wisSTLabel;
+    }
+
+    public JLabel getChaValueLabel() {
+        return chaValueLabel;
+    }
+
+    public JLabel getChaModifierLabel() {
+        return chaModifierLabel;
+    }
+
+    public JLabel getChaSTLabel() {
+        return chaSTLabel;
+    }
+
+    private AttributePanel() {
 
         this.setBackground(new Color(144, 111, 25));
         this.setBounds(300,80,400, 320);
         this.setLayout(new GridLayout(7,4));
 
         //"Roll" Button:
-        JButton col1Button = new JButton("Roll!");
-        col1Button.setFont(col1Button.getFont().deriveFont(col1Button.getFont().getStyle() | Font.ITALIC));
-        col1Button.setActionCommand("col1Button");
-        col1Button.addActionListener(this);
+        JButton rollButton = new JButton("Roll!");
+        rollButton.setFocusable(false);
+        rollButton.setFont(rollButton.getFont().deriveFont(rollButton.getFont().getStyle() | Font.ITALIC));
+        rollButton.setActionCommand("rollButton");
+        rollButton.addActionListener(this);
 
         //Titles:
         JLabel col2Label = new JLabel("Base Value");
@@ -72,34 +148,34 @@ public class AttributePanel extends JPanel implements ActionListener {
         JLabel chaLabel = new JLabel("Charisma:");
 
         //Adding elements:
-        this.add(col1Button);
+        this.add(rollButton);
         this.add(col2Label);
         this.add(col3Label);
         this.add(col4Label);
         this.add(strLabel);
-        this.add(v01aLabel);
-        this.add(v01bLabel);
-        this.add(v01cLabel);
+        this.add(strValueLabel);
+        this.add(strModifierLabel);
+        this.add(strSTLabel);
         this.add(dexLabel);
-        this.add(v02aLabel);
-        this.add(v02bLabel);
-        this.add(v02cLabel);
+        this.add(dexValueLabel);
+        this.add(dexModifierLabel);
+        this.add(dexSTLabel);
         this.add(conLabel);
-        this.add(v03aLabel);
-        this.add(v03bLabel);
-        this.add(v03cLabel);
+        this.add(conValueLabel);
+        this.add(conModifierLabel);
+        this.add(conSTLabel);
         this.add(intLabel);
-        this.add(v04aLabel);
-        this.add(v04bLabel);
-        this.add(v04cLabel);
+        this.add(intValueLabel);
+        this.add(intModifierLabel);
+        this.add(intSTLabel);
         this.add(wisLabel);
-        this.add(v05aLabel);
-        this.add(v05bLabel);
-        this.add(v05cLabel);
+        this.add(wisValueLabel);
+        this.add(wisModifierLabel);
+        this.add(wisSTLabel);
         this.add(chaLabel);
-        this.add(v06aLabel);
-        this.add(v06bLabel);
-        this.add(v06cLabel);
+        this.add(chaValueLabel);
+        this.add(chaModifierLabel);
+        this.add(chaSTLabel);
 
     }
 
@@ -108,30 +184,9 @@ public class AttributePanel extends JPanel implements ActionListener {
 
         switch (e.getActionCommand()) {
 
-            case "col1Button" -> {
-                //Roll Attributes:
-                v01aLabel.setText(String.valueOf(diceRoller.d6(attributeDiceCount)));
-                v02aLabel.setText(String.valueOf(diceRoller.d6(attributeDiceCount)));
-                v03aLabel.setText(String.valueOf(diceRoller.d6(attributeDiceCount)));
-                v04aLabel.setText(String.valueOf(diceRoller.d6(attributeDiceCount)));
-                v05aLabel.setText(String.valueOf(diceRoller.d6(attributeDiceCount)));
-                v06aLabel.setText(String.valueOf(diceRoller.d6(attributeDiceCount)));
-
-                //Set modifiers:
-                v01bLabel.setText(attributeToModifier(v01aLabel.getText()));
-                v02bLabel.setText(attributeToModifier(v02aLabel.getText()));
-                v03bLabel.setText(attributeToModifier(v03aLabel.getText()));
-                v04bLabel.setText(attributeToModifier(v04aLabel.getText()));
-                v05bLabel.setText(attributeToModifier(v05aLabel.getText()));
-                v06bLabel.setText(attributeToModifier(v06aLabel.getText()));
-
-                //Set saving throws:
-                v01cLabel.setText(attributeToModifier(v01aLabel.getText()));
-                v02cLabel.setText(attributeToModifier(v02aLabel.getText()));
-                v03cLabel.setText(attributeToModifier(v03aLabel.getText()));
-                v04cLabel.setText(attributeToModifier(v04aLabel.getText()));
-                v05cLabel.setText(attributeToModifier(v05aLabel.getText()));
-                v06cLabel.setText(attributeToModifier(v06aLabel.getText()));
+            case "rollButton" -> {
+                Controller controller = Controller.getInstance();
+                controller.rollAttributes();
             }
             default -> throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
         }

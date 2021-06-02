@@ -35,7 +35,7 @@ public class MainFrame extends JFrame implements ActionListener {
         this.setTitle("RPG Character Generator"); //sets title of main frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //exits from an app by clicking "X" button
         this.setResizable(false); //prevents frame from being resized
-        this.setSize(1366,768); //sets the dimensions of a frame
+        this.setSize(1366,700); //sets the dimensions of a frame
         this.setLayout(null); //no layout
         this.setVisible(true); //makes the frame visible
 
@@ -96,23 +96,23 @@ public class MainFrame extends JFrame implements ActionListener {
         //Adding panels to frame
         this.setJMenuBar(optionsMenu);
 
-        InfoPanel infoPanel = new InfoPanel();
+        InfoPanel infoPanel = InfoPanel.getInstance();
         this.add(infoPanel);
 
-        CombatValuesPanel combatValuesPanel = new CombatValuesPanel();
+        CombatValuesPanel combatValuesPanel = CombatValuesPanel.getInstance();
         this.add(combatValuesPanel);
 
-        AttributePanel attributePanel = new AttributePanel();
+        AttributePanel attributePanel = AttributePanel.getInstance();
         this.add(attributePanel);
 
-        SkillsPanel skillsPanel = new SkillsPanel();
+        SkillsPanel skillsPanel = SkillsPanel.getInstance();
         this.add(skillsPanel);
 
-        WeaponsPanel weaponsPanel = new WeaponsPanel();
-        this.add(weaponsPanel);
+        FeatsPanel featsPanel = FeatsPanel.getInstance();
+        this.add(featsPanel);
 
-        SpellsPanel spellsPanel = new SpellsPanel();
-        this.add(spellsPanel);
+        BackgroundPanel backgroundPanel = BackgroundPanel.getInstance();
+        this.add(backgroundPanel);
     }
 
     // ActionListener commands below:
@@ -131,7 +131,7 @@ public class MainFrame extends JFrame implements ActionListener {
             }
             case "exitItem" -> System.exit(0);
             case "diceItem" -> {
-                DiceRollerFrame diceFrame = new DiceRollerFrame();
+                DiceRollerFrame diceFrame = DiceRollerFrame.getInstance();
             }
             default -> throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
         }

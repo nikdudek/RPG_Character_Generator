@@ -1,45 +1,66 @@
 package com.app.view;
 
+import com.app.model.CharacterSheet;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class CombatValuesPanel extends JPanel {
 
-    public CombatValuesPanel() {
+    //SINGLETON
+    private static CombatValuesPanel instance = null;
+    public static synchronized CombatValuesPanel getInstance() {
+        if(instance == null)
+            instance = new CombatValuesPanel();
+        return instance;
+    }
+
+    //Instance of characterSheet:
+    CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+    //Titles:
+    JLabel iniLabel = new JLabel("Initiative:");
+    JLabel speLabel = new JLabel("Speed:");
+    JLabel proLabel = new JLabel("Proficiency:");
+    JLabel hidLabel = new JLabel("Hit Dice:");
+    JLabel hipLabel = new JLabel("Hit Points:");
+    JLabel armLabel = new JLabel("Armor Class:");
+
+    //Values:
+    JLabel iniValLabel = new JLabel("...");
+    JLabel speValLabel = new JLabel("...");
+    JLabel proValLabel = new JLabel("...");
+    JLabel hidValLabel = new JLabel("...");
+    JLabel hipValLabel = new JLabel("...");
+    JLabel armValLabel = new JLabel("...");
+
+    private CombatValuesPanel() {
 
         this.setBackground(new Color(182, 144, 51));
         this.setBounds(0,80,300, 320);
         this.setLayout(new GridLayout(6,2));
 
-        //Titles:
-        JLabel iniLabel = new JLabel("Initiative:");
-        JLabel speLabel = new JLabel("Speed:");
-        JLabel proLabel = new JLabel("Proficiency:");
-        JLabel hidLabel = new JLabel("Hit Dice:");
-        JLabel hipLabel = new JLabel("Hit Points:");
-        JLabel armLabel = new JLabel("Armor Class:");
-
-        //Values:
-        JLabel v01Label = new JLabel("/Value/");
-        JLabel v02Label = new JLabel("/Value/");
-        JLabel v03Label = new JLabel("/Value/");
-        JLabel v04Label = new JLabel("/Value/");
-        JLabel v05Label = new JLabel("/Value/");
-        JLabel v06Label = new JLabel("/Value/");
-
         //Adding elements:
         this.add(iniLabel);
-        this.add(v01Label);
+        this.add(iniValLabel);
         this.add(speLabel);
-        this.add(v02Label);
+        this.add(speValLabel);
         this.add(proLabel);
-        this.add(v03Label);
+        this.add(proValLabel);
         this.add(hidLabel);
-        this.add(v04Label);
+        this.add(hidValLabel);
         this.add(hipLabel);
-        this.add(v05Label);
+        this.add(hipValLabel);
         this.add(armLabel);
-        this.add(v06Label);
+        this.add(armValLabel);
+    }
+
+    public void refreshValues() {
+        iniValLabel.setText(String.valueOf(characterSheet.getInitiative()));
+        speValLabel.setText(String.valueOf(characterSheet.getSpeed()));
+        proValLabel.setText(String.valueOf(characterSheet.getProficiency()));
+        hidValLabel.setText(characterSheet.getHitDiceCount() + "d" + characterSheet.getHitDiceType());
+        hipValLabel.setText(String.valueOf(characterSheet.getHitPointsMax()));
+        armValLabel.setText(String.valueOf(characterSheet.getArmorClass()));
     }
 }
-// PROFICIENCY = (7 + LVL) / 4

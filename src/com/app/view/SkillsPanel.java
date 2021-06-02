@@ -1,11 +1,24 @@
 package com.app.view;
 
+import com.app.model.CharacterSheet;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class SkillsPanel extends JPanel {
 
-    public SkillsPanel() {
+    //SINGLETON
+    private static SkillsPanel instance = null;
+    public static synchronized SkillsPanel getInstance() {
+        if(instance == null)
+            instance = new SkillsPanel();
+        return instance;
+    }
+
+    //Instance of characterSheet:
+    CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+    private SkillsPanel() {
 
         this.setBackground(new Color(182, 144, 51));
         this.setBounds(700,80,666, 320);
@@ -33,24 +46,24 @@ public class SkillsPanel extends JPanel {
         JLabel surLabel = new JLabel("Survival:");
 
         //Values:
-        JLabel v01Label = new JLabel("/Value/");
-        JLabel v02Label = new JLabel("/Value/");
-        JLabel v03Label = new JLabel("/Value/");
-        JLabel v04Label = new JLabel("/Value/");
-        JLabel v05Label = new JLabel("/Value/");
-        JLabel v06Label = new JLabel("/Value/");
-        JLabel v07Label = new JLabel("/Value/");
-        JLabel v08Label = new JLabel("/Value/");
-        JLabel v09Label = new JLabel("/Value/");
-        JLabel v10Label = new JLabel("/Value/");
-        JLabel v11Label = new JLabel("/Value/");
-        JLabel v12Label = new JLabel("/Value/");
-        JLabel v13Label = new JLabel("/Value/");
-        JLabel v14Label = new JLabel("/Value/");
-        JLabel v15Label = new JLabel("/Value/");
-        JLabel v16Label = new JLabel("/Value/");
-        JLabel v17Label = new JLabel("/Value/");
-        JLabel v18Label = new JLabel("/Value/");
+        JLabel v01Label = new JLabel("...");
+        JLabel v02Label = new JLabel("...");
+        JLabel v03Label = new JLabel("...");
+        JLabel v04Label = new JLabel("...");
+        JLabel v05Label = new JLabel("...");
+        JLabel v06Label = new JLabel("...");
+        JLabel v07Label = new JLabel("...");
+        JLabel v08Label = new JLabel("...");
+        JLabel v09Label = new JLabel("...");
+        JLabel v10Label = new JLabel("...");
+        JLabel v11Label = new JLabel("...");
+        JLabel v12Label = new JLabel("...");
+        JLabel v13Label = new JLabel("...");
+        JLabel v14Label = new JLabel("...");
+        JLabel v15Label = new JLabel("...");
+        JLabel v16Label = new JLabel("...");
+        JLabel v17Label = new JLabel("...");
+        JLabel v18Label = new JLabel("...");
 
         //Adding elements:
         this.add(acrLabel);
