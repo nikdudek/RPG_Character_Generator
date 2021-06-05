@@ -1,7 +1,30 @@
 package com.app.model;
 
+import java.util.HashMap;
+
 public class CoreRules {
 
+//    HashMap<String,Integer> skillsMap = new HashMap<String,Integer>();
+//        skillsMap.put("Acrobatics",0);
+//        skillsMap.put("Animal Handling",1);
+//        skillsMap.put("Arcana",2);
+//        skillsMap.put("Athletics",3);
+//        skillsMap.put("Deception",4);
+//        skillsMap.put("History",5);
+//        skillsMap.put("Insight",6);
+//        skillsMap.put("Intimidation",7);
+//        skillsMap.put("Investigation",8);
+//        skillsMap.put("Medicine",9);
+//        skillsMap.put("Nature",10);
+//        skillsMap.put("Perception",11);
+//        skillsMap.put("Performance",12);
+//        skillsMap.put("Persuasion",13);
+//        skillsMap.put("Religion",14);
+//        skillsMap.put("Sleight of Hand",15);
+//        skillsMap.put("Stealth",16);
+//        skillsMap.put("Survival",17);
+
+    //FINALS
     public final int BARBARIAN = 0;
     public final int BARD = 1;
     public final int CLERIC = 2;
@@ -15,10 +38,41 @@ public class CoreRules {
     public final int WARLOCK = 10;
     public final int WIZARD = 11;
     public final int DEFAULT = 12;
+    public final int ALL_SKILLS = 18;
+    public final int ATTRIBUTE_DICE_COUNT = 3;
+    public final int STARTING_PROFICIENCY = 2;
+    public final int BASE_AC = 10;
+    public final int STARTING_LEVEL = 1;
 
     //SINGLETON
     private CoreRules() {
         System.out.println("Core rules created.");
+
+//        //CLASSES HashMap:
+//        HashMap<Integer,String> classMap = new HashMap<Integer,String>();
+//        classMap.put(0,"Barbarian");
+//
+//        //SKILLS HashMap:
+//        HashMap<String,Integer> skillMap = new HashMap<String,Integer>();
+//        skillMap.put("Acrobatics",0);
+//        skillMap.put("Animal Handling",1);
+//        skillMap.put("Arcana",2);
+//        skillMap.put("Athletics",3);
+//        skillMap.put("Deception",4);
+//        skillMap.put("History",5);
+//        skillMap.put("Insight",6);
+//        skillMap.put("Intimidation",7);
+//        skillMap.put("Investigation",8);
+//        skillMap.put("Medicine",9);
+//        skillMap.put("Nature",10);
+//        skillMap.put("Perception",11);
+//        skillMap.put("Performance",12);
+//        skillMap.put("Persuasion",13);
+//        skillMap.put("Religion",14);
+//        skillMap.put("Sleight of Hand",15);
+//        skillMap.put("Stealth",16);
+//        skillMap.put("Survival",17);
+
     }
 
     private static CoreRules instance = null;
@@ -34,7 +88,6 @@ public class CoreRules {
     private final String[] classes = {"Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"};
 
     private final String[][] subClasses = {
-            {"--None--"},
             {"Path of the Berserker", "Path of the Totem Warrior"},
             {"College of Lore", "College of Valor"},
             {"Knowledge Domain", "Life Domain", "Light Domain", "Nature Domain", "Tempest Domain", "Trickery Domain", "War Domain"},
@@ -46,24 +99,20 @@ public class CoreRules {
             {"Thief", "Assassin", "Arcane Trickster"},
             {"Draconic Blood", "Wild Magic"},
             {"The Archfey", "The Fiend", "The Great Old One"},
-            {"School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation"}
+            {"School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation"},
+            {"--None--"}
     };
-//    private final String[] subClassesBarbarian = {"Path of the Berserker", "Path of the Totem Warrior"};
-//    private final String[] subClassesBard = {"College of Lore", "College of Valor"};
-//    private final String[] subClassesCleric = {"Knowledge Domain", "Life Domain", "Light Domain", "Nature Domain", "Tempest Domain", "Trickery Domain", "War Domain"};
-//    private final String[] subClassesDruid = {"Circle of the Land", "Circle of the Moon"};
-//    private final String[] subClassesFighter = {"Champion", "Battle Master", "Eldritch Knight"};
-//    private final String[] subClassesMonk = {"Way of the Open Hand", "Way of Shadow", "Way of the Four Elements"};
-//    private final String[] subClassesPaladin = {"Oath of Devotion", "Oath of the Ancients", "Oath of Vengeance"};
-//    private final String[] subClassesRanger = {"Hunter", "Beast Master"};
-//    private final String[] subClassesRogue = {"Thief", "Assassin", "Arcane Trickster"};
-//    private final String[] subClassesSorcerer = {"Draconic Blood", "Wild Magic"};
-//    private final String[] subClassesWarlock = {"The Archfey", "The Fiend", "The Great Old One"};
-//    private final String[] subClassesWizard = {"School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation"};
 
-    private final Integer[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};
-    private final Integer[] subClassesDefaultLessThan2 = {3, 11};
+    private final int[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};
+    private final int[] subClassesDefaultLessThan2 = {3, 11};
     private final Integer[] levels = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+    private final int[] strSkills = {3};
+    private final int[] dexSkills = {0,15,16};
+    private final int[] conSkills = {};
+    private final int[] intSkills = {2,5,8,10,14};
+    private final int[] wisSkills = {1,6,9,11,17};
+    private final int[] chaSkills = {4,7,12,13};
+
 
     public String[] getRaces() {
         return races;
@@ -85,63 +134,39 @@ public class CoreRules {
         return subClasses[arrayOfSubClasses];
     }
 
-//    public String[] getSubClassesBarbarian() {
-//        return subClassesBarbarian;
-//    }
-//
-//    public String[] getSubClassesBard() {
-//        return subClassesBard;
-//    }
-//
-//    public String[] getSubClassesCleric() {
-//        return subClassesCleric;
-//    }
-//
-//    public String[] getSubClassesDruid() {
-//        return subClassesDruid;
-//    }
-//
-//    public String[] getSubClassesFighter() {
-//        return subClassesFighter;
-//    }
-//
-//    public String[] getSubClassesMonk() {
-//        return subClassesMonk;
-//    }
-//
-//    public String[] getSubClassesPaladin() {
-//        return subClassesPaladin;
-//    }
-//
-//    public String[] getSubClassesRanger() {
-//        return subClassesRanger;
-//    }
-//
-//    public String[] getSubClassesRogue() {
-//        return subClassesRogue;
-//    }
-//
-//    public String[] getSubClassesSorcerer() {
-//        return subClassesSorcerer;
-//    }
-//
-//    public String[] getSubClassesWarlock() {
-//        return subClassesWarlock;
-//    }
-//
-//    public String[] getSubClassesWizard() {
-//        return subClassesWizard;
-//    }
-
-    public Integer[] getSubClassesDefaultLessThan3() {
+    public int[] getSubClassesDefaultLessThan3() {
         return subClassesDefaultLessThan3;
     }
 
-    public Integer[] getSubClassesDefaultLessThan2() {
+    public int[] getSubClassesDefaultLessThan2() {
         return subClassesDefaultLessThan2;
     }
 
     public Integer[] getLevels() {
         return levels;
+    }
+
+    public int[] getStrSkills() {
+        return strSkills;
+    }
+
+    public int[] getDexSkills() {
+        return dexSkills;
+    }
+
+    public int[] getConSkills() {
+        return conSkills;
+    }
+
+    public int[] getIntSkills() {
+        return intSkills;
+    }
+
+    public int[] getWisSkills() {
+        return wisSkills;
+    }
+
+    public int[] getChaSkills() {
+        return chaSkills;
     }
 }

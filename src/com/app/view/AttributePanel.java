@@ -2,14 +2,11 @@ package com.app.view;
 
 import com.app.controller.Controller;
 import com.app.model.CharacterSheet;
-import com.app.model.CoreRules;
-import com.app.model.DiceRoller;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.charset.CoderResult;
 
 public class AttributePanel extends JPanel implements ActionListener {
 
@@ -20,10 +17,6 @@ public class AttributePanel extends JPanel implements ActionListener {
             instance = new AttributePanel();
         return instance;
     }
-
-    //Instance of characterSheet:
-    CharacterSheet characterSheet = CharacterSheet.getInstance();
-
 
     //Values:
     JLabel strValueLabel = new JLabel("...");
@@ -176,7 +169,6 @@ public class AttributePanel extends JPanel implements ActionListener {
         this.add(chaValueLabel);
         this.add(chaModifierLabel);
         this.add(chaSTLabel);
-
     }
 
     @Override

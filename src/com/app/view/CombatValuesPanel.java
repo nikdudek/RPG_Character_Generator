@@ -15,9 +15,6 @@ public class CombatValuesPanel extends JPanel {
         return instance;
     }
 
-    //Instance of characterSheet:
-    CharacterSheet characterSheet = CharacterSheet.getInstance();
-
     //Titles:
     JLabel iniLabel = new JLabel("Initiative:");
     JLabel speLabel = new JLabel("Speed:");
@@ -27,12 +24,12 @@ public class CombatValuesPanel extends JPanel {
     JLabel armLabel = new JLabel("Armor Class:");
 
     //Values:
-    JLabel iniValLabel = new JLabel("...");
-    JLabel speValLabel = new JLabel("...");
-    JLabel proValLabel = new JLabel("...");
-    JLabel hidValLabel = new JLabel("...");
-    JLabel hipValLabel = new JLabel("...");
-    JLabel armValLabel = new JLabel("...");
+    public JLabel iniValLabel = new JLabel("...");
+    public JLabel speValLabel = new JLabel("...");
+    public JLabel proValLabel = new JLabel("...");
+    public JLabel hidValLabel = new JLabel("...");
+    public JLabel hipValLabel = new JLabel("...");
+    public JLabel armValLabel = new JLabel("...");
 
     private CombatValuesPanel() {
 
@@ -53,14 +50,5 @@ public class CombatValuesPanel extends JPanel {
         this.add(hipValLabel);
         this.add(armLabel);
         this.add(armValLabel);
-    }
-
-    public void refreshValues() {
-        iniValLabel.setText(String.valueOf(characterSheet.getInitiative()));
-        speValLabel.setText(String.valueOf(characterSheet.getSpeed()));
-        proValLabel.setText(String.valueOf(characterSheet.getProficiency()));
-        hidValLabel.setText(characterSheet.getHitDiceCount() + "d" + characterSheet.getHitDiceType());
-        hipValLabel.setText(String.valueOf(characterSheet.getHitPointsMax()));
-        armValLabel.setText(String.valueOf(characterSheet.getArmorClass()));
     }
 }

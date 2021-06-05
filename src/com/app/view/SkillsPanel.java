@@ -1,9 +1,10 @@
 package com.app.view;
 
-import com.app.model.CharacterSheet;
+import com.app.model.CoreRules;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.stream.IntStream;
 
 public class SkillsPanel extends JPanel {
 
@@ -15,8 +16,11 @@ public class SkillsPanel extends JPanel {
         return instance;
     }
 
-    //Instance of characterSheet:
-    CharacterSheet characterSheet = CharacterSheet.getInstance();
+    //Instance of CoreRules
+    CoreRules coreRules = CoreRules.getInstance();
+    //Values:
+    public JLabel[] skillsLabels = IntStream.range(0, coreRules.ALL_SKILLS).mapToObj(i -> new JLabel("...")).toArray(JLabel[]::new);
+
 
     private SkillsPanel() {
 
@@ -45,62 +49,41 @@ public class SkillsPanel extends JPanel {
         JLabel steLabel = new JLabel("Stealth:");
         JLabel surLabel = new JLabel("Survival:");
 
-        //Values:
-        JLabel v01Label = new JLabel("...");
-        JLabel v02Label = new JLabel("...");
-        JLabel v03Label = new JLabel("...");
-        JLabel v04Label = new JLabel("...");
-        JLabel v05Label = new JLabel("...");
-        JLabel v06Label = new JLabel("...");
-        JLabel v07Label = new JLabel("...");
-        JLabel v08Label = new JLabel("...");
-        JLabel v09Label = new JLabel("...");
-        JLabel v10Label = new JLabel("...");
-        JLabel v11Label = new JLabel("...");
-        JLabel v12Label = new JLabel("...");
-        JLabel v13Label = new JLabel("...");
-        JLabel v14Label = new JLabel("...");
-        JLabel v15Label = new JLabel("...");
-        JLabel v16Label = new JLabel("...");
-        JLabel v17Label = new JLabel("...");
-        JLabel v18Label = new JLabel("...");
-
-        //Adding elements:
         this.add(acrLabel);
-        this.add(v01Label);
+        this.add(skillsLabels[0]);
         this.add(medLabel);
-        this.add(v10Label);
+        this.add(skillsLabels[9]);
         this.add(aniLabel);
-        this.add(v02Label);
+        this.add(skillsLabels[1]);
         this.add(natLabel);
-        this.add(v11Label);
+        this.add(skillsLabels[10]);
         this.add(arcLabel);
-        this.add(v03Label);
+        this.add(skillsLabels[2]);
         this.add(prcLabel);
-        this.add(v12Label);
+        this.add(skillsLabels[11]);
         this.add(athLabel);
-        this.add(v04Label);
+        this.add(skillsLabels[3]);
         this.add(prfLabel);
-        this.add(v13Label);
+        this.add(skillsLabels[12]);
         this.add(decLabel);
-        this.add(v05Label);
+        this.add(skillsLabels[4]);
         this.add(prsLabel);
-        this.add(v14Label);
+        this.add(skillsLabels[13]);
         this.add(hisLabel);
-        this.add(v06Label);
+        this.add(skillsLabels[5]);
         this.add(relLabel);
-        this.add(v15Label);
+        this.add(skillsLabels[14]);
         this.add(insLabel);
-        this.add(v07Label);
+        this.add(skillsLabels[6]);
         this.add(sleLabel);
-        this.add(v16Label);
+        this.add(skillsLabels[15]);
         this.add(intLabel);
-        this.add(v08Label);
+        this.add(skillsLabels[7]);
         this.add(steLabel);
-        this.add(v17Label);
+        this.add(skillsLabels[16]);
         this.add(invLabel);
-        this.add(v09Label);
+        this.add(skillsLabels[8]);
         this.add(surLabel);
-        this.add(v18Label);
+        this.add(skillsLabels[17]);
     }
 }

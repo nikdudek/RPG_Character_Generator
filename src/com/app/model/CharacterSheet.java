@@ -1,13 +1,9 @@
 package com.app.model;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class CharacterSheet {
-
-    //FINALS:
-    public final int ALL_SKILLS = 18;
-
 
     //SINGLETON
     private CharacterSheet() {
@@ -21,34 +17,46 @@ public class CharacterSheet {
         return instance;
     }
 
+    CoreRules coreRules = CoreRules.getInstance();
 
     //ATTRIBUTES:
     //Data from InfoPanel
     private String name = "...";
     private String race = "...";
-    private String mainClass = "...";
-    private String subClass = "...";
-    private int level = 1;
+    private int mainClass = coreRules.BARBARIAN;
+    private int subClass;
+    private int level = coreRules.STARTING_LEVEL;
     private String background = "...";
     private String alignment = "...";
 
     //Data from CombatValuesPanel
     private int initiative = 0;
     private int speed = 0;
-    private int proficiency = 0;
-    private int hitDiceCount = 0;
+    private int proficiency = coreRules.STARTING_PROFICIENCY;
+    private int hitDiceCount = coreRules.STARTING_LEVEL;
     private int hitDiceType = 0;
-    //private int hitPointsTotal;
     private int hitPointsMax = 0;
-    private int armorClass = 10;
+    private int armorClass = coreRules.BASE_AC;
 
     //Data from AttributePanel
     private int strength = 0;
+    private int strengthMod = 0;
+    private int strengthST = 0;
     private int dexterity = 0;
+    private int dexterityMod = 0;
+    private int dexterityST = 0;
     private int condition = 0;
+    private int conditionMod = 0;
+    private int conditionST = 0;
     private int intelligence = 0;
+    private int intelligenceMod = 0;
+    private int intelligenceST = 0;
     private int wisdom = 0;
+    private int wisdomMod = 0;
+    private int wisdomST = 0;
     private int charisma = 0;
+    private int charismaMod = 0;
+    private int charismaST = 0;
 
     //Proficients for ST/Skills
     private boolean strengthProficient = false;
@@ -59,45 +67,12 @@ public class CharacterSheet {
     private boolean charismaProficient = false;
     //---------------------------------
     private boolean[] skillsProficient = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
-//    private boolean acrobaticsProficient = false;
-//    private boolean animalHandlingProficient = false;
-//    private boolean arcanaProficient = false;
-//    private boolean athleticsProficient = false;
-//    private boolean deceptionProficient = false;
-//    private boolean historyProficient = false;
-//    private boolean insightProficient = false;
-//    private boolean intimidationProficient = false;
-//    private boolean investigationProficient = false;
-//    private boolean medicineProficient = false;
-//    private boolean natureProficient = false;
-//    private boolean perceptionProficient = false;
-//    private boolean performanceProficient = false;
-//    private boolean persuasionProficient = false;
-//    private boolean religionProficient = false;
-//    private boolean sleightOfHandProficient = false;
-//    private boolean stealthProficient = false;
-//    private boolean survivalProficient = false;
 
     //Data from SkillsPanel
     private int[] skills = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-//    private int acrobatics = 0;
-//    private int animalHandling = 0;
-//    private int arcana = 0;
-//    private int athletics = 0;
-//    private int deception = 0;
-//    private int history = 0;
-//    private int insight = 0;
-//    private int intimidation = 0;
-//    private int investigation = 0;
-//    private int medicine = 0;
-//    private int nature = 0;
-//    private int perception = 0;
-//    private int performance = 0;
-//    private int persuasion = 0;
-//    private int religion = 0;
-//    private int sleightOfHand = 0;
-//    private int stealth = 0;
-//    private int survival = 0;
+
+    //List of Feats
+    private List<String> feats;
 
 
         //METHODS:
@@ -117,19 +92,19 @@ public class CharacterSheet {
         this.race = race;
     }
 
-    public String getMainClass() {
+    public int getMainClass() {
         return mainClass;
     }
 
-    public void setMainClass(String mainClass) {
+    public void setMainClass(int mainClass) {
         this.mainClass = mainClass;
     }
 
-    public String getSubClass() {
+    public int getSubClass() {
         return subClass;
     }
 
-    public void setSubClass(String subClass) {
+    public void setSubClass(int subClass) {
         this.subClass = subClass;
     }
 
@@ -201,14 +176,6 @@ public class CharacterSheet {
         this.hitDiceType = hitDiceType;
     }
 
-//    public int getHitPointsTotal() {
-//        return hitPointsTotal;
-//    }
-
-//    public void setHitPointsTotal(int hitPointsTotal) {
-//        this.hitPointsTotal = hitPointsTotal;
-//    }
-
     public int getHitPointsMax() {
         return hitPointsMax;
     }
@@ -273,149 +240,101 @@ public class CharacterSheet {
         this.charisma = charisma;
     }
 
-//    public int getAcrobatics() {
-//        return acrobatics;
-//    }
-//
-//    public void setAcrobatics(int acrobatics) {
-//        this.acrobatics = acrobatics;
-//    }
-//
-//    public int getAnimalHandling() {
-//        return animalHandling;
-//    }
-//
-//    public void setAnimalHandling(int animalHandling) {
-//        this.animalHandling = animalHandling;
-//    }
-//
-//    public int getArcana() {
-//        return arcana;
-//    }
-//
-//    public void setArcana(int arcana) {
-//        this.arcana = arcana;
-//    }
-//
-//    public int getAthletics() {
-//        return athletics;
-//    }
-//
-//    public void setAthletics(int athletics) {
-//        this.athletics = athletics;
-//    }
-//
-//    public int getDeception() {
-//        return deception;
-//    }
-//
-//    public void setDeception(int deception) {
-//        this.deception = deception;
-//    }
-//
-//    public int getHistory() {
-//        return history;
-//    }
-//
-//    public void setHistory(int history) {
-//        this.history = history;
-//    }
-//
-//    public int getInsight() {
-//        return insight;
-//    }
-//
-//    public void setInsight(int insight) {
-//        this.insight = insight;
-//    }
-//
-//    public int getIntimidation() {
-//        return intimidation;
-//    }
-//
-//    public void setIntimidation(int intimidation) {
-//        this.intimidation = intimidation;
-//    }
-//
-//    public int getInvestigation() {
-//        return investigation;
-//    }
-//
-//    public void setInvestigation(int investigation) {
-//        this.investigation = investigation;
-//    }
-//
-//    public int getMedicine() {
-//        return medicine;
-//    }
-//
-//    public void setMedicine(int medicine) {
-//        this.medicine = medicine;
-//    }
-//
-//    public int getNature() {
-//        return nature;
-//    }
-//
-//    public void setNature(int nature) {
-//        this.nature = nature;
-//    }
-//
-//    public int getPerception() {
-//        return perception;
-//    }
-//
-//    public void setPerception(int perception) {
-//        this.perception = perception;
-//    }
-//
-//    public int getPerformance() {
-//        return performance;
-//    }
-//
-//    public void setPerformance(int performance) {
-//        this.performance = performance;
-//    }
-//
-//    public int getPersuasion() {
-//        return persuasion;
-//    }
-//
-//    public void setPersuasion(int persuasion) {
-//        this.persuasion = persuasion;
-//    }
-//
-//    public int getReligion() {
-//        return religion;
-//    }
-//
-//    public void setReligion(int religion) {
-//        this.religion = religion;
-//    }
-//
-//    public int getSleightOfHand() {
-//        return sleightOfHand;
-//    }
-//
-//    public void setSleightOfHand(int sleightOfHand) {
-//        this.sleightOfHand = sleightOfHand;
-//    }
-//
-//    public int getStealth() {
-//        return stealth;
-//    }
-//
-//    public void setStealth(int stealth) {
-//        this.stealth = stealth;
-//    }
-//
-//    public int getSurvival() {
-//        return survival;
-//    }
-//
-//    public void setSurvival(int survival) {
-//        this.survival = survival;
-//    }
+    public int getStrengthMod() {
+        return strengthMod;
+    }
+
+    public void setStrengthMod(int strengthMod) {
+        this.strengthMod = strengthMod;
+    }
+
+    public int getStrengthST() {
+        return strengthST;
+    }
+
+    public void setStrengthST(int strengthST) {
+        this.strengthST = strengthST;
+    }
+
+    public int getDexterityMod() {
+        return dexterityMod;
+    }
+
+    public void setDexterityMod(int dexterityMod) {
+        this.dexterityMod = dexterityMod;
+    }
+
+    public int getDexterityST() {
+        return dexterityST;
+    }
+
+    public void setDexterityST(int dexterityST) {
+        this.dexterityST = dexterityST;
+    }
+
+    public int getConditionMod() {
+        return conditionMod;
+    }
+
+    public void setConditionMod(int conditionMod) {
+        this.conditionMod = conditionMod;
+    }
+
+    public int getConditionST() {
+        return conditionST;
+    }
+
+    public void setConditionST(int conditionST) {
+        this.conditionST = conditionST;
+    }
+
+    public int getIntelligenceMod() {
+        return intelligenceMod;
+    }
+
+    public void setIntelligenceMod(int intelligenceMod) {
+        this.intelligenceMod = intelligenceMod;
+    }
+
+    public int getIntelligenceST() {
+        return intelligenceST;
+    }
+
+    public void setIntelligenceST(int intelligenceST) {
+        this.intelligenceST = intelligenceST;
+    }
+
+    public int getWisdomMod() {
+        return wisdomMod;
+    }
+
+    public void setWisdomMod(int wisdomMod) {
+        this.wisdomMod = wisdomMod;
+    }
+
+    public int getWisdomST() {
+        return wisdomST;
+    }
+
+    public void setWisdomST(int wisdomST) {
+        this.wisdomST = wisdomST;
+    }
+
+    public int getCharismaMod() {
+        return charismaMod;
+    }
+
+    public void setCharismaMod(int charismaMod) {
+        this.charismaMod = charismaMod;
+    }
+
+    public int getCharismaST() {
+        return charismaST;
+    }
+
+    public void setCharismaST(int charismaST) {
+        this.charismaST = charismaST;
+    }
 
     public boolean isStrengthProficient() {
         return strengthProficient;
@@ -465,151 +384,9 @@ public class CharacterSheet {
         this.charismaProficient = charismaProficient;
     }
 
-//    public boolean isAcrobaticsProficient() {
-//        return acrobaticsProficient;
-//    }
-//
-//    public void setAcrobaticsProficient(boolean acrobaticsProficient) {
-//        this.acrobaticsProficient = acrobaticsProficient;
-//    }
-//
-//    public boolean isAnimalHandlingProficient() {
-//        return animalHandlingProficient;
-//    }
-//
-//    public void setAnimalHandlingProficient(boolean animalHandlingProficient) {
-//        this.animalHandlingProficient = animalHandlingProficient;
-//    }
-//
-//    public boolean isArcanaProficient() {
-//        return arcanaProficient;
-//    }
-//
-//    public void setArcanaProficient(boolean arcanaProficient) {
-//        this.arcanaProficient = arcanaProficient;
-//    }
-//
-//    public boolean isAthleticsProficient() {
-//        return athleticsProficient;
-//    }
-//
-//    public void setAthleticsProficient(boolean athleticsProficient) {
-//        this.athleticsProficient = athleticsProficient;
-//    }
-//
-//    public boolean isDeceptionProficient() {
-//        return deceptionProficient;
-//    }
-//
-//    public void setDeceptionProficient(boolean deceptionProficient) {
-//        this.deceptionProficient = deceptionProficient;
-//    }
-//
-//    public boolean isHistoryProficient() {
-//        return historyProficient;
-//    }
-//
-//    public void setHistoryProficient(boolean historyProficient) {
-//        this.historyProficient = historyProficient;
-//    }
-//
-//    public boolean isInsightProficient() {
-//        return insightProficient;
-//    }
-//
-//    public void setInsightProficient(boolean insightProficient) {
-//        this.insightProficient = insightProficient;
-//    }
-//
-//    public boolean isIntimidationProficient() {
-//        return intimidationProficient;
-//    }
-//
-//    public void setIntimidationProficient(boolean intimidationProficient) {
-//        this.intimidationProficient = intimidationProficient;
-//    }
-//
-//    public boolean isInvestigationProficient() {
-//        return investigationProficient;
-//    }
-//
-//    public void setInvestigationProficient(boolean investigationProficient) {
-//        this.investigationProficient = investigationProficient;
-//    }
-//
-//    public boolean isMedicineProficient() {
-//        return medicineProficient;
-//    }
-//
-//    public void setMedicineProficient(boolean medicineProficient) {
-//        this.medicineProficient = medicineProficient;
-//    }
-//
-//    public boolean isNatureProficient() {
-//        return natureProficient;
-//    }
-//
-//    public void setNatureProficient(boolean natureProficient) {
-//        this.natureProficient = natureProficient;
-//    }
-//
-//    public boolean isPerceptionProficient() {
-//        return perceptionProficient;
-//    }
-//
-//    public void setPerceptionProficient(boolean perceptionProficient) {
-//        this.perceptionProficient = perceptionProficient;
-//    }
-//
-//    public boolean isPerformanceProficient() {
-//        return performanceProficient;
-//    }
-//
-//    public void setPerformanceProficient(boolean performanceProficient) {
-//        this.performanceProficient = performanceProficient;
-//    }
-//
-//    public boolean isPersuasionProficient() {
-//        return persuasionProficient;
-//    }
-//
-//    public void setPersuasionProficient(boolean persuasionProficient) {
-//        this.persuasionProficient = persuasionProficient;
-//    }
-//
-//    public boolean isReligionProficient() {
-//        return religionProficient;
-//    }
-//
-//    public void setReligionProficient(boolean religionProficient) {
-//        this.religionProficient = religionProficient;
-//    }
-//
-//    public boolean isSleightOfHandProficient() {
-//        return sleightOfHandProficient;
-//    }
-//
-//    public void setSleightOfHandProficient(boolean sleightOfHandProficient) {
-//        this.sleightOfHandProficient = sleightOfHandProficient;
-//    }
-//
-//    public boolean isStealthProficient() {
-//        return stealthProficient;
-//    }
-//
-//    public void setStealthProficient(boolean stealthProficient) {
-//        this.stealthProficient = stealthProficient;
-//    }
-//
-//    public boolean isSurvivalProficient() {
-//        return survivalProficient;
-//    }
-//
-//    public void setSurvivalProficient(boolean survivalProficient) {
-//        this.survivalProficient = survivalProficient;
-//    }
-
     public void clearProficients() {
+
+        CoreRules coreRules = CoreRules.getInstance();
         setStrengthProficient(false);
         setDexterityProficient(false);
         setConditionProficient(false);
@@ -635,11 +412,27 @@ public class CharacterSheet {
 //        setSleightOfHandProficient(false);
 //        setStealthProficient(false);
 //        setSurvivalProficient(false);
-        IntStream.range(0, ALL_SKILLS).forEach(i -> skillsProficient[i] = false);
+        IntStream.range(0, coreRules.ALL_SKILLS).forEach(i -> skillsProficient[i] = false);
     }
 
     public void changeRace(String race) {
         setRace(race);
         System.out.println(race);
+    }
+
+    public int[] getSkills() {
+        return skills;
+    }
+
+    public void setSkills(int[] skills) {
+        this.skills = skills;
+    }
+
+    public boolean[] getSkillsProficient() {
+        return skillsProficient;
+    }
+
+    public void setSkillsProficient(boolean[] skillsProficient) {
+        this.skillsProficient = skillsProficient;
     }
 }
