@@ -1,5 +1,7 @@
 package com.app.view;
 
+import com.app.controller.Controller;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -113,6 +115,9 @@ public class MainFrame extends JFrame implements ActionListener {
 
         BackgroundPanel backgroundPanel = BackgroundPanel.getInstance();
         this.add(backgroundPanel);
+
+        Controller controller = Controller.getInstance();
+        controller.setAllDefault();
     }
 
     // ActionListener commands below:

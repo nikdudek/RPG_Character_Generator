@@ -5,6 +5,7 @@ import com.app.model.CoreRules;
 import com.app.model.DiceRoller;
 import com.app.view.AttributePanel;
 import com.app.view.CombatValuesPanel;
+import com.app.view.InfoPanel;
 import com.app.view.SkillsPanel;
 
 import javax.swing.*;
@@ -27,20 +28,45 @@ public class Controller {
 
     // ------------------------------------------------- FUNCTIONS ------------------------------------------------- //
 
+    public void setAllDefault() {
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        CoreRules coreRules = CoreRules.getInstance();
+        InfoPanel infoPanel = InfoPanel.getInstance();
+
+        infoPanel.setSubClassBoxModel(coreRules.BARBARIAN);
+
+        rollAttributes();
+        characterSheet.setLevel(coreRules.STARTING_LEVEL);
+        characterSheet.setRace(coreRules.DRAGONBORN);
+        characterSheet.setAlignment(coreRules.LAWFUL_GOOD);
+        characterSheet.setBackground(coreRules.ACOLYTE);
+        characterSheet.setMainClass(coreRules.BARBARIAN);
+        characterSheet.setSubClass(coreRules.BARBARIAN);
+
+        characterSheet.setHitDiceType(coreRules.BARBARIAN_DICE);
+        characterSheet.setHitPointsMax(coreRules.BARBARIAN_DICE);
+        characterSheet.setStrengthProficient(true);
+        characterSheet.setConditionProficient(true);
+
+        //  <<----------- TU SKONCZYLES ----------------------------------------------------------------------------->>
+
+        refreshCombatValues();
+    }
+
     public int attributeToModifier(int getAttribute) {
         int attributeValue = getAttribute - 10;
         if(attributeValue < 0) return ((attributeValue - 1) / 2);
         else return (attributeValue / 2);
     }
 
-    public int attributeToST(int getModifier, boolean isProficient) {
+    public int attributeToST(int modifier, boolean isProficient) {
         if(isProficient) {
 
             CharacterSheet characterSheet = CharacterSheet.getInstance();
-            return (getModifier + characterSheet.getProficiency());
+            return (modifier + characterSheet.getProficiency());
         }
         else
-            return (getModifier);
+            return (modifier);
     }
 
     public boolean containsIn(final int[] arr, int key) { //static
@@ -69,21 +95,21 @@ public class Controller {
     public void setCombatValues() {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        DiceRoller diceRoller = DiceRoller.getInstance();
+//        DiceRoller diceRoller = DiceRoller.getInstance();
 
         characterSheet.setInitiative(characterSheet.getDexterityMod());
         //characterSheet.setSpeed(); --> from race (delete later)
         //characterSheet.setProficiency(); -- from level (delete later)
         // -||- same for rest
         //RANDOM HP:
-        if(characterSheet.getHitDiceType() == 6)
-            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d6(characterSheet.getHitDiceCount()));
-        else if(characterSheet.getHitDiceType() == 8)
-            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d8(characterSheet.getHitDiceCount()));
-        else if(characterSheet.getHitDiceType() == 10)
-            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d10(characterSheet.getHitDiceCount()));
-        else if(characterSheet.getHitDiceType() == 12)
-            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d12(characterSheet.getHitDiceCount()));
+//        if(characterSheet.getHitDiceType() == 6)
+//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d6(characterSheet.getHitDiceCount()));
+//        else if(characterSheet.getHitDiceType() == 8)
+//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d8(characterSheet.getHitDiceCount()));
+//        else if(characterSheet.getHitDiceType() == 10)
+//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d10(characterSheet.getHitDiceCount()));
+//        else if(characterSheet.getHitDiceType() == 12)
+//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d12(characterSheet.getHitDiceCount()));
     }
 
     public void refreshCombatValues() {
@@ -176,38 +202,92 @@ public class Controller {
 
     // --------------------------------------------------- RACE ---------------------------------------------------- //
 
-    public void setRace(ItemEvent e) {
+    public void setRace(ItemEvent e, JComboBox raceBox) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        if (!(characterSheet.getRace().equals((String) e.getItem()))) characterSheet.changeRace((String) e.getItem());
+        if (characterSheet.getRace() != raceBox.getSelectedIndex()) characterSheet.changeRace(raceBox.getSelectedIndex());
         //DODANIE I AKTUALIZACJA BONUSÓW Z RASY
     }
 
     // --------------------------------------------------- CLASS --------------------------------------------------- //
 
-    public void setClass(ItemEvent e,JComboBox classBox) {
+    public void setClass(ItemEvent e, JComboBox classBox, JComboBox levelBox) {
 
-        CoreRules coreRules = CoreRules.getInstance();
-        switch (classBox.getSelectedIndex()) { //ADD classSelected() for each
-            case 0 -> System.out.println("Barbarian");
-            case 1 -> System.out.println("Bard");
-            case 2 -> System.out.println("Cleric");
-            case 3 -> System.out.println("Druid");
-            case 4 -> System.out.println("Fighter");
-            case 5 -> System.out.println("Monk");
-            case 6 -> System.out.println("Paladin");
-            case 7 -> System.out.println("Ranger");
-            case 8 -> System.out.println("Rogue");
-            case 9 -> System.out.println("Sorcerer");
-            case 10 -> System.out.println("Warlock");
-            case 11 -> System.out.println("Wizard");
-            default -> throw new IllegalStateException("Unexpected value.");
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        if(classBox.getSelectedIndex() != characterSheet.getMainClass()) {
+            CoreRules coreRules = CoreRules.getInstance();
+            InfoPanel infoPanel = InfoPanel.getInstance();
+            int targetLevel = Integer.parseInt(levelBox.getSelectedItem().toString());
+            switch (classBox.getSelectedIndex()) {
+                case 0 -> {
+                    System.out.println("Barbarian");
+                    infoPanel.setSubClassBoxModel(coreRules.BARBARIAN); // TO DO KAZDEGO WYBORU KLASY!
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        barbarianSelected(i);
+                }
+                case 1 -> {
+                    System.out.println("Bard");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        bardSelected(i);
+                    }
+                case 2 -> {
+                    System.out.println("Cleric");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        clericSelected(i);
+                }
+                case 3 -> {
+                    System.out.println("Druid");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        druidSelected(i);
+                }
+                case 4 -> {
+                    System.out.println("Fighter");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        fighterSelected(i);
+                }
+                case 5 -> {
+                    System.out.println("Monk");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        monkSelected(i);
+                }
+                case 6 -> {
+                    System.out.println("Paladin");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        paladinSelected(i);
+                }
+                case 7 -> {
+                    System.out.println("Ranger");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        rangerSelected(i);
+                }
+                case 8 -> {
+                    System.out.println("Rogue");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        rogueSelected(i);
+                }
+                case 9 -> {
+                    System.out.println("Sorcerer");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        sorcererSelected(i);
+                }
+                case 10 -> {
+                    System.out.println("Warlock");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        warlockSelected(i);
+                }
+                case 11 -> {
+                    System.out.println("Wizard");
+                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                        wizardSelected(i);
+                }
+                default -> throw new IllegalStateException("Unexpected value.");
+            }
         }
     }
 
     // ------------------------------------------------- SUBCLASS -------------------------------------------------- //
 
-    public void setSubClass(ItemEvent e) {
+    public void setSubClass(ItemEvent e, JComboBox subclassBox) {
         //Subclass
     }
 
@@ -219,23 +299,22 @@ public class Controller {
 
     // --------------------------------------------------- LEVEL --------------------------------------------------- //
 
-    public void setLevel(ItemEvent e,JComboBox classBox) {
+    public void setLevel(ItemEvent e, JComboBox classBox) {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
 
-        if (characterSheet.getLevel() == Integer.parseInt(e.getItem().toString()))
-            return;
-        else if(characterSheet.getLevel() > Integer.parseInt(e.getItem().toString())) {
-            characterSheet.clearProficients(); //NEED TO MAKE THEM AGAIN
-            //clear feats, etc.
-            raiseLevel(coreRules.STARTING_LEVEL,Integer.parseInt(e.getItem().toString()));
-        }
-        else if(characterSheet.getLevel() < Integer.parseInt(e.getItem().toString()))
-            raiseLevel(characterSheet.getLevel()+1,Integer.parseInt(e.getItem().toString()));
+        if (characterSheet.getLevel() != Integer.parseInt(e.getItem().toString())) {
+            if (characterSheet.getLevel() > Integer.parseInt(e.getItem().toString())) {
+                    characterSheet.clearProficients(); //NEED TO MAKE THEM AGAIN
+                    //clear feats, etc.
+                    raiseLevel(coreRules.STARTING_LEVEL, Integer.parseInt(e.getItem().toString()));
+                } else if (characterSheet.getLevel() < Integer.parseInt(e.getItem().toString()))
+                    raiseLevel(characterSheet.getLevel() + 1, Integer.parseInt(e.getItem().toString()));
 
-        characterSheet.setLevel(Integer.parseInt(e.getItem().toString()));
-        characterSheet.setProficiency(calculateProficiency(Integer.parseInt(e.getItem().toString())));
-        refreshCombatValues();
+                characterSheet.setLevel(Integer.parseInt(e.getItem().toString()));
+                characterSheet.setProficiency(calculateProficiency(Integer.parseInt(e.getItem().toString())));
+                refreshCombatValues();
+        }
     }
 
     public void raiseLevel(int startingLevel, int targetLevel) {
@@ -244,29 +323,43 @@ public class Controller {
         CoreRules coreRules = CoreRules.getInstance();
 
         if(characterSheet.getMainClass() == coreRules.BARBARIAN)
-            barbarianSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                barbarianSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.BARD)
-            bardSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                bardSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.CLERIC)
-            clericSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                clericSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.DRUID)
-            druidSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                druidSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.FIGHTER)
-            fighterSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                fighterSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.MONK)
-            monkSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                monkSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.PALADIN)
-            paladinSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                paladinSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.RANGER)
-            rangerSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                rangerSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.ROGUE)
-            rogueSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                rogueSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.SORCERER)
-            sorcererSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                sorcererSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.WARLOCK)
-            warlockSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                warlockSelected(startingLevel);
         else if(characterSheet.getMainClass() == coreRules.WIZARD)
-            wizardSelected(startingLevel,targetLevel);
+            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
+                wizardSelected(startingLevel);
+
+        refreshCombatValues();
     }
 
     // -------------------------------------------------- SKILLS --------------------------------------------------- //
@@ -318,1144 +411,1125 @@ public class Controller {
 
     // ------------------------------------------- CLASSES CHOOSING ------------------------------------------------ //
 
-    public void barbarianSelected(int startingLevel, int targetLevel) {
-//RAISE HP WITH LEVEL!
+    public void barbarianSelected(int level) {
+        //RAISE HP WITH LEVEL!
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+        switch (level) {
+
+            case 1: {
+                InfoPanel infoPanel = InfoPanel.getInstance();
+                //infoPanel.setSubClassBoxModel(coreRules.);
+
+                characterSheet.clearProficients();
+                characterSheet.setHitDiceType(coreRules.BARBARIAN_DICE);
+                characterSheet.setHitPointsMax(coreRules.BARBARIAN_DICE);
+                characterSheet.setStrengthProficient(true);
+                characterSheet.setConditionProficient(true);
+                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+//                if(startingLevel < targetLevel)
+//                    barbarianSelected(startingLevel+1,targetLevel);
+            }
+
+            case 2: {
+                characterSheet.setHitPointsMax(characterSheet.getHitPointsMax() + diceRoller.d12(1));
+            }
+
+            case 3: {
+                InfoPanel infoPanel = InfoPanel.getInstance();
+                infoPanel.setSubClassBoxModel(coreRules.BARBARIAN);
+
+                characterSheet.setHitPointsMax(characterSheet.getHitPointsMax() + diceRoller.d12(1));
+            }
+
+            case 4: {
+            }
+
+            case 5: {
+            }
+
+            case 6: {
+            }
+
+            case 7: {
+            }
+
+            case 8: {
+            }
+
+            case 9: {
+            }
+
+            case 10: {
+            }
+
+            case 11: {
+            }
+
+            case 12: {
+            }
+
+            case 13: {
+            }
+
+            case 14: {
+            }
+
+            case 15: {
+            }
+
+            case 16: {
+            }
+
+            case 17: {
+            }
+
+            case 18: {
+            }
+
+            case 19: {
+            }
+
+            case 20: {
+            }
+
+            default:
+                throw new IllegalStateException("Unexpected value.");
+        }
+    }
+
+    public void bardSelected(int startingLevel) {
+
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    barbarianSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void bardSelected(int startingLevel, int targetLevel) {
+    public void clericSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    bardSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void clericSelected(int startingLevel, int targetLevel) {
+    public void druidSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    clericSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void druidSelected(int startingLevel, int targetLevel) {
+    public void fighterSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    druidSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void fighterSelected(int startingLevel, int targetLevel) {
+    public void monkSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    fighterSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void monkSelected(int startingLevel, int targetLevel) {
+    public void paladinSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    monkSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void paladinSelected(int startingLevel, int targetLevel) {
+    public void rangerSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    paladinSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void rangerSelected(int startingLevel, int targetLevel) {
+    public void rogueSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    rangerSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void rogueSelected(int startingLevel, int targetLevel) {
+    public void sorcererSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    rogueSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void sorcererSelected(int startingLevel, int targetLevel) {
+    public void warlockSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    sorcererSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
 
-    public void warlockSelected(int startingLevel, int targetLevel) {
+    public void wizardSelected(int startingLevel) {
 
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
             case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    warlockSelected(startingLevel+1,targetLevel);
             }
 
             case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
             }
 
             default:
-                return;
+                throw new IllegalStateException("Unexpected value.");
         }
     }
-
-    public void wizardSelected(int startingLevel, int targetLevel) {
-
-        switch (startingLevel) {
-
-            case 1: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-                characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-                if(startingLevel < targetLevel)
-                    wizardSelected(startingLevel+1,targetLevel);
-            }
-
-            case 2: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 3: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 4: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 5: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 6: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 7: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 8: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 9: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 10: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 11: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 12: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 13: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 14: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 15: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 16: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 17: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 18: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 19: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            case 20: {
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-            }
-
-            default:
-                return;
-        }
-    }
-
 }

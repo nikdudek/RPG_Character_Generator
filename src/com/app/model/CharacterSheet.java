@@ -21,13 +21,13 @@ public class CharacterSheet {
 
     //ATTRIBUTES:
     //Data from InfoPanel
-    private String name = "...";
-    private String race = "...";
-    private int mainClass = coreRules.BARBARIAN;
+    private String name;
+    private int race;
+    private int mainClass;
     private int subClass;
     private int level = coreRules.STARTING_LEVEL;
-    private String background = "...";
-    private String alignment = "...";
+    private int background;
+    private int alignment;
 
     //Data from CombatValuesPanel
     private int initiative = 0;
@@ -84,11 +84,11 @@ public class CharacterSheet {
         this.name = name;
     }
 
-    public String getRace() {
+    public int getRace() {
         return race;
     }
 
-    public void setRace(String race) {
+    public void setRace(int race) {
         this.race = race;
     }
 
@@ -116,23 +116,19 @@ public class CharacterSheet {
         this.level = level;
     }
 
-    public void calculateProficiency() {
-        setProficiency((getLevel() + 7) / 4);
-    }
-
-    public String getBackground() {
+    public int getBackground() {
         return background;
     }
 
-    public void setBackground(String background) {
+    public void setBackground(int background) {
         this.background = background;
     }
 
-    public String getAlignment() {
+    public int getAlignment() {
         return alignment;
     }
 
-    public void setAlignment(String alignment) {
+    public void setAlignment(int alignment) {
         this.alignment = alignment;
     }
 
@@ -394,28 +390,10 @@ public class CharacterSheet {
         setWisdomProficient(false);
         setCharismaProficient(false);
         //-----
-//        setAcrobaticsProficient(false);
-//        setAnimalHandlingProficient(false);
-//        setArcanaProficient(false);
-//        setAthleticsProficient(false);
-//        setDeceptionProficient(false);
-//        setHistoryProficient(false);
-//        setInsightProficient(false);
-//        setIntimidationProficient(false);
-//        setInvestigationProficient(false);
-//        setMedicineProficient(false);
-//        setNatureProficient(false);
-//        setPerceptionProficient(false);
-//        setPerformanceProficient(false);
-//        setPersuasionProficient(false);
-//        setReligionProficient(false);
-//        setSleightOfHandProficient(false);
-//        setStealthProficient(false);
-//        setSurvivalProficient(false);
         IntStream.range(0, coreRules.ALL_SKILLS).forEach(i -> skillsProficient[i] = false);
     }
 
-    public void changeRace(String race) {
+    public void changeRace(int race) {
         setRace(race);
         System.out.println(race);
     }

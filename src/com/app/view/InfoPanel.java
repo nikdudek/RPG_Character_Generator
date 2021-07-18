@@ -13,6 +13,23 @@ import java.awt.event.ItemListener;
 
 public class InfoPanel extends JPanel implements ActionListener, ItemListener {
 
+    public void setSubClassBoxModel(int classId) {
+        switch (classId) {
+            case 0 -> subClassBox.setModel(barbarianModel);
+            case 1 -> subClassBox.setModel(bardModel);
+            case 2 -> subClassBox.setModel(clericModel);
+            case 3 -> subClassBox.setModel(druidModel);
+            case 4 -> subClassBox.setModel(fighterModel);
+            case 5 -> subClassBox.setModel(monkModel);
+            case 6 -> subClassBox.setModel(paladinModel);
+            case 7 -> subClassBox.setModel(rangerModel);
+            case 8 -> subClassBox.setModel(rogueModel);
+            case 9 -> subClassBox.setModel(sorcererModel);
+            case 10 -> subClassBox.setModel(warlockModel);
+            case 11 -> subClassBox.setModel(wizardModel);
+        }
+    }
+
     //SINGLETON
     private static InfoPanel instance = null;
     public static synchronized InfoPanel getInstance() {
@@ -22,7 +39,7 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
         return instance;
     }
 
-    //Instance of characterSheet:
+    //Instances:
     CharacterSheet characterSheet = CharacterSheet.getInstance();
     CoreRules coreRules = CoreRules.getInstance();
     Controller controller = Controller.getInstance();
@@ -36,7 +53,20 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
     JComboBox alignmentBox = new JComboBox(coreRules.getAlignments());
     JComboBox backgroundBox = new JComboBox(coreRules.getBackgrounds());
     JComboBox classBox = new JComboBox(coreRules.getClasses());
-    JComboBox subClassBox = new JComboBox(controller.getSubClasses(coreRules.DEFAULT));
+    //Subclasses models:
+    DefaultComboBoxModel<String> barbarianModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.BARBARIAN));
+    DefaultComboBoxModel<String> bardModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.BARD));
+    DefaultComboBoxModel<String> clericModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.CLERIC));
+    DefaultComboBoxModel<String> druidModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.DRUID));
+    DefaultComboBoxModel<String> fighterModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.FIGHTER));
+    DefaultComboBoxModel<String> monkModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.MONK));
+    DefaultComboBoxModel<String> paladinModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.PALADIN));
+    DefaultComboBoxModel<String> rangerModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.RANGER));
+    DefaultComboBoxModel<String> rogueModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.ROGUE));
+    DefaultComboBoxModel<String> sorcererModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.SORCERER));
+    DefaultComboBoxModel<String> warlockModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.WARLOCK));
+    DefaultComboBoxModel<String> wizardModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.WIZARD));
+    JComboBox subClassBox = new JComboBox();
 
     private InfoPanel() {
 
@@ -57,6 +87,9 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
         renameButton.setFocusable(false);
         renameButton.setActionCommand("renameButton");
         renameButton.addActionListener(this);
+
+        //Setting default subclass model:
+        //subClassBox.setModel(barbarianModel);
 
         //Item listener
         levelBox.addItemListener(this);
@@ -110,9 +143,9 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
 
         if (e.getStateChange() == ItemEvent.SELECTED) {
 
-            if (e.getSource() == raceBox) controller.setRace(e);
-            else if (e.getSource() == classBox) controller.setClass(e,classBox);
-            else if (e.getSource() == subClassBox) controller.setSubClass(e);
+            if (e.getSource() == raceBox) controller.setRace(e,raceBox);
+            else if (e.getSource() == classBox) controller.setClass(e,classBox,levelBox);
+            else if (e.getSource() == subClassBox) controller.setSubClass(e,subClassBox);
             else if (e.getSource() == levelBox) controller.setLevel(e,classBox);
         }
     }

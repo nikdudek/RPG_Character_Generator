@@ -24,7 +24,19 @@ public class CoreRules {
 //        skillsMap.put("Stealth",16);
 //        skillsMap.put("Survival",17);
 
-    //FINALS
+//FINALS:
+    //RACES
+    public final int DRAGONBORN = 0;
+    public final int DWARF = 1;
+    public final int ELF = 2;
+    public final int GNOME = 3;
+    public final int HALF_ELF = 4;
+    public final int HALFLING = 5;
+    public final int HALF_ORC = 6;
+    public final int HUMAN = 7;
+    public final int TIEFLING = 8;
+
+    //CLASSES
     public final int BARBARIAN = 0;
     public final int BARD = 1;
     public final int CLERIC = 2;
@@ -38,41 +50,60 @@ public class CoreRules {
     public final int WARLOCK = 10;
     public final int WIZARD = 11;
     public final int DEFAULT = 12;
+
+    //ALIGNMENTS
+    public final int LAWFUL_GOOD = 0;
+    public final int LAWFUL_NEUTRAL = 1;
+    public final int LAWFUL_EVIL = 2;
+    public final int NEUTRAL_GOOD = 3;
+    public final int NEUTRAL_NEUTRAL = 4;
+    public final int NEUTRAL_EVIL = 5;
+    public final int CHAOTIC_GOOD = 6;
+    public final int CHAOTIC_NEUTRAL = 7;
+    public final int CHAOTIC_EVIL = 8;
+
+    //BACKGROUNDS
+    public final int ACOLYTE = 0;
+    public final int CHARLATAN = 1;
+    public final int CRIMINAL = 2;
+    public final int ENTERTAINER = 3;
+    public final int FOLK_HERO = 4;
+    public final int GLADIATOR = 5;
+    public final int GUILD_ARTISAN = 6;
+    public final int HERMIT = 7;
+    public final int KNIGHT = 8;
+    public final int NOBLE = 9;
+    public final int OUTLANDER = 10;
+    public final int PIRATE = 11;
+    public final int SAGE = 12;
+    public final int SAILOR = 13;
+    public final int SOLDIER = 14;
+    public final int URCHIN = 15;
+
+    //SKILLS & ATTRIBUTES
     public final int ALL_SKILLS = 18;
     public final int ATTRIBUTE_DICE_COUNT = 3;
     public final int STARTING_PROFICIENCY = 2;
     public final int BASE_AC = 10;
     public final int STARTING_LEVEL = 1;
 
+    //DICES
+    public final int BARBARIAN_DICE = 12;
+    public final int BARD_DICE = 8;
+    public final int CLERIC_DICE = 8;
+    public final int DRUID_DICE = 8;
+    public final int FIGHTER_DICE = 10;
+    public final int MONK_DICE = 8;
+    public final int PALADIN_DICE = 10;
+    public final int RANGER_DICE = 10;
+    public final int ROGUE_DICE = 8;
+    public final int SORCERER_DICE = 6;
+    public final int WARLOCK_DICE = 8;
+    public final int WIZARD_DICE = 6;
+
     //SINGLETON
     private CoreRules() {
         System.out.println("Core rules created.");
-
-//        //CLASSES HashMap:
-//        HashMap<Integer,String> classMap = new HashMap<Integer,String>();
-//        classMap.put(0,"Barbarian");
-//
-//        //SKILLS HashMap:
-//        HashMap<String,Integer> skillMap = new HashMap<String,Integer>();
-//        skillMap.put("Acrobatics",0);
-//        skillMap.put("Animal Handling",1);
-//        skillMap.put("Arcana",2);
-//        skillMap.put("Athletics",3);
-//        skillMap.put("Deception",4);
-//        skillMap.put("History",5);
-//        skillMap.put("Insight",6);
-//        skillMap.put("Intimidation",7);
-//        skillMap.put("Investigation",8);
-//        skillMap.put("Medicine",9);
-//        skillMap.put("Nature",10);
-//        skillMap.put("Perception",11);
-//        skillMap.put("Performance",12);
-//        skillMap.put("Persuasion",13);
-//        skillMap.put("Religion",14);
-//        skillMap.put("Sleight of Hand",15);
-//        skillMap.put("Stealth",16);
-//        skillMap.put("Survival",17);
-
     }
 
     private static CoreRules instance = null;
@@ -84,23 +115,22 @@ public class CoreRules {
 
     private final String[] races = {"Dragonborn", "Dwarf", "Elf", "Gnome", "Half-Elf", "Halfling", "Half-Orc", "Human", "Tiefling"};
     private final String[] alignments = {"Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"};
-    private final String[] backgrounds = {"Acolyte", "Charlatan", "Criminal/Spy", "Entertainer", "Folk Hero", "Gladiator", "Guild Artisan", "Hermit", "Knight", "Noble", "Outlander", "Pirate", "Sage", "Sailor", "Soldier", "Urchin"};
+    private final String[] backgrounds = {"Acolyte", "Charlatan", "Criminal", "Entertainer", "Folk Hero", "Gladiator", "Guild Artisan", "Hermit", "Knight", "Noble", "Outlander", "Pirate", "Sage", "Sailor", "Soldier", "Urchin"};
     private final String[] classes = {"Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"};
 
     private final String[][] subClasses = {
-            {"Path of the Berserker", "Path of the Totem Warrior"},
-            {"College of Lore", "College of Valor"},
-            {"Knowledge Domain", "Life Domain", "Light Domain", "Nature Domain", "Tempest Domain", "Trickery Domain", "War Domain"},
-            {"Circle of the Land", "Circle of the Moon"},
-            {"Champion", "Battle Master", "Eldritch Knight"},
-            {"Way of the Open Hand", "Way of Shadow", "Way of the Four Elements"},
-            {"Oath of Devotion", "Oath of the Ancients", "Oath of Vengeance"},
-            {"Hunter", "Beast Master"},
-            {"Thief", "Assassin", "Arcane Trickster"},
-            {"Draconic Blood", "Wild Magic"},
-            {"The Archfey", "The Fiend", "The Great Old One"},
-            {"School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation"},
-            {"--None--"}
+            {"--None--", "Path of the Berserker", "Path of the Totem Warrior"},
+            {"--None--", "College of Lore", "College of Valor"},
+            {"--None--", "Knowledge Domain", "Life Domain", "Light Domain", "Nature Domain", "Tempest Domain", "Trickery Domain", "War Domain"},
+            {"--None--", "Circle of the Land", "Circle of the Moon"},
+            {"--None--", "Champion", "Battle Master", "Eldritch Knight"},
+            {"--None--", "Way of the Open Hand", "Way of Shadow", "Way of the Four Elements"},
+            {"--None--", "Oath of Devotion", "Oath of the Ancients", "Oath of Vengeance"},
+            {"--None--", "Hunter", "Beast Master"},
+            {"--None--", "Thief", "Assassin", "Arcane Trickster"},
+            {"--None--", "Draconic Blood", "Wild Magic", "--None--"},
+            {"--None--", "The Archfey", "The Fiend", "The Great Old One"},
+            {"--None--", "School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation", "--None--"}
     };
 
     private final int[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};
