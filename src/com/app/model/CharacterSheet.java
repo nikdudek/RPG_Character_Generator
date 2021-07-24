@@ -20,7 +20,7 @@ public class CharacterSheet {
     CoreRules coreRules = CoreRules.getInstance();
 
     //ATTRIBUTES:
-    //Data from InfoPanel
+        //Data from InfoPanel
     private String name;
     private int race;
     private int mainClass;
@@ -29,7 +29,7 @@ public class CharacterSheet {
     private int background;
     private int alignment;
 
-    //Data from CombatValuesPanel
+        //Data from CombatValuesPanel
     private int initiative = 0;
     private int speed = 0;
     private int proficiency = coreRules.STARTING_PROFICIENCY;
@@ -38,7 +38,7 @@ public class CharacterSheet {
     private int hitPointsMax = 0;
     private int armorClass = coreRules.BASE_AC;
 
-    //Data from AttributePanel
+        //Data from AttributePanel
     private int strength = 0;
     private int strengthMod = 0;
     private int strengthST = 0;
@@ -58,7 +58,7 @@ public class CharacterSheet {
     private int charismaMod = 0;
     private int charismaST = 0;
 
-    //Proficients for ST/Skills
+        //Proficients for ST/Skills
     private boolean strengthProficient = false;
     private boolean dexterityProficient = false;
     private boolean conditionProficient = false;

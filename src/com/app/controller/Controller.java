@@ -11,7 +11,6 @@ import com.app.view.SkillsPanel;
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class Controller {
 
@@ -35,6 +34,9 @@ public class Controller {
 
         infoPanel.setSubClassBoxModel(coreRules.BARBARIAN);
 
+        characterSheet.setHitDiceType(12);
+        characterSheet.setHitDiceCount(1);
+
         rollAttributes();
         characterSheet.setLevel(coreRules.STARTING_LEVEL);
         characterSheet.setRace(coreRules.DRAGONBORN);
@@ -47,6 +49,8 @@ public class Controller {
         characterSheet.setHitPointsMax(coreRules.BARBARIAN_DICE);
         characterSheet.setStrengthProficient(true);
         characterSheet.setConditionProficient(true);
+
+        refreshCombatValues();
 
         //  <<----------- TU SKONCZYLES ----------------------------------------------------------------------------->>
 
@@ -77,39 +81,31 @@ public class Controller {
         return ((7+level) / 4);
     }
 
-    // ------------------------------------------ INFO PANEL: NAME LABEL ------------------------------------------- //
-
-    public void setName(JTextField nameField, JLabel renameLabel) {
-
-        CharacterSheet characterSheet = CharacterSheet.getInstance();
-        characterSheet.setName(nameField.getText());
-        renameLabel.setText("Character's current name is: " + characterSheet.getName());
-//                characterSheet.setAlignment(alignmentBox.getSelectedItem().toString());
-//                characterSheet.setBackground(backgroundBox.getSelectedItem().toString());
-//                characterSheet.setMainClass(classBox.getSelectedItem().toString());
-//                characterSheet.setSubClass(subClassBox.getSelectedItem().toString());
-//                characterSheet.setLevel(Integer.parseInt(levelBox.getSelectedItem().toString()));
-    }
     // --------------------------------------- COMBAT VALUES PANEL: LABELS ----------------------------------------- //
 
     public void setCombatValues() {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-//        DiceRoller diceRoller = DiceRoller.getInstance();
 
         characterSheet.setInitiative(characterSheet.getDexterityMod());
         //characterSheet.setSpeed(); --> from race (delete later)
         //characterSheet.setProficiency(); -- from level (delete later)
         // -||- same for rest
         //RANDOM HP:
-//        if(characterSheet.getHitDiceType() == 6)
-//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d6(characterSheet.getHitDiceCount()));
-//        else if(characterSheet.getHitDiceType() == 8)
-//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d8(characterSheet.getHitDiceCount()));
-//        else if(characterSheet.getHitDiceType() == 10)
-//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d10(characterSheet.getHitDiceCount()));
-//        else if(characterSheet.getHitDiceType() == 12)
-//            characterSheet.setHitPointsMax((characterSheet.getLevel()*characterSheet.getConditionMod())+diceRoller.d12(characterSheet.getHitDiceCount()));
+        int hitPoints = characterSheet.getHitDiceType() + characterSheet.getConditionMod();
+        if(characterSheet.getLevel() != 1) {
+
+            DiceRoller diceRoller = DiceRoller.getInstance();
+            int level = characterSheet.getLevel() - 1;
+            switch (characterSheet.getHitDiceType()) {
+                case 6 -> hitPoints += diceRoller.d6(level);
+                case 8 -> hitPoints += diceRoller.d8(level);
+                case 10 -> hitPoints += diceRoller.d10(level);
+                case 12 -> hitPoints += diceRoller.d12(level);
+                default -> throw new IllegalStateException("Unexpected value.");
+            }
+        }
+        characterSheet.setHitPointsMax(hitPoints);
     }
 
     public void refreshCombatValues() {
@@ -299,7 +295,7 @@ public class Controller {
 
     // --------------------------------------------------- LEVEL --------------------------------------------------- //
 
-    public void setLevel(ItemEvent e, JComboBox classBox) {
+    public void setLevel(ItemEvent e) {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
 

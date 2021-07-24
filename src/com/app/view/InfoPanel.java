@@ -6,12 +6,10 @@ import com.app.model.CoreRules;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-public class InfoPanel extends JPanel implements ActionListener, ItemListener {
+public class InfoPanel extends JPanel implements ItemListener {
 
     public void setSubClassBoxModel(int classId) {
         switch (classId) {
@@ -44,15 +42,12 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
     CoreRules coreRules = CoreRules.getInstance();
     Controller controller = Controller.getInstance();
 
-    //Public elements:
-    JTextField nameField = new JTextField();
-    JLabel renameLabel = new JLabel("Character's current name is: ");
-
     JComboBox levelBox = new JComboBox(coreRules.getLevels());
     JComboBox raceBox = new JComboBox(coreRules.getRaces());
     JComboBox alignmentBox = new JComboBox(coreRules.getAlignments());
     JComboBox backgroundBox = new JComboBox(coreRules.getBackgrounds());
     JComboBox classBox = new JComboBox(coreRules.getClasses());
+
     //Subclasses models:
     DefaultComboBoxModel<String> barbarianModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.BARBARIAN));
     DefaultComboBoxModel<String> bardModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.BARD));
@@ -66,30 +61,23 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
     DefaultComboBoxModel<String> sorcererModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.SORCERER));
     DefaultComboBoxModel<String> warlockModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.WARLOCK));
     DefaultComboBoxModel<String> wizardModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.WIZARD));
+
     JComboBox subClassBox = new JComboBox();
 
     private InfoPanel() {
 
         this.setBackground(new Color(222, 181, 84));
         this.setBounds(0,0,1366, 80);
-        this.setLayout(new GridLayout(4,4));
+        this.setBorder(BorderFactory.createBevelBorder(1));
+        this.setLayout(new GridLayout(3,4));
 
         //Labels:
-        JLabel nameLabel = new JLabel("Character name:");
         JLabel levelLabel = new JLabel("Level:");
         JLabel raceLabel = new JLabel("Race:");
         JLabel alignmentLabel = new JLabel("Alignment:");
         JLabel backgroundLabel = new JLabel("Background:");
         JLabel classLabel = new JLabel("Class:");
         JLabel subClassLabel = new JLabel("Subclass:");
-
-        JButton renameButton = new JButton("SET NAME");
-        renameButton.setFocusable(false);
-        renameButton.setActionCommand("renameButton");
-        renameButton.addActionListener(this);
-
-        //Setting default subclass model:
-        //subClassBox.setModel(barbarianModel);
 
         //Item listener
         levelBox.addItemListener(this);
@@ -100,12 +88,6 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
         subClassBox.addItemListener(this);
 
         //Putting elements into Panel
-        this.add(nameLabel);
-        this.add(nameField);
-
-        this.add(renameButton);
-        this.add(renameLabel);
-
         this.add(levelLabel);
         this.add(levelBox);
 
@@ -127,18 +109,6 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-        switch (e.getActionCommand()) {
-
-            case "renameButton" -> {
-                controller.setName(nameField,renameLabel);
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
-        }
-    }
-
-    @Override
     public void itemStateChanged(ItemEvent e) {
 
         if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -146,7 +116,7 @@ public class InfoPanel extends JPanel implements ActionListener, ItemListener {
             if (e.getSource() == raceBox) controller.setRace(e,raceBox);
             else if (e.getSource() == classBox) controller.setClass(e,classBox,levelBox);
             else if (e.getSource() == subClassBox) controller.setSubClass(e,subClassBox);
-            else if (e.getSource() == levelBox) controller.setLevel(e,classBox);
+            else if (e.getSource() == levelBox) controller.setLevel(e);
         }
     }
 }
