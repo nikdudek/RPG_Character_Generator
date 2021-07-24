@@ -72,10 +72,9 @@ public class CharacterSheet {
     private int[] skills = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
     //List of Feats
-    private List<String> feats;
+    private List<String> featsList;
 
-
-        //METHODS:
+    //METHODS:       ------------------------------------------------------------------------------------------
     public String getName() {
         return name;
     }
@@ -412,5 +411,13 @@ public class CharacterSheet {
 
     public void setSkillsProficient(boolean[] skillsProficient) {
         this.skillsProficient = skillsProficient;
+    }
+
+    public List<String> getFeatsList() {
+        return featsList;
+    }
+
+    public void setFeatsList(List<String> featsList) {
+        this.featsList = featsList;
     }
 }

@@ -81,7 +81,7 @@ public class Controller {
         return ((7+level) / 4);
     }
 
-    // --------------------------------------- COMBAT VALUES PANEL: LABELS ----------------------------------------- //
+    // --------------------------------------- COMBAT VALUES PANEL -> LABELS ----------------------------------------- //
 
     public void setCombatValues() {
 
@@ -91,7 +91,7 @@ public class Controller {
         //characterSheet.setSpeed(); --> from race (delete later)
         //characterSheet.setProficiency(); -- from level (delete later)
         // -||- same for rest
-        //RANDOM HP:
+        //RANDOM HP ->
         int hitPoints = characterSheet.getHitDiceType() + characterSheet.getConditionMod();
         if(characterSheet.getLevel() != 1) {
 
@@ -121,7 +121,7 @@ public class Controller {
         combatValuesPanel.armValLabel.setText(String.valueOf(characterSheet.getArmorClass()));
     }
 
-    // --------------------------------------------- ATTRIBUTES PANEL: --------------------------------------------- //
+    // --------------------------------------------- ATTRIBUTES PANEL -> --------------------------------------------- //
 
     public void rollAttributes() {
 
@@ -130,7 +130,7 @@ public class Controller {
         AttributePanel attributePanel = AttributePanel.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
 
-        //Roll Attributes & Set them at Character Sheet:
+        //Roll Attributes & Set them at Character Sheet ->
         characterSheet.setStrength(diceRoller.d6(coreRules.ATTRIBUTE_DICE_COUNT));
         characterSheet.setDexterity(diceRoller.d6(coreRules.ATTRIBUTE_DICE_COUNT));
         characterSheet.setCondition(diceRoller.d6(coreRules.ATTRIBUTE_DICE_COUNT));
@@ -146,14 +146,14 @@ public class Controller {
         attributePanel.getWisValueLabel().setText(String.valueOf(characterSheet.getWisdom()));
         attributePanel.getChaValueLabel().setText(String.valueOf(characterSheet.getCharisma()));
 
-        //Set modifiers:
+        //Set modifiers ->
         characterSheet.setStrengthMod(attributeToModifier(characterSheet.getStrength()));
         characterSheet.setDexterityMod(attributeToModifier(characterSheet.getDexterity()));
         characterSheet.setConditionMod(attributeToModifier(characterSheet.getCondition()));
         characterSheet.setIntelligenceMod(attributeToModifier(characterSheet.getIntelligence()));
         characterSheet.setWisdomMod(attributeToModifier(characterSheet.getWisdom()));
         characterSheet.setCharismaMod(attributeToModifier(characterSheet.getCharisma()));
-        //Set Mod labels:
+        //Set Mod labels ->
         attributePanel.getStrModifierLabel().setText(String.valueOf(characterSheet.getStrengthMod()));
         attributePanel.getDexModifierLabel().setText(String.valueOf(characterSheet.getDexterityMod()));
         attributePanel.getConModifierLabel().setText(String.valueOf(characterSheet.getConditionMod()));
@@ -161,14 +161,14 @@ public class Controller {
         attributePanel.getWisModifierLabel().setText(String.valueOf(characterSheet.getWisdomMod()));
         attributePanel.getChaModifierLabel().setText(String.valueOf(characterSheet.getCharismaMod()));
 
-        //Set saving throws:
+        //Set saving throws ->
         characterSheet.setStrengthST(attributeToST(characterSheet.getStrengthMod(),characterSheet.isStrengthProficient()));
         characterSheet.setDexterityST(attributeToST(characterSheet.getDexterityMod(),characterSheet.isDexterityProficient()));
         characterSheet.setConditionST(attributeToST(characterSheet.getConditionMod(),characterSheet.isConditionProficient()));
         characterSheet.setIntelligenceST(attributeToST(characterSheet.getIntelligenceMod(),characterSheet.isIntelligenceProficient()));
         characterSheet.setWisdomST(attributeToST(characterSheet.getWisdomMod(),characterSheet.isWisdomProficient()));
         characterSheet.setCharismaST(attributeToST(characterSheet.getCharismaMod(),characterSheet.isCharismaProficient()));
-        //Set ST labels:
+        //Set ST labels ->
         attributePanel.getStrSTLabel().setText(String.valueOf(characterSheet.getStrengthST()));
         attributePanel.getDexSTLabel().setText(String.valueOf(characterSheet.getDexterityST()));
         attributePanel.getConSTLabel().setText(String.valueOf(characterSheet.getConditionST()));
@@ -176,16 +176,16 @@ public class Controller {
         attributePanel.getWisSTLabel().setText(String.valueOf(characterSheet.getWisdomST()));
         attributePanel.getChaSTLabel().setText(String.valueOf(characterSheet.getCharismaST()));
 
-        //Calculate Skills:
+        //Calculate Skills ->
         calculateSkills();
-        //Put Skills values into Labels:
+        //Put Skills values into Labels ->
         setSkills();
         //Update Combat Values Label
         setCombatValues();
         refreshCombatValues();
     }
 
-    // ------------------------------------------- SKILLS PANEL: LABELS -------------------------------------------- //
+    // ------------------------------------------- SKILLS PANEL -> LABELS -------------------------------------------- //
 
     public void setSkills() {
         SkillsPanel skillsPanel = SkillsPanel.getInstance();
@@ -301,15 +301,18 @@ public class Controller {
 
         if (characterSheet.getLevel() != Integer.parseInt(e.getItem().toString())) {
             if (characterSheet.getLevel() > Integer.parseInt(e.getItem().toString())) {
-                    characterSheet.clearProficients(); //NEED TO MAKE THEM AGAIN
+                characterSheet.clearProficients(); //NEED TO MAKE THEM AGAIN
+                rollAttributes();
                     //clear feats, etc.
-                    raiseLevel(coreRules.STARTING_LEVEL, Integer.parseInt(e.getItem().toString()));
-                } else if (characterSheet.getLevel() < Integer.parseInt(e.getItem().toString()))
-                    raiseLevel(characterSheet.getLevel() + 1, Integer.parseInt(e.getItem().toString()));
+                raiseLevel(coreRules.STARTING_LEVEL, Integer.parseInt(e.getItem().toString()));
+            }
+            else if (characterSheet.getLevel() < Integer.parseInt(e.getItem().toString())) {
+                raiseLevel(characterSheet.getLevel() + 1, Integer.parseInt(e.getItem().toString()));
 
                 characterSheet.setLevel(Integer.parseInt(e.getItem().toString()));
                 characterSheet.setProficiency(calculateProficiency(Integer.parseInt(e.getItem().toString())));
                 refreshCombatValues();
+            }
         }
     }
 
@@ -319,8 +322,8 @@ public class Controller {
         CoreRules coreRules = CoreRules.getInstance();
 
         if(characterSheet.getMainClass() == coreRules.BARBARIAN)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                barbarianSelected(startingLevel);
+            for(int i = startingLevel ; i <= targetLevel ; i++)
+                barbarianSelected(i);
         else if(characterSheet.getMainClass() == coreRules.BARD)
             for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                 bardSelected(startingLevel);
@@ -414,7 +417,7 @@ public class Controller {
         DiceRoller diceRoller = DiceRoller.getInstance();
         switch (level) {
 
-            case 1: {
+            case 1 -> {
                 InfoPanel infoPanel = InfoPanel.getInstance();
                 //infoPanel.setSubClassBoxModel(coreRules.);
 
@@ -428,70 +431,69 @@ public class Controller {
 //                    barbarianSelected(startingLevel+1,targetLevel);
             }
 
-            case 2: {
+            case 2 -> {
                 characterSheet.setHitPointsMax(characterSheet.getHitPointsMax() + diceRoller.d12(1));
             }
 
-            case 3: {
+            case 3 -> {
                 InfoPanel infoPanel = InfoPanel.getInstance();
                 infoPanel.setSubClassBoxModel(coreRules.BARBARIAN);
 
                 characterSheet.setHitPointsMax(characterSheet.getHitPointsMax() + diceRoller.d12(1));
             }
 
-            case 4: {
+            case 4 -> {
             }
 
-            case 5: {
+            case 5 -> {
             }
 
-            case 6: {
+            case 6 -> {
             }
 
-            case 7: {
+            case 7 -> {
             }
 
-            case 8: {
+            case 8 -> {
             }
 
-            case 9: {
+            case 9 -> {
             }
 
-            case 10: {
+            case 10 -> {
             }
 
-            case 11: {
+            case 11 -> {
             }
 
-            case 12: {
+            case 12 -> {
             }
 
-            case 13: {
+            case 13 -> {
             }
 
-            case 14: {
+            case 14 -> {
             }
 
-            case 15: {
+            case 15 -> {
             }
 
-            case 16: {
+            case 16 -> {
             }
 
-            case 17: {
+            case 17 -> {
             }
 
-            case 18: {
+            case 18 -> {
             }
 
-            case 19: {
+            case 19 -> {
             }
 
-            case 20: {
+            case 20 -> {
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -500,7 +502,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -508,84 +510,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -594,7 +595,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -602,84 +603,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -688,7 +688,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -696,84 +696,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -782,7 +781,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -790,84 +789,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -876,7 +874,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -884,84 +882,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -970,7 +967,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -978,84 +975,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -1064,7 +1060,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -1072,84 +1068,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -1158,7 +1153,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -1166,84 +1161,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -1252,7 +1246,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -1260,84 +1254,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -1346,7 +1339,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -1354,84 +1347,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 
@@ -1440,7 +1432,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         switch (startingLevel) {
 
-            case 1: {
+            case 1 -> {
 
                 characterSheet.clearProficients();
                 characterSheet.setStrengthProficient(true);
@@ -1448,84 +1440,83 @@ public class Controller {
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
-            case 2: {
+            case 2 -> {
 
             }
 
-            case 3: {
+            case 3 -> {
 
             }
 
-            case 4: {
+            case 4 -> {
 
             }
 
-            case 5: {
+            case 5 -> {
 
             }
 
-            case 6: {
+            case 6 -> {
 
             }
 
-            case 7: {
+            case 7 -> {
 
             }
 
-            case 8: {
+            case 8 -> {
 
             }
 
-            case 9: {
+            case 9 -> {
 
             }
 
-            case 10: {
+            case 10 -> {
 
             }
 
-            case 11: {
+            case 11 -> {
 
             }
 
-            case 12: {
+            case 12 -> {
 
             }
 
-            case 13: {
+            case 13 -> {
 
             }
 
-            case 14: {
+            case 14 -> {
 
             }
 
-            case 15: {
+            case 15 -> {
 
             }
 
-            case 16: {
+            case 16 -> {
 
             }
 
-            case 17: {
+            case 17 -> {
 
             }
 
-            case 18: {
+            case 18 -> {
 
             }
 
-            case 19: {
+            case 19 -> {
 
             }
 
-            case 20: {
+            case 20 -> {
 
             }
 
-            default:
-                throw new IllegalStateException("Unexpected value.");
+            default -> throw new IllegalStateException("Unexpected value.");
         }
     }
 }
