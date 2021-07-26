@@ -128,9 +128,9 @@ public class CoreRules {
             {"--None--", "Oath of Devotion", "Oath of the Ancients", "Oath of Vengeance"},
             {"--None--", "Hunter", "Beast Master"},
             {"--None--", "Thief", "Assassin", "Arcane Trickster"},
-            {"--None--", "Draconic Blood", "Wild Magic", "--None--"},
+            {"--None--", "Draconic Blood", "Wild Magic"},
             {"--None--", "The Archfey", "The Fiend", "The Great Old One"},
-            {"--None--", "School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation", "--None--"}
+            {"--None--", "School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation"}
     };
 
     private final int[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};

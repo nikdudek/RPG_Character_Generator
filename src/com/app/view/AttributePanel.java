@@ -1,6 +1,7 @@
 package com.app.view;
 
 import com.app.controller.Controller;
+import com.app.model.CharacterSheet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -212,7 +213,11 @@ public class AttributePanel extends JPanel implements ActionListener {
 
             case "rollButton" -> {
                 Controller controller = Controller.getInstance();
-                controller.rollAttributes();
+                CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+                characterSheet.setLevel(21);
+                controller.setLevel();
+                //EARLIER WITHOUT characterSheet commands
             }
             default -> throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
         }

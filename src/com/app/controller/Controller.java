@@ -198,92 +198,116 @@ public class Controller {
 
     // --------------------------------------------------- RACE ---------------------------------------------------- //
 
-    public void setRace(ItemEvent e, JComboBox raceBox) {
+    public void setRace() {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        if (characterSheet.getRace() != raceBox.getSelectedIndex()) characterSheet.changeRace(raceBox.getSelectedIndex());
+        InfoPanel infoPanel = InfoPanel.getInstance();
+        if (characterSheet.getRace() != infoPanel.getRaceBox().getSelectedIndex()) characterSheet.changeRace(infoPanel.getRaceBox().getSelectedIndex());
         //DODANIE I AKTUALIZACJA BONUSÓW Z RASY
     }
 
     // --------------------------------------------------- CLASS --------------------------------------------------- //
 
-    public void setClass(ItemEvent e, JComboBox classBox, JComboBox levelBox) {
-
+    public void setClass() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        if(classBox.getSelectedIndex() != characterSheet.getMainClass()) {
+        InfoPanel infoPanel = InfoPanel.getInstance();
+
+        if(infoPanel.getClassBox().getSelectedIndex() != characterSheet.getMainClass()) {
             CoreRules coreRules = CoreRules.getInstance();
-            InfoPanel infoPanel = InfoPanel.getInstance();
-            int targetLevel = Integer.parseInt(levelBox.getSelectedItem().toString());
-            switch (classBox.getSelectedIndex()) {
+            int targetLevel = Integer.parseInt(infoPanel.getLevelBox().getSelectedItem().toString());
+            switch (infoPanel.getClassBox().getSelectedIndex()) {
                 case 0 -> {
                     System.out.println("Barbarian");
-                    infoPanel.setSubClassBoxModel(coreRules.BARBARIAN); // TO DO KAZDEGO WYBORU KLASY!
+                    characterSheet.setMainClass(coreRules.BARBARIAN);
+                    infoPanel.setSubClassBoxModel(coreRules.BARBARIAN);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         barbarianSelected(i);
                 }
                 case 1 -> {
                     System.out.println("Bard");
+                    characterSheet.setMainClass(coreRules.BARD);
+                    infoPanel.setSubClassBoxModel(coreRules.BARD);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         bardSelected(i);
                     }
                 case 2 -> {
                     System.out.println("Cleric");
+                    characterSheet.setMainClass(coreRules.CLERIC);
+                    infoPanel.setSubClassBoxModel(coreRules.CLERIC);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         clericSelected(i);
                 }
                 case 3 -> {
                     System.out.println("Druid");
+                    characterSheet.setMainClass(coreRules.DRUID);
+                    infoPanel.setSubClassBoxModel(coreRules.DRUID);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         druidSelected(i);
                 }
                 case 4 -> {
                     System.out.println("Fighter");
+                    infoPanel.setSubClassBoxModel(coreRules.FIGHTER);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         fighterSelected(i);
                 }
                 case 5 -> {
                     System.out.println("Monk");
+                    characterSheet.setMainClass(coreRules.MONK);
+                    infoPanel.setSubClassBoxModel(coreRules.MONK);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         monkSelected(i);
                 }
                 case 6 -> {
                     System.out.println("Paladin");
+                    characterSheet.setMainClass(coreRules.PALADIN);
+                    infoPanel.setSubClassBoxModel(coreRules.PALADIN);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         paladinSelected(i);
                 }
                 case 7 -> {
                     System.out.println("Ranger");
+                    characterSheet.setMainClass(coreRules.RANGER);
+                    infoPanel.setSubClassBoxModel(coreRules.RANGER);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         rangerSelected(i);
                 }
                 case 8 -> {
                     System.out.println("Rogue");
+                    characterSheet.setMainClass(coreRules.ROGUE);
+                    infoPanel.setSubClassBoxModel(coreRules.ROGUE);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         rogueSelected(i);
                 }
                 case 9 -> {
                     System.out.println("Sorcerer");
+                    characterSheet.setMainClass(coreRules.SORCERER);
+                    infoPanel.setSubClassBoxModel(coreRules.SORCERER);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         sorcererSelected(i);
                 }
                 case 10 -> {
                     System.out.println("Warlock");
+                    characterSheet.setMainClass(coreRules.WARLOCK);
+                    infoPanel.setSubClassBoxModel(coreRules.WARLOCK);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         warlockSelected(i);
                 }
                 case 11 -> {
                     System.out.println("Wizard");
+                    characterSheet.setMainClass(coreRules.WIZARD);
+                    infoPanel.setSubClassBoxModel(coreRules.WIZARD);
                     for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
                         wizardSelected(i);
                 }
                 default -> throw new IllegalStateException("Unexpected value.");
             }
+            refreshCombatValues();
         }
     }
 
     // ------------------------------------------------- SUBCLASS -------------------------------------------------- //
 
-    public void setSubClass(ItemEvent e, JComboBox subclassBox) {
+    public void setSubClass() {
         //Subclass
     }
 
@@ -295,24 +319,28 @@ public class Controller {
 
     // --------------------------------------------------- LEVEL --------------------------------------------------- //
 
-    public void setLevel(ItemEvent e) {
+    public void setLevel() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
+        InfoPanel infoPanel = InfoPanel.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
 
-        if (characterSheet.getLevel() != Integer.parseInt(e.getItem().toString())) {
-            if (characterSheet.getLevel() > Integer.parseInt(e.getItem().toString())) {
+        int targetLevel = Integer.parseInt(infoPanel.getLevelBox().getSelectedItem().toString());
+
+        if (characterSheet.getLevel() != targetLevel) {
+            if (characterSheet.getLevel() > targetLevel) {
                 characterSheet.clearProficients(); //NEED TO MAKE THEM AGAIN
                 rollAttributes();
                     //clear feats, etc.
-                raiseLevel(coreRules.STARTING_LEVEL, Integer.parseInt(e.getItem().toString()));
+                raiseLevel(coreRules.STARTING_LEVEL, targetLevel);
             }
-            else if (characterSheet.getLevel() < Integer.parseInt(e.getItem().toString())) {
-                raiseLevel(characterSheet.getLevel() + 1, Integer.parseInt(e.getItem().toString()));
+            else if (characterSheet.getLevel() < targetLevel) {
+                raiseLevel(characterSheet.getLevel() + 1, targetLevel);
 
-                characterSheet.setLevel(Integer.parseInt(e.getItem().toString()));
-                characterSheet.setProficiency(calculateProficiency(Integer.parseInt(e.getItem().toString())));
+                characterSheet.setProficiency(calculateProficiency(targetLevel));
                 refreshCombatValues();
             }
+            //Set level on Character Sheet
+            characterSheet.setLevel(targetLevel);
         }
     }
 
@@ -415,15 +443,20 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
         DiceRoller diceRoller = DiceRoller.getInstance();
+        //InfoPanel infoPanel = InfoPanel.getInstance();
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d12(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
         switch (level) {
 
             case 1 -> {
-                InfoPanel infoPanel = InfoPanel.getInstance();
-                //infoPanel.setSubClassBoxModel(coreRules.);
-
                 characterSheet.clearProficients();
                 characterSheet.setHitDiceType(coreRules.BARBARIAN_DICE);
-                characterSheet.setHitPointsMax(coreRules.BARBARIAN_DICE);
+                int newHitPointsMax = coreRules.BARBARIAN_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 characterSheet.setStrengthProficient(true);
                 characterSheet.setConditionProficient(true);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
@@ -432,14 +465,9 @@ public class Controller {
             }
 
             case 2 -> {
-                characterSheet.setHitPointsMax(characterSheet.getHitPointsMax() + diceRoller.d12(1));
             }
 
             case 3 -> {
-                InfoPanel infoPanel = InfoPanel.getInstance();
-                infoPanel.setSubClassBoxModel(coreRules.BARBARIAN);
-
-                characterSheet.setHitPointsMax(characterSheet.getHitPointsMax() + diceRoller.d12(1));
             }
 
             case 4 -> {
@@ -497,16 +525,26 @@ public class Controller {
         }
     }
 
-    public void bardSelected(int startingLevel) {
+    public void bardSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d8(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.BARD_DICE);
+                int newHitPointsMax = coreRules.BARD_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -590,16 +628,26 @@ public class Controller {
         }
     }
 
-    public void clericSelected(int startingLevel) {
+    public void clericSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d8(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.CLERIC_DICE);
+                int newHitPointsMax = coreRules.CLERIC_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -683,16 +731,26 @@ public class Controller {
         }
     }
 
-    public void druidSelected(int startingLevel) {
+    public void druidSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d8(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.DRUID_DICE);
+                int newHitPointsMax = coreRules.DRUID_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -776,16 +834,26 @@ public class Controller {
         }
     }
 
-    public void fighterSelected(int startingLevel) {
+    public void fighterSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d10(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.FIGHTER_DICE);
+                int newHitPointsMax = coreRules.FIGHTER_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -869,16 +937,26 @@ public class Controller {
         }
     }
 
-    public void monkSelected(int startingLevel) {
+    public void monkSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d8(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.MONK_DICE);
+                int newHitPointsMax = coreRules.MONK_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -962,16 +1040,26 @@ public class Controller {
         }
     }
 
-    public void paladinSelected(int startingLevel) {
+    public void paladinSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d10(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.PALADIN_DICE);
+                int newHitPointsMax = coreRules.PALADIN_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -1055,16 +1143,26 @@ public class Controller {
         }
     }
 
-    public void rangerSelected(int startingLevel) {
+    public void rangerSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d10(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.RANGER_DICE);
+                int newHitPointsMax = coreRules.RANGER_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -1148,16 +1246,26 @@ public class Controller {
         }
     }
 
-    public void rogueSelected(int startingLevel) {
+    public void rogueSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d8(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.ROGUE_DICE);
+                int newHitPointsMax = coreRules.ROGUE_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -1241,16 +1349,26 @@ public class Controller {
         }
     }
 
-    public void sorcererSelected(int startingLevel) {
+    public void sorcererSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d6(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.SORCERER_DICE);
+                int newHitPointsMax = coreRules.SORCERER_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -1334,16 +1452,26 @@ public class Controller {
         }
     }
 
-    public void warlockSelected(int startingLevel) {
+    public void warlockSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d8(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.WARLOCK_DICE);
+                int newHitPointsMax = coreRules.WARLOCK_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
@@ -1427,16 +1555,26 @@ public class Controller {
         }
     }
 
-    public void wizardSelected(int startingLevel) {
+    public void wizardSelected(int level) {
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        switch (startingLevel) {
+        CoreRules coreRules = CoreRules.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+
+        if(level != 1) {
+            int newHitPointsMax = characterSheet.getHitPointsMax() + diceRoller.d6(1) + characterSheet.getConditionMod();
+            if(newHitPointsMax < 1) newHitPointsMax = 1;
+            characterSheet.setHitPointsMax(newHitPointsMax);
+        }
+        switch (level) {
 
             case 1 -> {
 
                 characterSheet.clearProficients();
-                characterSheet.setStrengthProficient(true);
-                characterSheet.setConditionProficient(true);
+                characterSheet.setHitDiceType(coreRules.WIZARD_DICE);
+                int newHitPointsMax = coreRules.WIZARD_DICE + characterSheet.getConditionMod();
+                if(newHitPointsMax < 1) newHitPointsMax = 1;
+                characterSheet.setHitPointsMax(newHitPointsMax);
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 

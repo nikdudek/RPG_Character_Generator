@@ -108,15 +108,39 @@ public class InfoPanel extends JPanel implements ItemListener {
 
     }
 
+    public JComboBox getClassBox() {
+        return classBox;
+    }
+
+    public JComboBox getLevelBox() {
+        return levelBox;
+    }
+
+    public JComboBox getRaceBox() {
+        return raceBox;
+    }
+
+    public JComboBox getAlignmentBox() {
+        return alignmentBox;
+    }
+
+    public JComboBox getBackgroundBox() {
+        return backgroundBox;
+    }
+
+    public JComboBox getSubClassBox() {
+        return subClassBox;
+    }
+
     @Override
     public void itemStateChanged(ItemEvent e) {
 
         if (e.getStateChange() == ItemEvent.SELECTED) {
 
-            if (e.getSource() == raceBox) controller.setRace(e,raceBox);
-            else if (e.getSource() == classBox) controller.setClass(e,classBox,levelBox);
-            else if (e.getSource() == subClassBox) controller.setSubClass(e,subClassBox);
-            else if (e.getSource() == levelBox) controller.setLevel(e);
+            if (e.getSource() == raceBox) controller.setRace();
+            else if (e.getSource() == classBox) controller.setClass();
+            else if (e.getSource() == subClassBox) controller.setSubClass();
+            else if (e.getSource() == levelBox) controller.setLevel();
         }
     }
 }
