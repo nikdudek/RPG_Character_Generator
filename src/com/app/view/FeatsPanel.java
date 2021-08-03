@@ -18,7 +18,7 @@ public class FeatsPanel extends JPanel {
     private FeatsPanel() {
 
         this.setBackground(new Color(111, 84, 11));
-        this.setBounds(0,400,600, 243);
+        this.setBounds(0,400,600, 265);
         this.setBorder(BorderFactory.createBevelBorder(1));
         this.setLayout(new GridLayout(1,1));
 

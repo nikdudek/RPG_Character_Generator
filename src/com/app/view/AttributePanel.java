@@ -1,14 +1,9 @@
 package com.app.view;
 
-import com.app.controller.Controller;
-import com.app.model.CharacterSheet;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class AttributePanel extends JPanel implements ActionListener {
+public class AttributePanel extends JPanel {
 
     //SINGLETON
     private static AttributePanel instance = null;
@@ -101,12 +96,10 @@ public class AttributePanel extends JPanel implements ActionListener {
         this.setBorder(BorderFactory.createBevelBorder(1));
         this.setLayout(new GridLayout(7,4));
 
-        //"Roll" Button:
-        JButton rollButton = new JButton("Roll!");
-        rollButton.setFocusable(false);
-        rollButton.setFont(rollButton.getFont().deriveFont(rollButton.getFont().getStyle() | Font.ITALIC));
-        rollButton.setActionCommand("rollButton");
-        rollButton.addActionListener(this);
+        //Attribute Label
+        JLabel attrLabel = new JLabel("ATTRIBUTES:");
+        attrLabel.setFont(attrLabel.getFont().deriveFont(attrLabel.getFont().getStyle() | Font.ITALIC));
+        attrLabel.setHorizontalAlignment(JLabel.CENTER);
 
         //Titles:
         JLabel col2Label = new JLabel("Base Value");
@@ -176,7 +169,7 @@ public class AttributePanel extends JPanel implements ActionListener {
         chaSTLabel.setHorizontalAlignment(JLabel.CENTER);
 
         //Adding elements:
-        this.add(rollButton);
+        this.add(attrLabel);
         this.add(col2Label);
         this.add(col3Label);
         this.add(col4Label);
@@ -204,22 +197,5 @@ public class AttributePanel extends JPanel implements ActionListener {
         this.add(chaValueLabel);
         this.add(chaModifierLabel);
         this.add(chaSTLabel);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        switch (e.getActionCommand()) {
-
-            case "rollButton" -> {
-                Controller controller = Controller.getInstance();
-                CharacterSheet characterSheet = CharacterSheet.getInstance();
-
-                characterSheet.setLevel(21);
-                controller.setLevel();
-                //EARLIER WITHOUT characterSheet commands
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
-        }
     }
 }

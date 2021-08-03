@@ -17,6 +17,10 @@ public class DiceRollerFrame implements ActionListener {
         return instance;
     }
 
+    public static DiceRollerFrame getSeparate() {
+        return new DiceRollerFrame();
+    }
+
     JFrame frame = new JFrame("Dice Roller");
     DiceRoller diceRoller = DiceRoller.getInstance();
 
