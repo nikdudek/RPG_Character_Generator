@@ -42,11 +42,11 @@ public class InfoPanel extends JPanel implements ItemListener {
     CoreRules coreRules = CoreRules.getInstance();
     Controller controller = Controller.getInstance();
 
-    JComboBox levelBox = new JComboBox(coreRules.getLevels());
-    JComboBox raceBox = new JComboBox(coreRules.getRaces());
-    JComboBox alignmentBox = new JComboBox(coreRules.getAlignments());
-    JComboBox backgroundBox = new JComboBox(coreRules.getBackgrounds());
-    JComboBox classBox = new JComboBox(coreRules.getClasses());
+    private JComboBox levelBox = new JComboBox(coreRules.getLevels());
+    private JComboBox raceBox = new JComboBox(coreRules.getRaces());
+    private JComboBox alignmentBox = new JComboBox(coreRules.getAlignments());
+    private JComboBox backgroundBox = new JComboBox(coreRules.getBackgrounds());
+    private JComboBox classBox = new JComboBox(coreRules.getClasses());
 
     //Subclasses models:
     DefaultComboBoxModel<String> barbarianModel = new DefaultComboBoxModel<>(coreRules.getSubClasses(coreRules.BARBARIAN));
@@ -138,6 +138,8 @@ public class InfoPanel extends JPanel implements ItemListener {
         if (e.getStateChange() == ItemEvent.SELECTED) {
 
             if (e.getSource() == raceBox) controller.setRace();
+            else if (e.getSource() == alignmentBox) controller.setAlignment();
+            else if (e.getSource() == backgroundBox) controller.setBackground();
             else if (e.getSource() == classBox) controller.setClass();
             else if (e.getSource() == subClassBox) controller.setSubClass();
             else if (e.getSource() == levelBox) controller.setLevel();

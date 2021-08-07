@@ -12,8 +12,8 @@ public class FeatsPanel extends JPanel {
         return instance;
     }
 
-    public JTextArea featsTextArea = new JTextArea();
-    public JScrollPane featsPane = new JScrollPane(featsTextArea);
+    private JTextArea featsTextArea = new JTextArea();
+    private JScrollPane featsPane = new JScrollPane(featsTextArea);
 
     private FeatsPanel() {
 
@@ -23,5 +23,9 @@ public class FeatsPanel extends JPanel {
         this.setLayout(new GridLayout(1,1));
 
         this.add(featsPane);
+    }
+
+    public JTextArea getFeatsTextArea() {
+        return featsTextArea;
     }
 }

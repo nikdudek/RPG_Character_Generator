@@ -115,7 +115,7 @@ public class CoreRules {
 
     private final String[] races = {"Dragonborn", "Dwarf", "Elf", "Gnome", "Half-Elf", "Halfling", "Half-Orc", "Human", "Tiefling"};
     private final String[] alignments = {"Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"};
-    private final String[] backgrounds = {"Acolyte", "Charlatan", "Criminal", "Entertainer", "Folk Hero", "Gladiator", "Guild Artisan", "Hermit", "Knight", "Noble", "Outlander", "Pirate", "Sage", "Sailor", "Soldier", "Urchin"};
+    private final String[] backgrounds = {"Acolyte", "Charlatan", "Criminal", "Entertainer", "Folk Hero", "Guild Artisan", "Hermit", "Noble", "Outlander", "Sage", "Sailor", "Soldier", "Urchin"};
     private final String[] classes = {"Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"};
 
     private final String[][] subClasses = {
@@ -131,6 +131,26 @@ public class CoreRules {
             {"--None--", "Draconic Blood", "Wild Magic"},
             {"--None--", "The Archfey", "The Fiend", "The Great Old One"},
             {"--None--", "School of Abjuration", "School of Conjuration", "School of Divination", "School of Enchantment", "School of Evocation", "School of Illusion", "School of Necromancy", "School of Transmutation"}
+    };
+
+    private final String[] raceFeats = {
+            //dragonborn
+    };
+
+    private final String[] backgroundFeats = {
+            "> Two languages of your choice\n> Shelter Of The Faithful\n",
+            "> Proficiency in: Disguise kit, Forgery kit\n> False Identity\n",
+            "> Proficiency in: One type of gaming set, Thieves' tools\n> Criminal Contact\n",
+            "> Proficiency in: Disguise kit, One type of musical instrument\n> By Popular Demand\n",
+            "> Proficiency in: One type of artisan's tools, Vehicles(land)\n> Rustic Hospitality\n",
+            "> Proficiency in: One type of artisan's tools\n> One language of your choice\n> Guild Membership\n",
+            "> Proficiency in: Herbalism kit\n> One language of your choice\n> Discovery\n",
+            "> Proficiency in: One type of gaming set\n> One language of your choice\n> Position Of Privilege\n",
+            "> Proficiency in: One type of musical instrument\n> One language of your choice\n> Wanderer\n",
+            "> Two languages of your choice\n> Researcher\n",
+            "> Proficiency in: Navigator's tools, Vehicles(water)\n> Ship's Passage\n",
+            "> Proficiency in: One type of gaming set, Vehicles(land)\n> Military Rank\n",
+            "> Proficiency in: Disguise kit, thieves' tools\n> City Secrets\n"
     };
 
     private final int[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};
@@ -198,5 +218,9 @@ public class CoreRules {
 
     public int[] getChaSkills() {
         return chaSkills;
+    }
+
+    public String[] getBackgroundFeats() {
+        return backgroundFeats;
     }
 }

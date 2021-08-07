@@ -3,14 +3,12 @@ package com.app.controller;
 import com.app.model.CharacterSheet;
 import com.app.model.CoreRules;
 import com.app.model.DiceRoller;
-import com.app.view.AttributePanel;
-import com.app.view.CombatValuesPanel;
-import com.app.view.InfoPanel;
-import com.app.view.SkillsPanel;
+import com.app.view.*;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Controller {
 
@@ -50,11 +48,36 @@ public class Controller {
         characterSheet.setStrengthProficient(true);
         characterSheet.setConditionProficient(true);
 
-        refreshCombatValues();
-
         //  <<----------- TU SKONCZYLES ----------------------------------------------------------------------------->>
 
         refreshCombatValues();
+    }
+
+    public void rollAlignment() {
+        InfoPanel infoPanel = InfoPanel.getInstance();
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+        infoPanel.getAlignmentBox().setSelectedIndex(ThreadLocalRandom.current().nextInt(0,9));
+        characterSheet.setAlignment(infoPanel.getAlignmentBox().getSelectedIndex());
+    }
+
+    public void rollBackground() {
+        InfoPanel infoPanel = InfoPanel.getInstance();
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+        infoPanel.getBackgroundBox().setSelectedIndex(ThreadLocalRandom.current().nextInt(0,13));
+        characterSheet.setBackground(infoPanel.getBackgroundBox().getSelectedIndex());
+    }
+
+    public void readFeats() {
+        FeatsPanel featsPanel = FeatsPanel.getInstance();
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        CoreRules coreRules = CoreRules.getInstance();
+        int bgIndex = characterSheet.getBackground();
+
+        String allFeats = "Background - " + coreRules.getBackgrounds()[bgIndex] + "\n" + coreRules.getBackgroundFeats()[bgIndex];
+
+        featsPanel.getFeatsTextArea().setText(allFeats);
     }
 
     public int attributeToModifier(int getAttribute) {
@@ -65,7 +88,6 @@ public class Controller {
 
     public int attributeToST(int modifier, boolean isProficient) {
         if(isProficient) {
-
             CharacterSheet characterSheet = CharacterSheet.getInstance();
             return (modifier + characterSheet.getProficiency());
         }
@@ -176,16 +198,27 @@ public class Controller {
         attributePanel.getWisSTLabel().setText(String.valueOf(characterSheet.getWisdomST()));
         attributePanel.getChaSTLabel().setText(String.valueOf(characterSheet.getCharismaST()));
 
+        //Roll alignment
+        rollAlignment();
+
+        //Roll background
+        rollBackground();
+
         //Calculate Skills ->
         calculateSkills();
+
         //Put Skills values into Labels ->
         setSkills();
+
         //Update Combat Values Label
         setCombatValues();
         refreshCombatValues();
+
+        //Read feats
+        readFeats();
     }
 
-    // ------------------------------------------- SKILLS PANEL -> LABELS -------------------------------------------- //
+    // ------------------------------------------ SKILLS PANEL -> LABELS ------------------------------------------- //
 
     public void setSkills() {
         SkillsPanel skillsPanel = SkillsPanel.getInstance();
@@ -204,6 +237,27 @@ public class Controller {
         InfoPanel infoPanel = InfoPanel.getInstance();
         if (characterSheet.getRace() != infoPanel.getRaceBox().getSelectedIndex()) characterSheet.changeRace(infoPanel.getRaceBox().getSelectedIndex());
         //DODANIE I AKTUALIZACJA BONUSÓW Z RASY
+    }
+
+    // ------------------------------------------------- ALIGNMENT ------------------------------------------------- //
+
+    public void setAlignment() {
+        InfoPanel infoPanel = InfoPanel.getInstance();
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+        if(characterSheet.getAlignment() != infoPanel.getAlignmentBox().getSelectedIndex())
+            characterSheet.setAlignment(infoPanel.getAlignmentBox().getSelectedIndex());
+    }
+
+    // ------------------------------------------------ BACKGROUND ------------------------------------------------- //
+
+    public void setBackground() {
+        InfoPanel infoPanel = InfoPanel.getInstance();
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+        if(characterSheet.getBackground() != infoPanel.getBackgroundBox().getSelectedIndex())
+            characterSheet.setBackground(infoPanel.getBackgroundBox().getSelectedIndex());
+        //dopisać aktualizację wszystkich okieniek!
     }
 
     // --------------------------------------------------- CLASS --------------------------------------------------- //
