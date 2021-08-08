@@ -34,7 +34,6 @@ public class MainFrame extends JFrame {
         ButtonsPanel buttonsPanel = ButtonsPanel.getInstance();
         this.add(buttonsPanel);
 
-        Controller controller = Controller.getInstance();
-        controller.setAllDefault();
+        Controller.getInstance().rollAll();
     }
 }

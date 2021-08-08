@@ -19,7 +19,7 @@ public class SkillsPanel extends JPanel {
     //Instance of CoreRules
     CoreRules coreRules = CoreRules.getInstance();
     //Values:
-    public JLabel[] skillsLabels = IntStream.range(0, coreRules.ALL_SKILLS).mapToObj(i -> new JLabel()).toArray(JLabel[]::new);
+    JLabel[] skillsLabels = IntStream.range(0, coreRules.ALL_SKILLS).mapToObj(i -> new JLabel()).toArray(JLabel[]::new);
 
     private SkillsPanel() {
 
@@ -108,5 +108,9 @@ public class SkillsPanel extends JPanel {
         this.add(skillsLabels[8]);
         this.add(surLabel);
         this.add(skillsLabels[17]);
+    }
+
+    public JLabel[] getSkillsLabels() {
+        return skillsLabels;
     }
 }

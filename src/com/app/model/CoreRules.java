@@ -25,6 +25,8 @@ public class CoreRules {
 //        skillsMap.put("Survival",17);
 
 //FINALS:
+    public final int STARTING_DEFAULT = 0;
+
     //RACES
     public final int DRAGONBORN = 0;
     public final int DWARF = 1;
@@ -35,6 +37,7 @@ public class CoreRules {
     public final int HALF_ORC = 6;
     public final int HUMAN = 7;
     public final int TIEFLING = 8;
+    public final int ALL_RACES = 9;
 
     //CLASSES
     public final int BARBARIAN = 0;
@@ -49,7 +52,7 @@ public class CoreRules {
     public final int SORCERER = 9;
     public final int WARLOCK = 10;
     public final int WIZARD = 11;
-    public final int DEFAULT = 12;
+    public final int ALL_CLASSES = 12;
 
     //ALIGNMENTS
     public final int LAWFUL_GOOD = 0;
@@ -61,6 +64,7 @@ public class CoreRules {
     public final int CHAOTIC_GOOD = 6;
     public final int CHAOTIC_NEUTRAL = 7;
     public final int CHAOTIC_EVIL = 8;
+    public final int ALL_ALIGNMENTS = 9;
 
     //BACKGROUNDS
     public final int ACOLYTE = 0;
@@ -68,19 +72,42 @@ public class CoreRules {
     public final int CRIMINAL = 2;
     public final int ENTERTAINER = 3;
     public final int FOLK_HERO = 4;
-    public final int GLADIATOR = 5;
-    public final int GUILD_ARTISAN = 6;
-    public final int HERMIT = 7;
-    public final int KNIGHT = 8;
-    public final int NOBLE = 9;
-    public final int OUTLANDER = 10;
-    public final int PIRATE = 11;
-    public final int SAGE = 12;
-    public final int SAILOR = 13;
-    public final int SOLDIER = 14;
-    public final int URCHIN = 15;
+    public final int GUILD_ARTISAN = 5;
+    public final int HERMIT = 6;
+    public final int NOBLE = 7;
+    public final int OUTLANDER = 8;
+    public final int SAGE = 9;
+    public final int SAILOR = 10;
+    public final int SOLDIER = 11;
+    public final int URCHIN = 12;
+    public final int ALL_BACKGROUNDS = 13;
 
     //SKILLS & ATTRIBUTES
+    public final int STRENGTH = 0;
+    public final int DEXTERITY = 1;
+    public final int CONSTITUTION = 2;
+    public final int INTELLIGENCE = 3;
+    public final int WISDOM = 4;
+    public final int CHARISMA = 5;
+    public final int ALL_ATTRIBUTES = 6;
+    public final int ACROBATICS = 0;
+    public final int ANIMAL_HANDLING = 1;
+    public final int ARCANA = 2;
+    public final int ATHLETICS = 3;
+    public final int DECEPTION = 4;
+    public final int HISTORY = 5;
+    public final int INSIGHT = 6;
+    public final int INTIMIDATION = 7;
+    public final int INVESTIGATION = 8;
+    public final int MEDICINE = 9;
+    public final int NATURE = 10;
+    public final int PERCEPTION = 11;
+    public final int PERFORMANCE = 12;
+    public final int PERSUASION = 13;
+    public final int RELIGION = 14;
+    public final int SLEIGHT_OF_HAND = 15;
+    public final int STEALTH = 16;
+    public final int SURVIVAL = 17;
     public final int ALL_SKILLS = 18;
     public final int ATTRIBUTE_DICE_COUNT = 3;
     public final int STARTING_PROFICIENCY = 2;
@@ -134,7 +161,15 @@ public class CoreRules {
     };
 
     private final String[] raceFeats = {
-            //dragonborn
+            "> Draconic Ancestry\n> Breath Weapon\n> Damage Resistance\n> Languages: Common, Draconic\n",
+            "> Darkvision\n> Dwarven Resilience\n> Dwarven Combat Training\n> Stonecunning\n> Languages: Common, Dwarvish\n",
+            "> Darkvision\n> Keen Senses\n> Fey Ancestry\n> Trance\n> Languages: Common, Elvish\n",
+            "> Darkvision\n> Gnome Cunning\n> Languages: Common, Gnomish\n",
+            "> Darkvision\n> Fey Ancestry\n> Skill Versatility\n> Languages: Common, Elvish, +One language of your choice\n",
+            "> Lucky\n> Brave\n> Halfling Nimbleness\n> Languages: Common, Halfling\n",
+            "> Darkvision\n> Menacing\n> Relentless Endurance\n> Savage Attacks\n> Languages: Common, Orc\n",
+            "> Languages: Common, +One language of your choice\n",
+            "> Darkvision\n> Hellish Resistance\n> Infernal Legacy\n> Languages: Common, Infernal\n"
     };
 
     private final String[] backgroundFeats = {
@@ -151,6 +186,44 @@ public class CoreRules {
             "> Proficiency in: Navigator's tools, Vehicles(water)\n> Ship's Passage\n",
             "> Proficiency in: One type of gaming set, Vehicles(land)\n> Military Rank\n",
             "> Proficiency in: Disguise kit, thieves' tools\n> City Secrets\n"
+    };
+
+    private final int[][] backgroundSkillsProficiencies = {
+            {INSIGHT,RELIGION},
+            {DECEPTION,SLEIGHT_OF_HAND},
+            {DECEPTION,STEALTH},
+            {ACROBATICS,PERFORMANCE},
+            {ANIMAL_HANDLING,SURVIVAL},
+            {INSIGHT,PERSUASION},
+            {MEDICINE,RELIGION},
+            {HISTORY,PERSUASION},
+            {ATHLETICS,SURVIVAL},
+            {ARCANA,HISTORY},
+            {ATHLETICS,PERCEPTION},
+            {ATHLETICS,INTIMIDATION},
+            {SLEIGHT_OF_HAND,STEALTH}
+    };
+
+//    private final int[][] raceSkillsProficiencies = {
+//            {},
+//            {},
+//            {PERCEPTION},
+//
+//    };
+
+    private final int[][] classAttributesProficiencies = {
+            {STRENGTH,CONSTITUTION},
+            {DEXTERITY,CHARISMA},
+            {WISDOM,CHARISMA},
+            {INTELLIGENCE,WISDOM},
+            {STRENGTH,CONSTITUTION},
+            {STRENGTH,DEXTERITY},
+            {WISDOM,CHARISMA},
+            {STRENGTH,DEXTERITY},
+            {DEXTERITY,INTELLIGENCE},
+            {CONSTITUTION,CHARISMA},
+            {WISDOM,CHARISMA},
+            {INTELLIGENCE,WISDOM}
     };
 
     private final int[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};
@@ -222,5 +295,17 @@ public class CoreRules {
 
     public String[] getBackgroundFeats() {
         return backgroundFeats;
+    }
+
+    public int[][] getBackgroundSkillsProficiencies() {
+        return backgroundSkillsProficiencies;
+    }
+
+    public String[] getRaceFeats() {
+        return raceFeats;
+    }
+
+    public int[][] getClassAttributesProficiencies() {
+        return classAttributesProficiencies;
     }
 }

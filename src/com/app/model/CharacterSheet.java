@@ -21,51 +21,29 @@ public class CharacterSheet {
 
     //ATTRIBUTES:
         //Data from InfoPanel
-    private String name;
-    private int race;
-    private int mainClass;
-    private int subClass;
-    private int level = coreRules.STARTING_LEVEL;
-    private int background;
-    private int alignment;
+    private int race = coreRules.STARTING_DEFAULT;
+    private int mainClass = coreRules.STARTING_DEFAULT;
+    private int subClass = coreRules.STARTING_DEFAULT;
+    private int level = coreRules.STARTING_DEFAULT;
+    private int background = coreRules.STARTING_DEFAULT;
+    private int alignment = coreRules.STARTING_DEFAULT;
 
         //Data from CombatValuesPanel
-    private int initiative = 0;
-    private int speed = 0;
+    private int initiative = coreRules.STARTING_DEFAULT;
+    private int speed = 25;
     private int proficiency = coreRules.STARTING_PROFICIENCY;
-    private int hitDiceCount = coreRules.STARTING_LEVEL;
-    private int hitDiceType = 0;
-    private int hitPointsMax = 0;
+    private int hitDiceCount = 1;
+    private int hitDiceType = coreRules.BARBARIAN_DICE;
+    private int hitPointsMax = coreRules.BARBARIAN_DICE;
     private int armorClass = coreRules.BASE_AC;
 
         //Data from AttributePanel
-    private int strength = 0;
-    private int strengthMod = 0;
-    private int strengthST = 0;
-    private int dexterity = 0;
-    private int dexterityMod = 0;
-    private int dexterityST = 0;
-    private int condition = 0;
-    private int conditionMod = 0;
-    private int conditionST = 0;
-    private int intelligence = 0;
-    private int intelligenceMod = 0;
-    private int intelligenceST = 0;
-    private int wisdom = 0;
-    private int wisdomMod = 0;
-    private int wisdomST = 0;
-    private int charisma = 0;
-    private int charismaMod = 0;
-    private int charismaST = 0;
+    private int[] attributes = {0,0,0,0,0,0};
+    private int[] attributesMod = {0,0,0,0,0,0};
+    private int[] attributesST = {0,0,0,0,0,0};
 
-        //Proficients for ST/Skills
-    private boolean strengthProficient = false;
-    private boolean dexterityProficient = false;
-    private boolean conditionProficient = false;
-    private boolean intelligenceProficient = false;
-    private boolean wisdomProficient = false;
-    private boolean charismaProficient = false;
-    //---------------------------------
+//        //Proficients for ST/Skills
+    private boolean[] attributesProficient = {false,false,false,false,false,false};
     private boolean[] skillsProficient = {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
 
     //Data from SkillsPanel
@@ -74,14 +52,7 @@ public class CharacterSheet {
     //List of Feats
     private List<String> featsList;
 
-    //METHODS:       ------------------------------------------------------------------------------------------
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    //METHODS:
 
     public int getRace() {
         return race;
@@ -187,214 +158,15 @@ public class CharacterSheet {
         this.armorClass = armorClass;
     }
 
-    public int getStrength() {
-        return strength;
-    }
-
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
-
-    public int getDexterity() {
-        return dexterity;
-    }
-
-    public void setDexterity(int dexterity) {
-        this.dexterity = dexterity;
-    }
-
-    public int getCondition() {
-        return condition;
-    }
-
-    public void setCondition(int condition) {
-        this.condition = condition;
-    }
-
-    public int getIntelligence() {
-        return intelligence;
-    }
-
-    public void setIntelligence(int intelligence) {
-        this.intelligence = intelligence;
-    }
-
-    public int getWisdom() {
-        return wisdom;
-    }
-
-    public void setWisdom(int wisdom) {
-        this.wisdom = wisdom;
-    }
-
-    public int getCharisma() {
-        return charisma;
-    }
-
-    public void setCharisma(int charisma) {
-        this.charisma = charisma;
-    }
-
-    public int getStrengthMod() {
-        return strengthMod;
-    }
-
-    public void setStrengthMod(int strengthMod) {
-        this.strengthMod = strengthMod;
-    }
-
-    public int getStrengthST() {
-        return strengthST;
-    }
-
-    public void setStrengthST(int strengthST) {
-        this.strengthST = strengthST;
-    }
-
-    public int getDexterityMod() {
-        return dexterityMod;
-    }
-
-    public void setDexterityMod(int dexterityMod) {
-        this.dexterityMod = dexterityMod;
-    }
-
-    public int getDexterityST() {
-        return dexterityST;
-    }
-
-    public void setDexterityST(int dexterityST) {
-        this.dexterityST = dexterityST;
-    }
-
-    public int getConditionMod() {
-        return conditionMod;
-    }
-
-    public void setConditionMod(int conditionMod) {
-        this.conditionMod = conditionMod;
-    }
-
-    public int getConditionST() {
-        return conditionST;
-    }
-
-    public void setConditionST(int conditionST) {
-        this.conditionST = conditionST;
-    }
-
-    public int getIntelligenceMod() {
-        return intelligenceMod;
-    }
-
-    public void setIntelligenceMod(int intelligenceMod) {
-        this.intelligenceMod = intelligenceMod;
-    }
-
-    public int getIntelligenceST() {
-        return intelligenceST;
-    }
-
-    public void setIntelligenceST(int intelligenceST) {
-        this.intelligenceST = intelligenceST;
-    }
-
-    public int getWisdomMod() {
-        return wisdomMod;
-    }
-
-    public void setWisdomMod(int wisdomMod) {
-        this.wisdomMod = wisdomMod;
-    }
-
-    public int getWisdomST() {
-        return wisdomST;
-    }
-
-    public void setWisdomST(int wisdomST) {
-        this.wisdomST = wisdomST;
-    }
-
-    public int getCharismaMod() {
-        return charismaMod;
-    }
-
-    public void setCharismaMod(int charismaMod) {
-        this.charismaMod = charismaMod;
-    }
-
-    public int getCharismaST() {
-        return charismaST;
-    }
-
-    public void setCharismaST(int charismaST) {
-        this.charismaST = charismaST;
-    }
-
-    public boolean isStrengthProficient() {
-        return strengthProficient;
-    }
-
-    public void setStrengthProficient(boolean strengthProficient) {
-        this.strengthProficient = strengthProficient;
-    }
-
-    public boolean isDexterityProficient() {
-        return dexterityProficient;
-    }
-
-    public void setDexterityProficient(boolean dexterityProficient) {
-        this.dexterityProficient = dexterityProficient;
-    }
-
-    public boolean isConditionProficient() {
-        return conditionProficient;
-    }
-
-    public void setConditionProficient(boolean conditionProficient) {
-        this.conditionProficient = conditionProficient;
-    }
-
-    public boolean isIntelligenceProficient() {
-        return intelligenceProficient;
-    }
-
-    public void setIntelligenceProficient(boolean intelligenceProficient) {
-        this.intelligenceProficient = intelligenceProficient;
-    }
-
-    public boolean isWisdomProficient() {
-        return wisdomProficient;
-    }
-
-    public void setWisdomProficient(boolean wisdomProficient) {
-        this.wisdomProficient = wisdomProficient;
-    }
-
-    public boolean isCharismaProficient() {
-        return charismaProficient;
-    }
-
-    public void setCharismaProficient(boolean charismaProficient) {
-        this.charismaProficient = charismaProficient;
-    }
-
     public void clearProficients() {
 
         CoreRules coreRules = CoreRules.getInstance();
-        setStrengthProficient(false);
-        setDexterityProficient(false);
-        setConditionProficient(false);
-        setIntelligenceProficient(false);
-        setWisdomProficient(false);
-        setCharismaProficient(false);
-        //-----
+        IntStream.range(0, coreRules.ALL_ATTRIBUTES).forEach(i -> attributesProficient[i] = false);
         IntStream.range(0, coreRules.ALL_SKILLS).forEach(i -> skillsProficient[i] = false);
     }
 
     public void changeRace(int race) {
         setRace(race);
-        System.out.println(race);
     }
 
     public int[] getSkills() {
@@ -419,5 +191,37 @@ public class CharacterSheet {
 
     public void setFeatsList(List<String> featsList) {
         this.featsList = featsList;
+    }
+
+    public int[] getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(int[] attributes) {
+        this.attributes = attributes;
+    }
+
+    public int[] getAttributesMod() {
+        return attributesMod;
+    }
+
+    public void setAttributesMod(int[] attributesMod) {
+        this.attributesMod = attributesMod;
+    }
+
+    public int[] getAttributesST() {
+        return attributesST;
+    }
+
+    public void setAttributesST(int[] attributesST) {
+        this.attributesST = attributesST;
+    }
+
+    public boolean[] getAttributesProficient() {
+        return attributesProficient;
+    }
+
+    public void setAttributesProficient(boolean[] attributesProficient) {
+        this.attributesProficient = attributesProficient;
     }
 }

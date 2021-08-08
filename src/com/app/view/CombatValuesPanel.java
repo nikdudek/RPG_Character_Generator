@@ -22,12 +22,12 @@ public class CombatValuesPanel extends JPanel {
     JLabel armLabel = new JLabel("Armor Class:");
 
     //Values:
-    public JLabel iniValLabel = new JLabel();
-    public JLabel speValLabel = new JLabel();
-    public JLabel proValLabel = new JLabel();
-    public JLabel hidValLabel = new JLabel();
-    public JLabel hipValLabel = new JLabel();
-    public JLabel armValLabel = new JLabel();
+    private JLabel iniValLabel = new JLabel();
+    private JLabel speValLabel = new JLabel();
+    private JLabel proValLabel = new JLabel();
+    private JLabel hidValLabel = new JLabel();
+    private JLabel hipValLabel = new JLabel();
+    private JLabel armValLabel = new JLabel();
 
     private CombatValuesPanel() {
 
@@ -69,5 +69,29 @@ public class CombatValuesPanel extends JPanel {
         this.add(hipValLabel);
         this.add(armLabel);
         this.add(armValLabel);
+    }
+
+    public JLabel getIniValLabel() {
+        return iniValLabel;
+    }
+
+    public JLabel getSpeValLabel() {
+        return speValLabel;
+    }
+
+    public JLabel getProValLabel() {
+        return proValLabel;
+    }
+
+    public JLabel getHidValLabel() {
+        return hidValLabel;
+    }
+
+    public JLabel getHipValLabel() {
+        return hipValLabel;
+    }
+
+    public JLabel getArmValLabel() {
+        return armValLabel;
     }
 }

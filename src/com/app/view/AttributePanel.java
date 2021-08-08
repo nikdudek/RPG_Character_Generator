@@ -1,7 +1,10 @@
 package com.app.view;
 
+import com.app.model.CoreRules;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.stream.IntStream;
 
 public class AttributePanel extends JPanel {
 
@@ -13,80 +16,21 @@ public class AttributePanel extends JPanel {
         return instance;
     }
 
+    CoreRules coreRules = CoreRules.getInstance();
     //Values:
-    JLabel strValueLabel = new JLabel();
-    JLabel strModifierLabel = new JLabel();
-    JLabel strSTLabel = new JLabel();
-    JLabel dexValueLabel = new JLabel();
-    JLabel dexModifierLabel = new JLabel();
-    JLabel dexSTLabel = new JLabel();
-    JLabel conValueLabel = new JLabel();
-    JLabel conModifierLabel = new JLabel();
-    JLabel conSTLabel = new JLabel();
-    JLabel intValueLabel = new JLabel();
-    JLabel intModifierLabel = new JLabel();
-    JLabel intSTLabel = new JLabel();
-    JLabel wisValueLabel = new JLabel();
-    JLabel wisModifierLabel = new JLabel();
-    JLabel wisSTLabel = new JLabel();
-    JLabel chaValueLabel = new JLabel();
-    JLabel chaModifierLabel = new JLabel();
-    JLabel chaSTLabel = new JLabel();
+    JLabel[] valueLabels = IntStream.range(0, coreRules.ALL_ATTRIBUTES).mapToObj(i -> new JLabel()).toArray(JLabel[]::new);
+    JLabel[] modifierLabels = IntStream.range(0, coreRules.ALL_ATTRIBUTES).mapToObj(i -> new JLabel()).toArray(JLabel[]::new);
+    JLabel[] stLabels = IntStream.range(0, coreRules.ALL_ATTRIBUTES).mapToObj(i -> new JLabel()).toArray(JLabel[]::new);
 
     //Getters for Labels:
-    public JLabel getStrValueLabel() {
-        return strValueLabel;
+    public JLabel[] getValueLabels() {
+        return valueLabels;
     }
-    public JLabel getStrModifierLabel() {
-        return strModifierLabel;
+    public JLabel[] getModifierLabels() {
+        return modifierLabels;
     }
-    public JLabel getStrSTLabel() {
-        return strSTLabel;
-    }
-    public JLabel getDexValueLabel() {
-        return dexValueLabel;
-    }
-    public JLabel getDexModifierLabel() {
-        return dexModifierLabel;
-    }
-    public JLabel getDexSTLabel() {
-        return dexSTLabel;
-    }
-    public JLabel getConValueLabel() {
-        return conValueLabel;
-    }
-    public JLabel getConModifierLabel() {
-        return conModifierLabel;
-    }
-    public JLabel getConSTLabel() {
-        return conSTLabel;
-    }
-    public JLabel getIntValueLabel() {
-        return intValueLabel;
-    }
-    public JLabel getIntModifierLabel() {
-        return intModifierLabel;
-    }
-    public JLabel getIntSTLabel() {
-        return intSTLabel;
-    }
-    public JLabel getWisValueLabel() {
-        return wisValueLabel;
-    }
-    public JLabel getWisModifierLabel() {
-        return wisModifierLabel;
-    }
-    public JLabel getWisSTLabel() {
-        return wisSTLabel;
-    }
-    public JLabel getChaValueLabel() {
-        return chaValueLabel;
-    }
-    public JLabel getChaModifierLabel() {
-        return chaModifierLabel;
-    }
-    public JLabel getChaSTLabel() {
-        return chaSTLabel;
+    public JLabel[] getStLabels() {
+        return stLabels;
     }
 
     private AttributePanel() {
@@ -111,7 +55,7 @@ public class AttributePanel extends JPanel {
 
         JLabel strLabel = new JLabel("Strength:");
         JLabel dexLabel = new JLabel("Dexterity:");
-        JLabel conLabel = new JLabel("Condition:");
+        JLabel conLabel = new JLabel("Constitution:");
         JLabel intLabel = new JLabel("Intelligence:");
         JLabel wisLabel = new JLabel("Wisdom:");
         JLabel chaLabel = new JLabel("Charisma:");
@@ -131,42 +75,18 @@ public class AttributePanel extends JPanel {
         col4Label.setBorder(BorderFactory.createBevelBorder(1));
         col4Label.setHorizontalAlignment(JLabel.CENTER);
 
-        strValueLabel.setBorder(BorderFactory.createBevelBorder(1));
-        strValueLabel.setHorizontalAlignment(JLabel.CENTER);
-        strModifierLabel.setBorder(BorderFactory.createBevelBorder(1));
-        strModifierLabel.setHorizontalAlignment(JLabel.CENTER);
-        strSTLabel.setBorder(BorderFactory.createBevelBorder(1));
-        strSTLabel.setHorizontalAlignment(JLabel.CENTER);
-        dexValueLabel.setBorder(BorderFactory.createBevelBorder(1));
-        dexValueLabel.setHorizontalAlignment(JLabel.CENTER);
-        dexModifierLabel.setBorder(BorderFactory.createBevelBorder(1));
-        dexModifierLabel.setHorizontalAlignment(JLabel.CENTER);
-        dexSTLabel.setBorder(BorderFactory.createBevelBorder(1));
-        dexSTLabel.setHorizontalAlignment(JLabel.CENTER);
-        conValueLabel.setBorder(BorderFactory.createBevelBorder(1));
-        conValueLabel.setHorizontalAlignment(JLabel.CENTER);
-        conModifierLabel.setBorder(BorderFactory.createBevelBorder(1));
-        conModifierLabel.setHorizontalAlignment(JLabel.CENTER);
-        conSTLabel.setBorder(BorderFactory.createBevelBorder(1));
-        conSTLabel.setHorizontalAlignment(JLabel.CENTER);
-        intValueLabel.setBorder(BorderFactory.createBevelBorder(1));
-        intValueLabel.setHorizontalAlignment(JLabel.CENTER);
-        intModifierLabel.setBorder(BorderFactory.createBevelBorder(1));
-        intModifierLabel.setHorizontalAlignment(JLabel.CENTER);
-        intSTLabel.setBorder(BorderFactory.createBevelBorder(1));
-        intSTLabel.setHorizontalAlignment(JLabel.CENTER);
-        wisValueLabel.setBorder(BorderFactory.createBevelBorder(1));
-        wisValueLabel.setHorizontalAlignment(JLabel.CENTER);
-        wisModifierLabel.setBorder(BorderFactory.createBevelBorder(1));
-        wisModifierLabel.setHorizontalAlignment(JLabel.CENTER);
-        wisSTLabel.setBorder(BorderFactory.createBevelBorder(1));
-        wisSTLabel.setHorizontalAlignment(JLabel.CENTER);
-        chaValueLabel.setBorder(BorderFactory.createBevelBorder(1));
-        chaValueLabel.setHorizontalAlignment(JLabel.CENTER);
-        chaModifierLabel.setBorder(BorderFactory.createBevelBorder(1));
-        chaModifierLabel.setHorizontalAlignment(JLabel.CENTER);
-        chaSTLabel.setBorder(BorderFactory.createBevelBorder(1));
-        chaSTLabel.setHorizontalAlignment(JLabel.CENTER);
+        for(JLabel x : valueLabels) {
+            x.setBorder(BorderFactory.createBevelBorder(1));
+            x.setHorizontalAlignment(JLabel.CENTER);
+        }
+        for(JLabel x : modifierLabels) {
+            x.setBorder(BorderFactory.createBevelBorder(1));
+            x.setHorizontalAlignment(JLabel.CENTER);
+        }
+        for(JLabel x : stLabels) {
+            x.setBorder(BorderFactory.createBevelBorder(1));
+            x.setHorizontalAlignment(JLabel.CENTER);
+        }
 
         //Adding elements:
         this.add(attrLabel);
@@ -174,28 +94,28 @@ public class AttributePanel extends JPanel {
         this.add(col3Label);
         this.add(col4Label);
         this.add(strLabel);
-        this.add(strValueLabel);
-        this.add(strModifierLabel);
-        this.add(strSTLabel);
+        this.add(valueLabels[0]);
+        this.add(modifierLabels[0]);
+        this.add(stLabels[0]);
         this.add(dexLabel);
-        this.add(dexValueLabel);
-        this.add(dexModifierLabel);
-        this.add(dexSTLabel);
+        this.add(valueLabels[1]);
+        this.add(modifierLabels[1]);
+        this.add(stLabels[1]);
         this.add(conLabel);
-        this.add(conValueLabel);
-        this.add(conModifierLabel);
-        this.add(conSTLabel);
+        this.add(valueLabels[2]);
+        this.add(modifierLabels[2]);
+        this.add(stLabels[2]);
         this.add(intLabel);
-        this.add(intValueLabel);
-        this.add(intModifierLabel);
-        this.add(intSTLabel);
+        this.add(valueLabels[3]);
+        this.add(modifierLabels[3]);
+        this.add(stLabels[3]);
         this.add(wisLabel);
-        this.add(wisValueLabel);
-        this.add(wisModifierLabel);
-        this.add(wisSTLabel);
+        this.add(valueLabels[4]);
+        this.add(modifierLabels[4]);
+        this.add(stLabels[4]);
         this.add(chaLabel);
-        this.add(chaValueLabel);
-        this.add(chaModifierLabel);
-        this.add(chaSTLabel);
+        this.add(valueLabels[5]);
+        this.add(modifierLabels[5]);
+        this.add(stLabels[5]);
     }
 }

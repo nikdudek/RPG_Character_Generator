@@ -65,6 +65,16 @@ public class DiceRollerFrame implements ActionListener {
         frame.setLayout(null);
         frame.setVisible(true);
 
+        //Buttons not focusable
+        d2Button.setFocusable(false);
+        d3Button.setFocusable(false);
+        d4Button.setFocusable(false);
+        d6Button.setFocusable(false);
+        d8Button.setFocusable(false);
+        d10Button.setFocusable(false);
+        d12Button.setFocusable(false);
+        d20Button.setFocusable(false);
+
         //Buttons & Text Fields:
         d2Button.setBounds(0,0,200,60);
         d2CountField.setBounds(201,0,40,60);
