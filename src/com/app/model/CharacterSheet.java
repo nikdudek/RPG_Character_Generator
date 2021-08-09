@@ -24,7 +24,7 @@ public class CharacterSheet {
     private int race = coreRules.STARTING_DEFAULT;
     private int mainClass = coreRules.STARTING_DEFAULT;
     private int subClass = coreRules.STARTING_DEFAULT;
-    private int level = coreRules.STARTING_DEFAULT;
+    private int level = coreRules.STARTING_LEVEL;
     private int background = coreRules.STARTING_DEFAULT;
     private int alignment = coreRules.STARTING_DEFAULT;
 
