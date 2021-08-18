@@ -204,13 +204,6 @@ public class CoreRules {
             {SLEIGHT_OF_HAND,STEALTH}
     };
 
-//    private final int[][] raceSkillsProficiencies = {
-//            {},
-//            {},
-//            {PERCEPTION},
-//
-//    };
-
     private final int[][] classAttributesProficiencies = {
             {STRENGTH,CONSTITUTION},
             {DEXTERITY,CHARISMA},

@@ -24,6 +24,39 @@ public class Controller {
 
     // ------------------------------------------------- FUNCTIONS ------------------------------------------------- //
 
+    public void raiseRandomAttributes() {
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        CoreRules coreRules = CoreRules.getInstance();
+
+        int[] attributes = characterSheet.getAttributes();
+
+        attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES)]++;
+        attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES)]++;
+
+        characterSheet.setAttributes(attributes);
+    }
+
+    public void setAttributeProficiencies(int[] attributeProficient) {
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+        boolean[] attrProficient = characterSheet.getAttributesProficient();
+        for (int x : attributeProficient) {
+            attrProficient[x] = true;
+        }
+        characterSheet.setAttributesProficient(attrProficient);
+
+    }
+
+    public void clearAttributeProficiencies() {
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+
+        boolean[] attributesProficient = characterSheet.getAttributesProficient();
+
+        IntStream.range(0,attributesProficient.length).forEach(i -> attributesProficient[i] = false);
+
+        characterSheet.setAttributesProficient(attributesProficient);
+    }
+
     public void calculateAC() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
@@ -180,6 +213,7 @@ public class Controller {
     public void refreshCombatValues() {
 
         setSkills();
+        setAttributesModifiers();
         setCombatValues();
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
@@ -195,20 +229,14 @@ public class Controller {
 
     // --------------------------------------------- ATTRIBUTES PANEL -> --------------------------------------------- //
 
-    public void rollAttributes() {
-
+    public void setAttributesModifiers() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
-        DiceRoller diceRoller = DiceRoller.getInstance();
         AttributePanel attributePanel = AttributePanel.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
 
         int allAttributes = coreRules.ALL_ATTRIBUTES;
         int[] attrVal = characterSheet.getAttributes(), attrMod = characterSheet.getAttributesMod(), attrST = characterSheet.getAttributesST();
         boolean[] attrProficient = characterSheet.getAttributesProficient();
-
-        //Roll Attributes & Set them at Character Sheet ->
-        IntStream.range(0,allAttributes).forEach(i -> attrVal[i] = diceRoller.d6(coreRules.ATTRIBUTE_DICE_COUNT));
-        characterSheet.setAttributes(attrVal);
 
         //Show Attributes from Character Sheet
         IntStream.range(0,allAttributes).forEach(i -> attributePanel.getValueLabels()[i].setText(String.valueOf(characterSheet.getAttributes()[i])));
@@ -226,6 +254,22 @@ public class Controller {
 
         //Set ST labels ->
         IntStream.range(0,allAttributes).forEach(i -> attributePanel.getStLabels()[i].setText(String.valueOf(attrST[i])));
+    }
+
+    public void rollAttributes() {
+
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        DiceRoller diceRoller = DiceRoller.getInstance();
+        CoreRules coreRules = CoreRules.getInstance();
+
+        int allAttributes = coreRules.ALL_ATTRIBUTES;
+        int[] attrVal = characterSheet.getAttributes();
+
+        //Roll Attributes & Set them at Character Sheet ->
+        IntStream.range(0,allAttributes).forEach(i -> attrVal[i] = diceRoller.d6(coreRules.ATTRIBUTE_DICE_COUNT));
+        characterSheet.setAttributes(attrVal);
+
+        setAttributesModifiers();
 
         refreshCombatValues();
     }
@@ -282,8 +326,8 @@ public class Controller {
             }
             else if(race == coreRules.HALF_ELF) {
                 attributes[coreRules.CHARISMA] += 2;
-                attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES-1)] += 1;
-                attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES-1)] += 1;
+                attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES-1)]++;
+                attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES-1)]++;
                 characterSheet.setSpeed(30);
                 characterSheet.getSkillsProficient()[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_SKILLS)] = true;
                 characterSheet.getSkillsProficient()[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_SKILLS)] = true;
@@ -330,17 +374,15 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
         int background = infoPanel.getBackgroundBox().getSelectedIndex();
+        boolean arr[] = characterSheet.getSkillsProficient();
 
-        if(characterSheet.getBackground() != background) {
-            boolean arr[] = characterSheet.getSkillsProficient();
-            for (int x : coreRules.getBackgroundSkillsProficiencies()[characterSheet.getBackground()]) {
-                arr[x] = false;
-            }
-            for (int x : coreRules.getBackgroundSkillsProficiencies()[background]) {
-                arr[x] = true;
-            }
-            characterSheet.setBackground(background);
+        for (int x : coreRules.getBackgroundSkillsProficiencies()[characterSheet.getBackground()]) {
+            arr[x] = false;
         }
+        for (int x : coreRules.getBackgroundSkillsProficiencies()[background]) {
+            arr[x] = true;
+        }
+        characterSheet.setBackground(background);
         readFeats();
         refreshCombatValues();
     }
@@ -583,15 +625,12 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-                boolean[] attrProficient = characterSheet.getAttributesProficient();
+                characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().BARBARIAN]);
+                setBackground();
                 characterSheet.setHitDiceType(coreRules.BARBARIAN_DICE);
-
-                attrProficient[0] = true;
-                attrProficient[2] = true;
-                characterSheet.setAttributesProficient(attrProficient);
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
-//                if(startingLevel < targetLevel)
-//                    barbarianSelected(startingLevel+1,targetLevel);
+                // Add FEATS as STRING
+                refreshCombatValues();
             }
 
             case 2 -> {
@@ -601,6 +640,8 @@ public class Controller {
             }
 
             case 4 -> {
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 5 -> {
@@ -613,6 +654,8 @@ public class Controller {
             }
 
             case 8 -> {
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 9 -> {
@@ -625,6 +668,8 @@ public class Controller {
             }
 
             case 12 -> {
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 13 -> {
@@ -637,6 +682,8 @@ public class Controller {
             }
 
             case 16 -> {
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 17 -> {
@@ -649,6 +696,8 @@ public class Controller {
             }
 
             case 20 -> {
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -663,10 +712,13 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().BARD]);
+                setBackground();
+
                 characterSheet.setHitDiceType(coreRules.BARD_DICE);
 
+                refreshCombatValues();
                 //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
