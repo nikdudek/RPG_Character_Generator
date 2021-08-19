@@ -49,8 +49,10 @@ public class CharacterSheet {
     //Data from SkillsPanel
     private int[] skills = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-    //List of Feats
-    private List<String> featsList;
+    //Feats Strings:
+    private String raceFeats;
+    private String backgroundFeats;
+    private String classFeats;
 
     //METHODS:
 
@@ -185,14 +187,6 @@ public class CharacterSheet {
         this.skillsProficient = skillsProficient;
     }
 
-    public List<String> getFeatsList() {
-        return featsList;
-    }
-
-    public void setFeatsList(List<String> featsList) {
-        this.featsList = featsList;
-    }
-
     public int[] getAttributes() {
         return attributes;
     }
@@ -223,5 +217,29 @@ public class CharacterSheet {
 
     public void setAttributesProficient(boolean[] attributesProficient) {
         this.attributesProficient = attributesProficient;
+    }
+
+    public String getRaceFeats() {
+        return raceFeats;
+    }
+
+    public void setRaceFeats(String raceFeats) {
+        this.raceFeats = raceFeats;
+    }
+
+    public String getBackgroundFeats() {
+        return backgroundFeats;
+    }
+
+    public void setBackgroundFeats(String backgroundFeats) {
+        this.backgroundFeats = backgroundFeats;
+    }
+
+    public String getClassFeats() {
+        return classFeats;
+    }
+
+    public void setClassFeats(String classFeats) {
+        this.classFeats = classFeats;
     }
 }

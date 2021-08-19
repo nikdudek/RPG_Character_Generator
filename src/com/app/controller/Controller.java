@@ -148,10 +148,10 @@ public class Controller {
         CoreRules coreRules = CoreRules.getInstance();
         int bgIndex = characterSheet.getBackground();
 
-        String allFeats =
-                coreRules.getRaces()[characterSheet.getRace()] + ":\n" + coreRules.getRaceFeats()[characterSheet.getRace()] + "\n" +
-                "Background - " + coreRules.getBackgrounds()[bgIndex] + ":\n" + coreRules.getBackgroundFeats()[bgIndex];
+        characterSheet.setRaceFeats(coreRules.getRaces()[characterSheet.getRace()] + ":\n" + coreRules.getRaceFeats()[characterSheet.getRace()] + "\n");
+        characterSheet.setBackgroundFeats("Background - " + coreRules.getBackgrounds()[bgIndex] + ":\n" + coreRules.getBackgroundFeats()[bgIndex] + "\n");
 
+        String allFeats = characterSheet.getRaceFeats() + characterSheet.getBackgroundFeats() + characterSheet.getClassFeats();
         featsPanel.getFeatsTextArea().setText(allFeats);
     }
 
@@ -205,16 +205,15 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
 
         characterSheet.setInitiative(characterSheet.getAttributesMod()[1]);
-        characterSheet.setProficiency(calculateProficiency(characterSheet.getLevel()));
         calculateAC();
         calculateHP();
     }
 
     public void refreshCombatValues() {
 
-        setSkills();
         setAttributesModifiers();
         setCombatValues();
+        setSkills();
 
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CombatValuesPanel combatValuesPanel = CombatValuesPanel.getInstance();
@@ -233,6 +232,9 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         AttributePanel attributePanel = AttributePanel.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
+
+        // Set Proficiency:
+        characterSheet.setProficiency(calculateProficiency(characterSheet.getLevel()));
 
         int allAttributes = coreRules.ALL_ATTRIBUTES;
         int[] attrVal = characterSheet.getAttributes(), attrMod = characterSheet.getAttributesMod(), attrST = characterSheet.getAttributesST();
@@ -629,14 +631,21 @@ public class Controller {
                 setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().BARBARIAN]);
                 setBackground();
                 characterSheet.setHitDiceType(coreRules.BARBARIAN_DICE);
-                // Add FEATS as STRING
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense" + "\n");
+                readFeats();
                 refreshCombatValues();
             }
 
             case 2 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 3 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 4 -> {
@@ -645,12 +654,21 @@ public class Controller {
             }
 
             case 5 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 6 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 7 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 8 -> {
@@ -659,12 +677,21 @@ public class Controller {
             }
 
             case 9 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (1 die)" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 10 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (1 die)\n> Path feature" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 11 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (1 die)\n> Path feature\n> Relentless Rage" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 12 -> {
@@ -673,12 +700,21 @@ public class Controller {
             }
 
             case 13 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (2 dice)\n> Path feature\n> Relentless Rage" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 14 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (2 dice)\n> Path feature\n> Relentless Rage\n> Path feature" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 15 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (2 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 16 -> {
@@ -687,16 +723,25 @@ public class Controller {
             }
 
             case 17 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (3 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 18 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (3 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage\n> Indomitable Might" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 19 -> {
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 20 -> {
-                raiseRandomAttributes();
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (3 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage\n> Indomitable Might\n> Primal Champion" + "\n");
+                readFeats();
                 refreshCombatValues();
             }
 
