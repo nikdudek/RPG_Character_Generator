@@ -24,6 +24,15 @@ public class Controller {
 
     // ------------------------------------------------- FUNCTIONS ------------------------------------------------- //
 
+    public void setRandomSkillsProficiencies(final int[] skillsList, int skillCount) {
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        CoreRules coreRules = CoreRules.getInstance();
+
+        for(int i = 0 ; i < skillCount ; i++) {
+            characterSheet.getSkillsProficient()[skillsList[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT, skillsList.length)]] = true;
+        }
+    }
+
     public void raiseRandomAttributes() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
@@ -47,15 +56,15 @@ public class Controller {
 
     }
 
-    public void clearAttributeProficiencies() {
-        CharacterSheet characterSheet = CharacterSheet.getInstance();
-
-        boolean[] attributesProficient = characterSheet.getAttributesProficient();
-
-        IntStream.range(0,attributesProficient.length).forEach(i -> attributesProficient[i] = false);
-
-        characterSheet.setAttributesProficient(attributesProficient);
-    }
+//    public void clearAttributeProficiencies() {
+//        CharacterSheet characterSheet = CharacterSheet.getInstance();
+//
+//        boolean[] attributesProficient = characterSheet.getAttributesProficient();
+//
+//        IntStream.range(0,attributesProficient.length).forEach(i -> attributesProficient[i] = false);
+//
+//        characterSheet.setAttributesProficient(attributesProficient);
+//    }
 
     public void calculateAC() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
@@ -376,7 +385,7 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
         int background = infoPanel.getBackgroundBox().getSelectedIndex();
-        boolean arr[] = characterSheet.getSkillsProficient();
+        boolean[] arr = characterSheet.getSkillsProficient();
 
         for (int x : coreRules.getBackgroundSkillsProficiencies()[characterSheet.getBackground()]) {
             arr[x] = false;
@@ -630,6 +639,7 @@ public class Controller {
                 characterSheet.clearProficients();
                 setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().BARBARIAN]);
                 setBackground();
+                setRandomSkillsProficiencies(coreRules.getBarbarianSkills(),2);
                 characterSheet.setHitDiceType(coreRules.BARBARIAN_DICE);
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense" + "\n");
                 readFeats();
@@ -760,63 +770,81 @@ public class Controller {
                 characterSheet.clearProficients();
                 setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().BARD]);
                 setBackground();
+                for(int i = 0 ; i < 3 ; i++) {
+                    characterSheet.getSkillsProficient()[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT, coreRules.ALL_SKILLS)] = true;
+                }
 
                 characterSheet.setHitDiceType(coreRules.BARD_DICE);
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d6)" + "\n");
+                readFeats();
                 refreshCombatValues();
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d6)\n> Jack of All Trades\n> Song of Rest (d6)" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d6)\n> Jack of All Trades\n> Song of Rest (d6)\n> Bard College\n> Expertise" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 4 -> {
-
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 5 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d8)\n> Jack of All Trades\n> Song of Rest (d6)\n> Bard College\n> Expertise\n> Font of Inspiration" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d8)\n> Jack of All Trades\n> Song of Rest (d6)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
-            case 7 -> {
-
-            }
+            case 7 -> {}
 
             case 8 -> {
-
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 9 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d8)\n> Jack of All Trades\n> Song of Rest (d8)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d10)\n> Jack of All Trades\n> Song of Rest (d8)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
-            case 11 -> {
-
-            }
+            case 11 -> {}
 
             case 12 -> {
-
+                raiseRandomAttributes();
+                refreshCombatValues();
             }
 
             case 13 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d10)\n> Jack of All Trades\n> Song of Rest (d10)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d10)\n> Jack of All Trades\n> Song of Rest (d10)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets\n> Magical Secrets (second)\n> Bard College feature" + "\n");
+                readFeats();
+                refreshCombatValues();
             }
 
             case 15 -> {

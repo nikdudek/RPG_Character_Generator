@@ -90,6 +90,7 @@ public class CoreRules {
     public final int WISDOM = 4;
     public final int CHARISMA = 5;
     public final int ALL_ATTRIBUTES = 6;
+
     public final int ACROBATICS = 0;
     public final int ANIMAL_HANDLING = 1;
     public final int ARCANA = 2;
@@ -109,6 +110,7 @@ public class CoreRules {
     public final int STEALTH = 16;
     public final int SURVIVAL = 17;
     public final int ALL_SKILLS = 18;
+
     public final int ATTRIBUTE_DICE_COUNT = 3;
     public final int STARTING_PROFICIENCY = 2;
     public final int BASE_AC = 10;
@@ -219,6 +221,18 @@ public class CoreRules {
             {INTELLIGENCE,WISDOM}
     };
 
+    private final int[] barbarianSkills = {ANIMAL_HANDLING,ATHLETICS,INTIMIDATION,NATURE,PERCEPTION,SURVIVAL}; //x2
+    private final int[] clericSkills = {HISTORY,INSIGHT,MEDICINE,PERSUASION,RELIGION}; //x2
+    private final int[] druidSkills = {ARCANA,ANIMAL_HANDLING,INSIGHT,MEDICINE,NATURE,PERCEPTION,RELIGION,SURVIVAL}; //x2
+    private final int[] fighterSkills = {ACROBATICS,ANIMAL_HANDLING,ATHLETICS,HISTORY,INSIGHT,INTIMIDATION,PERCEPTION,SURVIVAL}; //x2
+    private final int[] monkSkills = {ACROBATICS,ATHLETICS,HISTORY,INSIGHT,RELIGION,STEALTH}; //x2
+    private final int[] paladinSkills = {ATHLETICS,INSIGHT,INTIMIDATION,MEDICINE,PERSUASION,RELIGION}; //x2
+    private final int[] rangerSkills = {ANIMAL_HANDLING,ATHLETICS,INSIGHT,INVESTIGATION,NATURE,PERCEPTION,STEALTH,SURVIVAL}; //x3
+    private final int[] rogueSkills = {ACROBATICS,ATHLETICS,DECEPTION,INSIGHT,INTIMIDATION,INVESTIGATION,PERCEPTION,PERFORMANCE,PERSUASION,SLEIGHT_OF_HAND,STEALTH}; //x4
+    private final int[] sorcererSkills = {ARCANA,DECEPTION,INSIGHT,INTIMIDATION,PERSUASION,RELIGION}; //x2
+    private final int[] warlockSkills = {ARCANA,DECEPTION,HISTORY,INTIMIDATION,INVESTIGATION,NATURE,RELIGION}; //x2
+    private final int[] wizardSkills = {ARCANA,HISTORY,INSIGHT,INVESTIGATION,MEDICINE,RELIGION}; //x2
+
     private final int[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};
     private final int[] subClassesDefaultLessThan2 = {3, 11};
     private final Integer[] levels = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
@@ -300,5 +314,49 @@ public class CoreRules {
 
     public int[][] getClassAttributesProficiencies() {
         return classAttributesProficiencies;
+    }
+
+    public int[] getBarbarianSkills() {
+        return barbarianSkills;
+    }
+
+    public int[] getClericSkills() {
+        return clericSkills;
+    }
+
+    public int[] getDruidSkills() {
+        return druidSkills;
+    }
+
+    public int[] getFighterSkills() {
+        return fighterSkills;
+    }
+
+    public int[] getMonkSkills() {
+        return monkSkills;
+    }
+
+    public int[] getPaladinSkills() {
+        return paladinSkills;
+    }
+
+    public int[] getRangerSkills() {
+        return rangerSkills;
+    }
+
+    public int[] getRogueSkills() {
+        return rogueSkills;
+    }
+
+    public int[] getSorcererSkills() {
+        return sorcererSkills;
+    }
+
+    public int[] getWarlockSkills() {
+        return warlockSkills;
+    }
+
+    public int[] getWizardSkills() {
+        return wizardSkills;
     }
 }
