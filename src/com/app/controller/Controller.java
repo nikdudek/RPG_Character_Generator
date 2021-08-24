@@ -306,7 +306,7 @@ public class Controller {
         CoreRules coreRules = CoreRules.getInstance();
 
         int race = infoPanel.getRaceBox().getSelectedIndex();
-        if (characterSheet.getRace() != race) {
+//        if (characterSheet.getRace() != race) {
             characterSheet.clearProficients();
             characterSheet.changeRace(race);
             rollAttributes();
@@ -317,20 +317,20 @@ public class Controller {
             if(race == coreRules.DRAGONBORN) {
                 attributes[coreRules.STRENGTH] += 2;
                 attributes[coreRules.CHARISMA] += 1;
-                characterSheet.setSpeed(30);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
             }
             else if(race == coreRules.DWARF) {
                 attributes[coreRules.CONSTITUTION] += 2;
-                characterSheet.setSpeed(25);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
             }
             else if(race == coreRules.ELF) {
                 attributes[coreRules.DEXTERITY] += 2;
-                characterSheet.setSpeed(30);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
                 characterSheet.getSkillsProficient()[coreRules.PERCEPTION] = true;
             }
             else if(race == coreRules.GNOME) {
                 attributes[coreRules.INTELLIGENCE] += 2;
-                characterSheet.setSpeed(25);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
                 characterSheet.getAttributesProficient()[coreRules.INTELLIGENCE] = true;
                 characterSheet.getAttributesProficient()[coreRules.WISDOM] = true;
                 characterSheet.getAttributesProficient()[coreRules.CHARISMA] = true;
@@ -339,34 +339,34 @@ public class Controller {
                 attributes[coreRules.CHARISMA] += 2;
                 attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES-1)]++;
                 attributes[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_ATTRIBUTES-1)]++;
-                characterSheet.setSpeed(30);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
                 characterSheet.getSkillsProficient()[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_SKILLS)] = true;
                 characterSheet.getSkillsProficient()[ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,coreRules.ALL_SKILLS)] = true;
             }
             else if(race == coreRules.HALFLING) {
                 attributes[coreRules.DEXTERITY] += 2;
-                characterSheet.setSpeed(25);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
             }
             else if(race == coreRules.HALF_ORC) {
                 attributes[coreRules.STRENGTH] += 2;
                 attributes[coreRules.CONSTITUTION] += 1;
-                characterSheet.setSpeed(30);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
                 characterSheet.getSkillsProficient()[coreRules.INTIMIDATION] = true;
             }
             else if(race == coreRules.HUMAN) {
                 IntStream.range(0,coreRules.ALL_ATTRIBUTES).forEach(i -> attributes[i] += 1);
-                characterSheet.setSpeed(30);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
             }
             else if(race == coreRules.TIEFLING) {
                 attributes[coreRules.INTELLIGENCE] += 1;
                 attributes[coreRules.CHARISMA] += 2;
-                characterSheet.setSpeed(30);
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[race]);
             }
 
             characterSheet.setAttributes(attributes);
             refreshCombatValues();
         }
-    }
+//    }
 
     // ------------------------------------------------- ALIGNMENT ------------------------------------------------- //
 
@@ -403,99 +403,97 @@ public class Controller {
     public void setClass() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         InfoPanel infoPanel = InfoPanel.getInstance();
+        int index = infoPanel.getClassBox().getSelectedIndex();
 
-        if(infoPanel.getClassBox().getSelectedIndex() != characterSheet.getMainClass()) {
+        if(index != characterSheet.getMainClass()) {
             CoreRules coreRules = CoreRules.getInstance();
-
-            characterSheet.clearProficients();
-            int targetLevel = Integer.parseInt(infoPanel.getLevelBox().getSelectedItem().toString());
-            switch (infoPanel.getClassBox().getSelectedIndex()) {
+            switch (index) {
                 case 0 -> {
                     System.out.println("Barbarian");
                     characterSheet.setMainClass(coreRules.BARBARIAN);
                     infoPanel.setSubClassBoxModel(coreRules.BARBARIAN);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        barbarianSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 1 -> {
                     System.out.println("Bard");
                     characterSheet.setMainClass(coreRules.BARD);
                     infoPanel.setSubClassBoxModel(coreRules.BARD);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        bardSelected(i);
+                    setRace();
+                    setLevel();
                     }
                 case 2 -> {
                     System.out.println("Cleric");
                     characterSheet.setMainClass(coreRules.CLERIC);
                     infoPanel.setSubClassBoxModel(coreRules.CLERIC);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        clericSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 3 -> {
                     System.out.println("Druid");
                     characterSheet.setMainClass(coreRules.DRUID);
                     infoPanel.setSubClassBoxModel(coreRules.DRUID);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        druidSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 4 -> {
                     System.out.println("Fighter");
+                    characterSheet.setMainClass(coreRules.FIGHTER);
                     infoPanel.setSubClassBoxModel(coreRules.FIGHTER);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        fighterSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 5 -> {
                     System.out.println("Monk");
                     characterSheet.setMainClass(coreRules.MONK);
                     infoPanel.setSubClassBoxModel(coreRules.MONK);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        monkSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 6 -> {
                     System.out.println("Paladin");
                     characterSheet.setMainClass(coreRules.PALADIN);
                     infoPanel.setSubClassBoxModel(coreRules.PALADIN);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        paladinSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 7 -> {
                     System.out.println("Ranger");
                     characterSheet.setMainClass(coreRules.RANGER);
                     infoPanel.setSubClassBoxModel(coreRules.RANGER);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        rangerSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 8 -> {
                     System.out.println("Rogue");
                     characterSheet.setMainClass(coreRules.ROGUE);
                     infoPanel.setSubClassBoxModel(coreRules.ROGUE);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        rogueSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 9 -> {
                     System.out.println("Sorcerer");
                     characterSheet.setMainClass(coreRules.SORCERER);
                     infoPanel.setSubClassBoxModel(coreRules.SORCERER);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        sorcererSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 10 -> {
                     System.out.println("Warlock");
                     characterSheet.setMainClass(coreRules.WARLOCK);
                     infoPanel.setSubClassBoxModel(coreRules.WARLOCK);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        warlockSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 case 11 -> {
                     System.out.println("Wizard");
                     characterSheet.setMainClass(coreRules.WIZARD);
                     infoPanel.setSubClassBoxModel(coreRules.WIZARD);
-                    for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                        wizardSelected(i);
+                    setRace();
+                    setLevel();
                 }
                 default -> throw new IllegalStateException("Unexpected value.");
             }
-            refreshCombatValues();
         }
     }
 
@@ -520,20 +518,20 @@ public class Controller {
 
         int targetLevel = Integer.parseInt(infoPanel.getLevelBox().getSelectedItem().toString());
 
-        if (characterSheet.getLevel() != targetLevel) {
-            if (characterSheet.getLevel() > targetLevel) {
-                characterSheet.clearProficients(); //NEED TO MAKE THEM AGAIN
-                rollAttributes();
-                    //clear feats, etc.
-                raiseLevel(coreRules.STARTING_LEVEL, targetLevel);
-            }
-            else {
-                raiseLevel(characterSheet.getLevel() + 1, targetLevel);
-            }
+        characterSheet.setHitDiceCount(targetLevel);
 
-            characterSheet.setLevel(targetLevel);
-            refreshCombatValues();
+        if (characterSheet.getLevel() >= targetLevel) {
+            characterSheet.clearProficients();
+            rollAttributes();
+            setRace();
+            raiseLevel(coreRules.STARTING_LEVEL, targetLevel);
         }
+        else {
+            raiseLevel(characterSheet.getLevel() + 1, targetLevel);
+        }
+
+        characterSheet.setLevel(targetLevel);
+        readFeats();
     }
 
     public void raiseLevel(int startingLevel, int targetLevel) {
@@ -541,44 +539,45 @@ public class Controller {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
 
-        if(characterSheet.getMainClass() == coreRules.BARBARIAN)
-            for(int i = startingLevel ; i <= targetLevel ; i++)
-                barbarianSelected(i);
-        else if(characterSheet.getMainClass() == coreRules.BARD)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                bardSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.CLERIC)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                clericSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.DRUID)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                druidSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.FIGHTER)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                fighterSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.MONK)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                monkSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.PALADIN)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                paladinSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.RANGER)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                rangerSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.ROGUE)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                rogueSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.SORCERER)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                sorcererSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.WARLOCK)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                warlockSelected(startingLevel);
-        else if(characterSheet.getMainClass() == coreRules.WIZARD)
-            for(int i = coreRules.STARTING_LEVEL ; i <= targetLevel ; i++)
-                wizardSelected(startingLevel);
+        if (characterSheet.getMainClass() == coreRules.BARBARIAN) {
+            for (int i = startingLevel; i <= targetLevel; i++) barbarianSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.BARD) {
+            for (int i = startingLevel; i <= targetLevel; i++) bardSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.CLERIC) {
+            for (int i = startingLevel; i <= targetLevel; i++) clericSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.DRUID) {
+            for (int i = startingLevel; i <= targetLevel; i++) druidSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.FIGHTER) {
+            for (int i = startingLevel; i <= targetLevel; i++) fighterSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.MONK) {
+            for (int i = startingLevel; i <= targetLevel; i++) monkSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.PALADIN) {
+            for (int i = startingLevel; i <= targetLevel; i++) paladinSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.RANGER) {
+            for (int i = startingLevel; i <= targetLevel; i++) rangerSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.ROGUE) {
+            for (int i = startingLevel; i <= targetLevel; i++) rogueSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.SORCERER) {
+            for (int i = startingLevel; i <= targetLevel; i++) sorcererSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.WARLOCK) {
+            for (int i = startingLevel; i <= targetLevel; i++) warlockSelected(i);
+        }
+        else if (characterSheet.getMainClass() == coreRules.WIZARD) {
+            for (int i = startingLevel; i <= targetLevel; i++) wizardSelected(i);
+        }
 
-        //refreshCombatValues();
+        readFeats();
+        refreshCombatValues();
     }
 
     // -------------------------------------------------- SKILLS --------------------------------------------------- //
@@ -642,117 +641,82 @@ public class Controller {
                 setRandomSkillsProficiencies(coreRules.getBarbarianSkills(),2);
                 characterSheet.setHitDiceType(coreRules.BARBARIAN_DICE);
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 2 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 3 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 4 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 5 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 6 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 7 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 8 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 9 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (1 die)" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 10 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (1 die)\n> Path feature" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 11 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (1 die)\n> Path feature\n> Relentless Rage" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 12 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 13 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (2 dice)\n> Path feature\n> Relentless Rage" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 14 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (2 dice)\n> Path feature\n> Relentless Rage\n> Path feature" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 15 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (2 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 16 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 17 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (3 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 18 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (3 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage\n> Indomitable Might" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 19 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 20 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Rage\n> Unarmored Defense\n> Reckless Attack\n> Danger Sense\n> Primal Path\n> Extra Attack\n> Fast Movement\n> Path feature\n> Feral Instinct\n> Brutal Critical (3 dice)\n> Path feature\n> Relentless Rage\n> Path feature\n> Persistent Rage\n> Indomitable Might\n> Primal Champion" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -776,99 +740,78 @@ public class Controller {
 
                 characterSheet.setHitDiceType(coreRules.BARD_DICE);
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d6)" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 2 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d6)\n> Jack of All Trades\n> Song of Rest (d6)" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 3 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d6)\n> Jack of All Trades\n> Song of Rest (d6)\n> Bard College\n> Expertise" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 4 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 5 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d8)\n> Jack of All Trades\n> Song of Rest (d6)\n> Bard College\n> Expertise\n> Font of Inspiration" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 6 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d8)\n> Jack of All Trades\n> Song of Rest (d6)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 7 -> {}
 
             case 8 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 9 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d8)\n> Jack of All Trades\n> Song of Rest (d8)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 10 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d10)\n> Jack of All Trades\n> Song of Rest (d8)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 11 -> {}
 
             case 12 -> {
                 raiseRandomAttributes();
-                refreshCombatValues();
             }
 
             case 13 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d10)\n> Jack of All Trades\n> Song of Rest (d10)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 14 -> {
                 characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d10)\n> Jack of All Trades\n> Song of Rest (d10)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets\n> Magical Secrets (second)\n> Bard College feature" + "\n");
-                readFeats();
-                refreshCombatValues();
             }
 
             case 15 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d12)\n> Jack of All Trades\n> Song of Rest (d10)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets\n> Magical Secrets (second)\n> Bard College feature" + "\n");
             }
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
             case 17 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d12)\n> Jack of All Trades\n> Song of Rest (d12)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets\n> Magical Secrets (second)\n> Bard College feature" + "\n");
             }
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d12)\n> Jack of All Trades\n> Song of Rest (d12)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets\n> Magical Secrets (second)\n> Bard College feature\n> Magical Secrets (third)" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Bardic Inspiration (d12)\n> Jack of All Trades\n> Song of Rest (d12)\n> Bard College\n> Expertise\n> Font of Inspiration\n> Countercharm\n> Bard College feature\n> Expertise (second)\n> Magical Secrets\n> Magical Secrets (second)\n> Bard College feature\n> Magical Secrets (third)\n> Superior Inspiration" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -883,87 +826,80 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().CLERIC]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getClericSkills(),2);
                 characterSheet.setHitDiceType(coreRules.CLERIC_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (1/rest)\n> Divine Domain feature" + "\n");
             }
 
-            case 3 -> {
-
-            }
+            case 3 -> {}
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
             case 5 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (1/rest)\n> Divine Domain feature\n> Destroy Undead (CR 1/2)" + "\n");
             }
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (2/rest)\n> Divine Domain feature\n> Destroy Undead (CR 1/2)\n> Divine Domain feature (second)" + "\n");
             }
 
-            case 7 -> {
-
-            }
+            case 7 -> {}
 
             case 8 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (2/rest)\n> Divine Domain feature\n> Destroy Undead (CR 1)\n> Divine Domain feature (second)\n> Divine Domain feature (third)" + "\n");
 
+                raiseRandomAttributes();
             }
 
-            case 9 -> {
-
-            }
+            case 9 -> {}
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (2/rest)\n> Divine Domain feature\n> Destroy Undead (CR 1)\n> Divine Domain feature (second)\n> Divine Domain feature (third)\n> Divine Intervention" + "\n");
             }
 
             case 11 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (2/rest)\n> Divine Domain feature\n> Destroy Undead (CR 2)\n> Divine Domain feature (second)\n> Divine Domain feature (third)\n> Divine Intervention" + "\n");
             }
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 13 -> {
-
-            }
+            case 13 -> {}
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (2/rest)\n> Divine Domain feature\n> Destroy Undead (CR 3)\n> Divine Domain feature (second)\n> Divine Domain feature (third)\n> Divine Intervention" + "\n");
             }
 
-            case 15 -> {
-
-            }
+            case 15 -> {}
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
             case 17 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (2/rest)\n> Divine Domain feature\n> Destroy Undead (CR 4)\n> Divine Domain feature (second)\n> Divine Domain feature (third)\n> Divine Intervention\n> Divine Domain feature (fourth)" + "\n");
             }
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (3/rest)\n> Divine Domain feature\n> Destroy Undead (CR 4)\n> Divine Domain feature (second)\n> Divine Domain feature (third)\n> Divine Intervention\n> Divine Domain feature (fourth)" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Divine Domain\n> Channel Divinity (3/rest)\n> Divine Domain feature\n> Destroy Undead (CR 4)\n> Divine Domain feature (second)\n> Divine Domain feature (third)\n> Divine Intervention\n> Divine Domain feature (fourth)\n> Divine Intervention improvement" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -978,87 +914,76 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().DRUID]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getDruidSkills(),2);
                 characterSheet.setHitDiceType(coreRules.DRUID_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle" + "\n");
             }
 
-            case 3 -> {
-
-            }
+            case 3 -> {}
 
             case 4 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle\n> Wild Shape improvement" + "\n");
 
+                raiseRandomAttributes();
             }
 
-            case 5 -> {
-
-            }
+            case 5 -> {}
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle\n> Wild Shape improvement\n> Druid Circle feature" + "\n");
             }
 
-            case 7 -> {
-
-            }
+            case 7 -> {}
 
             case 8 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle\n> Wild Shape improvement\n> Druid Circle feature\n> Wild Shape improvement (second)" + "\n");
 
+                raiseRandomAttributes();
             }
 
-            case 9 -> {
-
-            }
+            case 9 -> {}
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle\n> Wild Shape improvement\n> Druid Circle feature\n> Wild Shape improvement (second)\n> Druid Circle feature (second)" + "\n");
             }
 
-            case 11 -> {
-
-            }
+            case 11 -> {}
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 13 -> {
-
-            }
+            case 13 -> {}
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle\n> Wild Shape improvement\n> Druid Circle feature\n> Wild Shape improvement (second)\n> Druid Circle feature (second)\n> Druid Circle feature (third)" + "\n");
             }
 
-            case 15 -> {
-
-            }
+            case 15 -> {}
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 17 -> {
-
-            }
+            case 17 -> {}
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle\n> Wild Shape improvement\n> Druid Circle feature\n> Wild Shape improvement (second)\n> Druid Circle feature (second)\n> Druid Circle feature (third)\n> Timeless Body\n> Beast Spells" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Druidic\n> Spellcasting\n> Wild Shape\n> Druid Circle\n> Wild Shape improvement\n> Druid Circle feature\n> Wild Shape improvement (second)\n> Druid Circle feature (second)\n> Druid Circle feature (third)\n> Timeless Body\n> Beast Spells\n> Archdruid" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -1073,87 +998,88 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().FIGHTER]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getFighterSkills(),2);
                 characterSheet.setHitDiceType(coreRules.FIGHTER_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)" + "\n");
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype" + "\n");
             }
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
             case 5 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype\n> Extra Attack" + "\n");
             }
 
             case 6 -> {
-
+                raiseRandomAttributes();
             }
 
             case 7 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype\n> Extra Attack\n> Martial Archetype feature" + "\n");
             }
 
             case 8 -> {
-
+                raiseRandomAttributes();
             }
 
             case 9 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype\n> Extra Attack\n> Martial Archetype feature\n> Indomitable (one use)" + "\n");
             }
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype\n> Extra Attack\n> Martial Archetype feature\n> Indomitable (one use)\n> Martial Archetype feature (second)" + "\n");
             }
 
             case 11 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype\n> Extra Attack (2)\n> Martial Archetype feature\n> Indomitable (one use)\n> Martial Archetype feature (second)" + "\n");
             }
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
             case 13 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype\n> Extra Attack (2)\n> Martial Archetype feature\n> Indomitable (two uses)\n> Martial Archetype feature (second)" + "\n");
             }
 
             case 14 -> {
-
+                raiseRandomAttributes();
             }
 
             case 15 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (one use)\n> Martial Archetype\n> Extra Attack (2)\n> Martial Archetype feature\n> Indomitable (two uses)\n> Martial Archetype feature (second)\n> Martial Archetype feature (third)" + "\n");
             }
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
             case 17 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (two uses)\n> Martial Archetype\n> Extra Attack (2)\n> Martial Archetype feature\n> Indomitable (three uses)\n> Martial Archetype feature (second)\n> Martial Archetype feature (third)" + "\n");
             }
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (two uses)\n> Martial Archetype\n> Extra Attack (2)\n> Martial Archetype feature\n> Indomitable (three uses)\n> Martial Archetype feature (second)\n> Martial Archetype feature (third)\n> Martial Archetype feature (fourth)" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Fighting Style\n> Second Wind\n> Action Surge (two uses)\n> Martial Archetype\n> Extra Attack (3)\n> Martial Archetype feature\n> Indomitable (three uses)\n> Martial Archetype feature (second)\n> Martial Archetype feature (third)\n> Martial Archetype feature (fourth)" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -1168,91 +1094,100 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().MONK]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getMonkSkills(),2);
                 characterSheet.setHitDiceType(coreRules.MONK_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement" + "\n");
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[characterSheet.getRace()]+10);
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles" + "\n");
             }
 
             case 4 -> {
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall" + "\n");
 
+                raiseRandomAttributes();
             }
 
             case 5 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike" + "\n");
             }
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature" + "\n");
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[characterSheet.getRace()]+15);
             }
 
             case 7 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind" + "\n");
             }
 
             case 8 -> {
-
+                raiseRandomAttributes();
             }
 
             case 9 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement" + "\n");
             }
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body" + "\n");
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[characterSheet.getRace()]+20);
             }
 
             case 11 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body\n> Monastic Tradition feature (second)" + "\n");
             }
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
             case 13 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body\n> Monastic Tradition feature (second)\n> Tongue of the Sun and Moon" + "\n");
             }
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body\n> Monastic Tradition feature (second)\n> Tongue of the Sun and Moon\n> Diamond Soul" + "\n");
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[characterSheet.getRace()]+25);
             }
 
             case 15 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body\n> Monastic Tradition feature (second)\n> Tongue of the Sun and Moon\n> Diamond Soul\n> Timeless Body" + "\n");
             }
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
             case 17 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body\n> Monastic Tradition feature (second)\n> Tongue of the Sun and Moon\n> Diamond Soul\n> Timeless Body\n> Monastic Tradition feature (third)" + "\n");
             }
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body\n> Monastic Tradition feature (second)\n> Tongue of the Sun and Moon\n> Diamond Soul\n> Timeless Body\n> Monastic Tradition feature (third)\n> Empty Body" + "\n");
+                characterSheet.setSpeed(coreRules.getRaceSpeed()[characterSheet.getRace()]+30);
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Unarmored Defense\n> Martial Arts\n> Ki\n> Unarmored Movement\n> Monastic Tradition\n> Deflect Missiles\n> Slow Fall\n> Extra Attack\n> Stunning Strike\n> Ki-Empowered Strikes\n> Monastic Tradition feature\n> Evasion\n> Stillness of Mind\n> Unarmored Movement improvement\n> Purity of Body\n> Monastic Tradition feature (second)\n> Tongue of the Sun and Moon\n> Diamond Soul\n> Timeless Body\n> Monastic Tradition feature (third)\n> Empty Body\n> Perfect Self" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
         }
+
     }
 
     public void paladinSelected(int level) {
@@ -1263,87 +1198,81 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().PALADIN]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getPaladinSkills(),2);
                 characterSheet.setHitDiceType(coreRules.PALADIN_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite" + "\n");
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath" + "\n");
             }
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
             case 5 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack" + "\n");
             }
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection" + "\n");
             }
 
             case 7 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection\n> Sacred Oath feature" + "\n");
             }
 
             case 8 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 9 -> {
-
-            }
+            case 9 -> {}
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection\n> Sacred Oath feature\n> Aura of Courage" + "\n");
             }
 
             case 11 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection\n> Sacred Oath feature\n> Aura of Courage\n> Improved Divine Smite" + "\n");
             }
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
-
-            case 13 -> {
-
-            }
+            case 13 -> {}
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection\n> Sacred Oath feature\n> Aura of Courage\n> Improved Divine Smite\n> Cleansing Touch" + "\n");
             }
 
             case 15 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection\n> Sacred Oath feature\n> Aura of Courage\n> Improved Divine Smite\n> Cleansing Touch\n> Sacred Oath feature (second)" + "\n");
             }
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 17 -> {
-
-            }
+            case 17 -> {}
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection\n> Sacred Oath feature\n> Aura of Courage\n> Improved Divine Smite\n> Cleansing Touch\n> Sacred Oath feature (second)\n> Aura improvements" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Divine Sense\n> Lay on Hands\n> Fighting Style\n> Spellcasting\n> Divine Smite\n> Divine Health\n> Sacred Oath\n> Extra Attack\n> Aura of Protection\n> Sacred Oath feature\n> Aura of Courage\n> Improved Divine Smite\n> Cleansing Touch\n> Sacred Oath feature (second)\n> Aura improvements\n> Sacred Oath feature (third)" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -1358,87 +1287,83 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().RANGER]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getRangerSkills(),3);
                 characterSheet.setHitDiceType(coreRules.RANGER_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting" + "\n");
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness" + "\n");
             }
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
             case 5 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack" + "\n");
             }
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements" + "\n");
             }
 
             case 7 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature" + "\n");
             }
 
             case 8 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature\n> Land's Stride" + "\n");
+                raiseRandomAttributes();
             }
 
-            case 9 -> {
-
-            }
+            case 9 -> {}
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature\n> Land's Stride\n> Natural Explorer improvement (second)\n> Hide in Plain Sight" + "\n");
             }
 
             case 11 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature\n> Land's Stride\n> Natural Explorer improvement (second)\n> Hide in Plain Sight\n> Ranger Archetype feature (second)" + "\n");
             }
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 13 -> {
-
-            }
+            case 13 -> {}
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature\n> Land's Stride\n> Natural Explorer improvement (second)\n> Hide in Plain Sight\n> Ranger Archetype feature (second)\n> Favored Enemy improvement (second)" + "\n");
             }
 
             case 15 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature\n> Land's Stride\n> Natural Explorer improvement (second)\n> Hide in Plain Sight\n> Ranger Archetype feature (second)\n> Favored Enemy improvement (second)\n> Ranger Archetype feature (third)" + "\n");
             }
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 17 -> {
-
-            }
+            case 17 -> {}
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature\n> Land's Stride\n> Natural Explorer improvement (second)\n> Hide in Plain Sight\n> Ranger Archetype feature (second)\n> Favored Enemy improvement (second)\n> Ranger Archetype feature (third)\n> Feral Senses" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Favored Enemy\n> Natural Explorer\n> Fighting Style\n> Spellcasting\n> Ranger Archetype\n> Primeval Awareness\n> Extra Attack\n> Favored Enemy and Natural Explorer improvements\n> Ranger Archetype feature\n> Land's Stride\n> Natural Explorer improvement (second)\n> Hide in Plain Sight\n> Ranger Archetype feature (second)\n> Favored Enemy improvement (second)\n> Ranger Archetype feature (third)\n> Feral Senses\n> Foe Slayer" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -1453,87 +1378,89 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().ROGUE]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getRogueSkills(),4);
                 characterSheet.setHitDiceType(coreRules.ROGUE_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (1d6)\n> Thieves' Cant" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (1d6)\n> Thieves' Cant\n> Cunning Action" + "\n");
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (2d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype" + "\n");
             }
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
             case 5 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (3d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge" + "\n");
             }
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (3d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)" + "\n");
             }
 
             case 7 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (4d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion" + "\n");
             }
 
             case 8 -> {
-
+                raiseRandomAttributes();
             }
 
             case 9 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (5d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature" + "\n");
             }
 
             case 10 -> {
-
+                raiseRandomAttributes();
             }
 
             case 11 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (6d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent" + "\n");
             }
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
             case 13 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (7d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent\n> Roguish Archetype feature (second)" + "\n");
             }
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (7d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent\n> Roguish Archetype feature (second)\n> Blindsense" + "\n");
             }
 
             case 15 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (8d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent\n> Roguish Archetype feature (second)\n> Blindsense\n> Slippery Mind" + "\n");
             }
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
             case 17 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (9d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent\n> Roguish Archetype feature (second)\n> Blindsense\n> Slippery Mind\n> Roguish Archetype feature (third)" + "\n");
             }
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (9d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent\n> Roguish Archetype feature (second)\n> Blindsense\n> Slippery Mind\n> Roguish Archetype feature (third)\n> Elusive" + "\n");
             }
 
             case 19 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (10d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent\n> Roguish Archetype feature (second)\n> Blindsense\n> Slippery Mind\n> Roguish Archetype feature (third)\n> Elusive" + "\n");
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Expertise\n> Sneak Attack (10d6)\n> Thieves' Cant\n> Cunning Action\n> Roguish Archetype\n> Uncanny Dodge\n> Expertise (second)\n> Evasion\n> Roguish Archetype feature\n> Reliable Talent\n> Roguish Archetype feature (second)\n> Blindsense\n> Slippery Mind\n> Roguish Archetype feature (third)\n> Elusive\n> Stroke of Luck" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -1548,87 +1475,76 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().SORCERER]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getSorcererSkills(),2);
                 characterSheet.setHitDiceType(coreRules.SORCERER_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic" + "\n");
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic\n> Metamagic" + "\n");
             }
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 5 -> {
-
-            }
+            case 5 -> {}
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic\n> Metamagic\n> Sorcerous Origin feature" + "\n");
             }
 
-            case 7 -> {
-
-            }
+            case 7 -> {}
 
             case 8 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 9 -> {
-
-            }
+            case 9 -> {}
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic\n> Metamagic\n> Sorcerous Origin feature\n> Metamagic (second)" + "\n");
             }
 
-            case 11 -> {
-
-            }
+            case 11 -> {}
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 13 -> {
-
-            }
+            case 13 -> {}
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic\n> Metamagic\n> Sorcerous Origin feature\n> Metamagic (second)\n> Sorcerous Origin feature (second)" + "\n");
             }
 
-            case 15 -> {
-
-            }
+            case 15 -> {}
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
             case 17 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic\n> Metamagic\n> Sorcerous Origin feature\n> Metamagic (second)\n> Sorcerous Origin feature (second)\n> Metamagic (third)" + "\n");
             }
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic\n> Metamagic\n> Sorcerous Origin feature\n> Metamagic (second)\n> Sorcerous Origin feature (second)\n> Metamagic (third)\n> Sorcerous Origin feature (third)" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Sorcerous Origin\n> Font of Magic\n> Metamagic\n> Sorcerous Origin feature\n> Metamagic (second)\n> Sorcerous Origin feature (second)\n> Metamagic (third)\n> Sorcerous Origin feature (third)\n> Sorcerous Restoration" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -1643,87 +1559,80 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().WARLOCK]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getWarlockSkills(),2);
                 characterSheet.setHitDiceType(coreRules.WARLOCK_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations" + "\n");
             }
 
             case 3 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon" + "\n");
             }
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 5 -> {
-
-            }
+            case 5 -> {}
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature" + "\n");
             }
 
-            case 7 -> {
-
-            }
+            case 7 -> {}
 
             case 8 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 9 -> {
-
-            }
+            case 9 -> {}
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature\n> Otherworldly Patron feature (second)" + "\n");
             }
 
             case 11 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature\n> Otherworldly Patron feature (second)\n> Mystic Arcanum (6th level)" + "\n");
             }
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
             case 13 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature\n> Otherworldly Patron feature (second)\n> Mystic Arcanum (6th level)\n> Mystic Arcanum (7th level)" + "\n");
             }
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature\n> Otherworldly Patron feature (second)\n> Mystic Arcanum (6th level)\n> Mystic Arcanum (7th level)\n> Otherworldly Patron feature (third)" + "\n");
             }
 
             case 15 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature\n> Otherworldly Patron feature (second)\n> Mystic Arcanum (6th level)\n> Mystic Arcanum (7th level)\n> Otherworldly Patron feature (third)\n> Mystic Arcanum (8th level)" + "\n");
             }
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
             case 17 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature\n> Otherworldly Patron feature (second)\n> Mystic Arcanum (6th level)\n> Mystic Arcanum (7th level)\n> Otherworldly Patron feature (third)\n> Mystic Arcanum (8th level)\n> Mystic Arcanum (9th level)" + "\n");
             }
 
-            case 18 -> {
-
-            }
+            case 18 -> {}
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Otherworldly Patron\n> Pact Magic\n> Eldritch Invocations\n> Pact Boon\n> Otherworldly Patron feature\n> Otherworldly Patron feature (second)\n> Mystic Arcanum (6th level)\n> Mystic Arcanum (7th level)\n> Otherworldly Patron feature (third)\n> Mystic Arcanum (8th level)\n> Mystic Arcanum (9th level)\n> Eldritch Master" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");
@@ -1738,87 +1647,72 @@ public class Controller {
         switch (level) {
 
             case 1 -> {
-
                 characterSheet.clearProficients();
+                setAttributeProficiencies(coreRules.getClassAttributesProficiencies()[CoreRules.getInstance().WIZARD]);
+                setBackground();
+                setRandomSkillsProficiencies(coreRules.getWizardSkills(),2);
                 characterSheet.setHitDiceType(coreRules.WIZARD_DICE);
-
-                //ADD FEATS TO SORTED ALPHANUMERICAL LIST AS STRINGS (or better yet, make every feat a function)
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Arcane Recovery" + "\n");
             }
 
             case 2 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Arcane Recovery\n> Arcane Tradition" + "\n");
             }
 
-            case 3 -> {
-
-            }
+            case 3 -> {}
 
             case 4 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 5 -> {
-
-            }
+            case 5 -> {}
 
             case 6 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Arcane Recovery\n> Arcane Tradition\n> Arcane Tradition feature" + "\n");
             }
 
-            case 7 -> {
-
-            }
+            case 7 -> {}
 
             case 8 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 9 -> {
-
-            }
+            case 9 -> {}
 
             case 10 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Arcane Recovery\n> Arcane Tradition\n> Arcane Tradition feature\n> Arcane Tradition feature (second)" + "\n");
             }
 
-            case 11 -> {
-
-            }
+            case 11 -> {}
 
             case 12 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 13 -> {
-
-            }
+            case 13 -> {}
 
             case 14 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Arcane Recovery\n> Arcane Tradition\n> Arcane Tradition feature\n> Arcane Tradition feature (second)\n> Arcane Tradition feature (third)" + "\n");
             }
 
-            case 15 -> {
-
-            }
+            case 15 -> {}
 
             case 16 -> {
-
+                raiseRandomAttributes();
             }
 
-            case 17 -> {
-
-            }
+            case 17 -> {}
 
             case 18 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Arcane Recovery\n> Arcane Tradition\n> Arcane Tradition feature\n> Arcane Tradition feature (second)\n> Arcane Tradition feature (third)\n> Spell Mastery" + "\n");
             }
 
             case 19 -> {
-
+                raiseRandomAttributes();
             }
 
             case 20 -> {
-
+                characterSheet.setClassFeats(coreRules.getClasses()[characterSheet.getMainClass()] + ":\n" + "> Spellcasting\n> Arcane Recovery\n> Arcane Tradition\n> Arcane Tradition feature\n> Arcane Tradition feature (second)\n> Arcane Tradition feature (third)\n> Spell Mastery\n> Signature Spell" + "\n");
             }
 
             default -> throw new IllegalStateException("Unexpected value.");

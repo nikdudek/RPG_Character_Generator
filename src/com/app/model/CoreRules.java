@@ -190,6 +190,8 @@ public class CoreRules {
             "> Proficiency in: Disguise kit, thieves' tools\n> City Secrets\n"
     };
 
+    private final int[] raceSpeed = {30,25,30,25,30,25,30,30,30};
+
     private final int[][] backgroundSkillsProficiencies = {
             {INSIGHT,RELIGION},
             {DECEPTION,SLEIGHT_OF_HAND},
@@ -358,5 +360,9 @@ public class CoreRules {
 
     public int[] getWizardSkills() {
         return wizardSkills;
+    }
+
+    public int[] getRaceSpeed() {
+        return raceSpeed;
     }
 }
