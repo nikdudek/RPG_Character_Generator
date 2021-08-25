@@ -1,6 +1,5 @@
 package com.app.model;
 
-import java.util.List;
 import java.util.stream.IntStream;
 
 public class CharacterSheet {
@@ -181,10 +180,6 @@ public class CharacterSheet {
 
     public boolean[] getSkillsProficient() {
         return skillsProficient;
-    }
-
-    public void setSkillsProficient(boolean[] skillsProficient) {
-        this.skillsProficient = skillsProficient;
     }
 
     public int[] getAttributes() {

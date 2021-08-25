@@ -56,16 +56,6 @@ public class Controller {
 
     }
 
-//    public void clearAttributeProficiencies() {
-//        CharacterSheet characterSheet = CharacterSheet.getInstance();
-//
-//        boolean[] attributesProficient = characterSheet.getAttributesProficient();
-//
-//        IntStream.range(0,attributesProficient.length).forEach(i -> attributesProficient[i] = false);
-//
-//        characterSheet.setAttributesProficient(attributesProficient);
-//    }
-
     public void calculateAC() {
         CharacterSheet characterSheet = CharacterSheet.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
@@ -306,7 +296,6 @@ public class Controller {
         CoreRules coreRules = CoreRules.getInstance();
 
         int race = infoPanel.getRaceBox().getSelectedIndex();
-//        if (characterSheet.getRace() != race) {
             characterSheet.clearProficients();
             characterSheet.changeRace(race);
             rollAttributes();
@@ -365,8 +354,7 @@ public class Controller {
 
             characterSheet.setAttributes(attributes);
             refreshCombatValues();
-        }
-//    }
+    }
 
     // ------------------------------------------------- ALIGNMENT ------------------------------------------------- //
 
@@ -500,13 +488,38 @@ public class Controller {
     // ------------------------------------------------- SUBCLASS -------------------------------------------------- //
 
     public void setSubClass() {
-        //Subclass
-    }
-
-    public String[] getSubClasses(int arrayOfSubClasses) {
-        //TO DO
+        CharacterSheet characterSheet = CharacterSheet.getInstance();
+        InfoPanel infoPanel = InfoPanel.getInstance();
         CoreRules coreRules = CoreRules.getInstance();
-        return coreRules.getSubClasses(arrayOfSubClasses);
+
+        int subClass = infoPanel.getSubClassBox().getSelectedIndex(),
+            classId = characterSheet.getMainClass(),
+            level = characterSheet.getLevel();
+
+        characterSheet.setSubClass(subClass);
+
+        if(containsIn(coreRules.getSubClassesDefaultLessThanSecond(),classId)) {
+            if(subClass != 0 && level < 2) {
+                infoPanel.getLevelBox().setSelectedIndex(1);
+                setLevel();
+            }
+            else if(subClass == 0 && level >= 2) {
+                infoPanel.getLevelBox().setSelectedIndex(0);
+                setLevel();
+            }
+        }
+
+        else if(containsIn(coreRules.getSubClassesDefaultLessThanThird(),classId)) {
+            if(subClass != 0 && level < 3) {
+                infoPanel.getLevelBox().setSelectedIndex(2);
+                setLevel();
+            }
+            else if(subClass == 0 && level >= 3) {
+                infoPanel.getLevelBox().setSelectedIndex(1);
+                setLevel();
+            }
+        }
+
     }
 
     // --------------------------------------------------- LEVEL --------------------------------------------------- //
@@ -574,6 +587,22 @@ public class Controller {
         }
         else if (characterSheet.getMainClass() == coreRules.WIZARD) {
             for (int i = startingLevel; i <= targetLevel; i++) wizardSelected(i);
+        }
+
+        if(characterSheet.getSubClass() == 0 && containsIn(coreRules.getSubClassesDefaultLessThanSecond(),characterSheet.getMainClass()) && targetLevel > 1) {
+            InfoPanel infoPanel = InfoPanel.getInstance();
+            int range = infoPanel.getSubClassBox().getItemCount();
+
+            infoPanel.getSubClassBox().setSelectedIndex(ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,range));
+            characterSheet.setSubClass(infoPanel.getSubClassBox().getSelectedIndex());
+        }
+
+        else if(characterSheet.getSubClass() == 0 && containsIn(coreRules.getSubClassesDefaultLessThanThird(),characterSheet.getMainClass()) && targetLevel > 2) {
+            InfoPanel infoPanel = InfoPanel.getInstance();
+            int range = infoPanel.getSubClassBox().getItemCount();
+
+            infoPanel.getSubClassBox().setSelectedIndex(ThreadLocalRandom.current().nextInt(coreRules.STARTING_DEFAULT,range));
+            characterSheet.setSubClass(infoPanel.getSubClassBox().getSelectedIndex());
         }
 
         readFeats();

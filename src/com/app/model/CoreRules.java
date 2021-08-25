@@ -235,8 +235,8 @@ public class CoreRules {
     private final int[] warlockSkills = {ARCANA,DECEPTION,HISTORY,INTIMIDATION,INVESTIGATION,NATURE,RELIGION}; //x2
     private final int[] wizardSkills = {ARCANA,HISTORY,INSIGHT,INVESTIGATION,MEDICINE,RELIGION}; //x2
 
-    private final int[] subClassesDefaultLessThan3 = {0, 1, 4, 5, 6, 7, 8};
-    private final int[] subClassesDefaultLessThan2 = {3, 11};
+    private final int[] subClassesDefaultLessThanThird = {0, 1, 4, 5, 6, 7, 8};
+    private final int[] subClassesDefaultLessThanSecond = {3, 11};
     private final Integer[] levels = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
     private final int[] strSkills = {3};
     private final int[] dexSkills = {0,15,16};
@@ -266,12 +266,12 @@ public class CoreRules {
         return subClasses[arrayOfSubClasses];
     }
 
-    public int[] getSubClassesDefaultLessThan3() {
-        return subClassesDefaultLessThan3;
+    public int[] getSubClassesDefaultLessThanThird() {
+        return subClassesDefaultLessThanThird;
     }
 
-    public int[] getSubClassesDefaultLessThan2() {
-        return subClassesDefaultLessThan2;
+    public int[] getSubClassesDefaultLessThanSecond() {
+        return subClassesDefaultLessThanSecond;
     }
 
     public Integer[] getLevels() {
